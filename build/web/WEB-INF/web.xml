@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <!-- Welcome file -->
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>Views/Auth.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- Register Servlet -->
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>Controllers.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>Controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+    <!-- Login Servlet -->
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>Controllers.LoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <!-- Auth Filter -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>Filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
