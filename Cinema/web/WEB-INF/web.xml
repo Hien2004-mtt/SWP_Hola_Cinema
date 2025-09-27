@@ -4,8 +4,16 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>Controllers.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountListController</servlet-name>
+        <servlet-class>Controllers.AccountListController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountListController</servlet-name>
+        <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
 </web-app>

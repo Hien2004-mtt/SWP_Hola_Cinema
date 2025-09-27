@@ -80,4 +80,40 @@ public class DAO {
         }
         return null;
     }
+    // Lấy danh sách người dùng, có thể tìm kiếm theo tên hoặc email
+    public java.util.List<User> getAllUsers(String search) {
+        java.util.List<User> userList = new java.util.ArrayList<>();
+        String sql;
+        if (search != null && !search.trim().isEmpty()) {
+            sql = "SELECT user_id, email, password_hash, name, phone, dob, gender, role, created_at, updated_at FROM Users WHERE email LIKE ? OR name LIKE ?";
+        } else {
+            sql = "SELECT user_id, email, password_hash, name, phone, dob, gender, role, created_at, updated_at FROM Users";
+        }
+        try (java.sql.Connection conn = DBContext.getConnection();
+             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(1, "%" + search + "%");
+                ps.setString(2, "%" + search + "%");
+            }
+            java.sql.ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setUserId(rs.getInt("user_id"));
+                u.setEmail(rs.getString("email"));
+                u.setPasswordHash(rs.getString("password_hash"));
+                u.setName(rs.getString("name"));
+                u.setPhone(rs.getString("phone"));
+                java.sql.Date dob = rs.getDate("dob");
+                if (dob != null) u.setDob(dob.toLocalDate());
+                u.setGender(rs.getBoolean("gender"));
+                u.setRole(rs.getInt("role"));
+                u.setCreatedAt(rs.getTimestamp("created_at"));
+                u.setUpdatedAt(rs.getTimestamp("updated_at"));
+                userList.add(u);
+            }
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
 }
