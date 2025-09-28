@@ -209,6 +209,18 @@
             </header>
             <main>
                 <h2>User List</h2>
+                <form action="accountList" method="get" style="margin-bottom: 18px; display: flex; gap: 8px; justify-content: flex-start;">
+                    <input type="text" name="search" placeholder="Search by email or name">
+                    <button type="submit">Search</button>
+                    <button type="button" onclick="showAllUsers()" style="background: #b2bec3; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">Show All</button>
+                </form>
+                <script>
+                function showAllUsers() {
+                    document.querySelector('input[name=search]').value = '';
+                    document.querySelector('form[action=accountList]').submit();
+                }
+                </script>
+                </form>
                 <table>
             <thead>
                 <tr>
@@ -217,7 +229,7 @@
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Date of Birth</th>
-                    <th>Gender</th>
+                    <!-- Gender column removed -->
                     <th>Role</th>
                     <th>Action</th>
                 </tr>
@@ -230,7 +242,7 @@
                         <td>${user.name}</td>
                         <td>${user.phone}</td>
                         <td>${user.dob}</td>
-                        <td>${user.gender ? 'Male' : 'Female'}</td>
+                        <!-- Gender column removed -->
                         <td>
                             <c:choose>
                                 <c:when test="${user.role == 0}">Admin</c:when>
@@ -239,16 +251,89 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="detail.jsp?user_id=${user.userId}">Detail</a>
+                            <a href="#" class="detail-btn" 
+                               data-userid="${user.userId}"
+                               data-email="${user.email}"
+                               data-name="${user.name}"
+                               data-phone="${user.phone}"
+                               data-dob="${user.dob}"
+                               data-gender="${user.gender}"
+                               data-role="${user.role}">Detail</a>
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
                 </table>
-                <form action="accountList" method="get">
-                    <input type="text" name="search" placeholder="Search by email or name">
-                    <button type="submit">Search</button>
-                </form>
+            <!-- Modal for user detail -->
+            <div id="userDetailModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:999;align-items:center;justify-content:center;">
+                <div style="background:#fff;padding:32px 24px;border-radius:12px;min-width:320px;max-width:400px;box-shadow:0 2px 16px rgba(44,62,80,0.18);position:relative;">
+                    <h2 style="color:#2980b9;margin-top:0;">User Detail</h2>
+                    <div id="modalContent">
+                        <!-- Info will be injected here -->
+                    </div>
+                    <button onclick="closeModal()" id="closeModalBtn" style="position:absolute;top:12px;right:12px;background:transparent;color:#2980b9;border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;">&times;</button>
+                    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+                        <button onclick="showDeleteConfirm()" id="deleteBtn" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
+                        <button onclick="closeModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Close</button>
+                    </div>
+                    <!-- Modal xác nhận xóa -->
+                    <div id="deleteConfirmModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1000;align-items:center;justify-content:center;">
+                        <div style="background:#fff;padding:28px 22px;border-radius:12px;min-width:280px;max-width:340px;box-shadow:0 2px 16px rgba(44,62,80,0.18);position:relative;">
+                            <h3 style="color:#e74c3c;margin-top:0;">Confirm Delete</h3>
+                            <p>Are you sure you want to delete this user?</p>
+                            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
+                                <button onclick="confirmDeleteUser()" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
+                                <button onclick="closeDeleteModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="deleteUserForm" method="post" action="deleteUser" style="display:none;">
+                        <input type="hidden" name="user_id" id="deleteUserId" />
+                    </form>
+                    <script>
+                        let currentDeleteUserId = null;
+                        function showDeleteConfirm() {
+                            document.getElementById('deleteConfirmModal').style.display = 'flex';
+                        }
+                        function closeDeleteModal() {
+                            document.getElementById('deleteConfirmModal').style.display = 'none';
+                        }
+                        function confirmDeleteUser() {
+                            document.getElementById('deleteConfirmModal').style.display = 'none';
+                            document.getElementById('userDetailModal').style.display = 'none';
+                            document.getElementById('deleteUserForm').submit();
+                        }
+                        // Gán userId cho form xóa khi mở modal chi tiết
+                        document.querySelectorAll('.detail-btn').forEach(function(btn) {
+                            btn.addEventListener('click', function(e) {
+                                // ...existing code...
+                                document.getElementById('deleteUserId').value = btn.dataset.userid;
+                                currentDeleteUserId = btn.dataset.userid;
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <script>
+                function closeModal() {
+                    document.getElementById('userDetailModal').style.display = 'none';
+                }
+                document.querySelectorAll('.detail-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var html = '';
+                        html += '<p><strong>ID:</strong> ' + btn.dataset.userid + '</p>';
+                        html += '<p><strong>Email:</strong> ' + btn.dataset.email + '</p>';
+                        html += '<p><strong>Name:</strong> ' + btn.dataset.name + '</p>';
+                        html += '<p><strong>Phone:</strong> ' + btn.dataset.phone + '</p>';
+                        html += '<p><strong>Date of Birth:</strong> ' + btn.dataset.dob + '</p>';
+                        html += '<p><strong>Gender:</strong> ' + (btn.dataset.gender == 'true' ? 'Male' : 'Female') + '</p>';
+                        html += '<p><strong>Role:</strong> ' + (btn.dataset.role == '0' ? 'Admin' : (btn.dataset.role == '1' ? 'Manager' : 'Customer')) + '</p>';
+                        document.getElementById('modalContent').innerHTML = html;
+                        document.getElementById('userDetailModal').style.display = 'flex';
+                    });
+                });
+            </script>
             </main>
             <footer>
                 <p>&copy; 2025 Cinema Booking System</p>

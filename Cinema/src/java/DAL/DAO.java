@@ -116,4 +116,16 @@ public class DAO {
         }
         return userList;
     }
+    // Xóa user theo id
+    public boolean deleteUserById(int userId) {
+        String sql = "DELETE FROM Users WHERE user_id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
