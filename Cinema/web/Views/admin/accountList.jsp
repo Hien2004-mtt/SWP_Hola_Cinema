@@ -228,40 +228,51 @@
                     <th>Email</th>
                     <th>Name</th>
                     <th>Phone</th>
-                    <th>Date of Birth</th>
+                    <!-- Date of Birth column removed -->
                     <!-- Gender column removed -->
                     <th>Role</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="user" items="${userList}">
-                    <tr>
-                        <td>${user.userId}</td>
-                        <td>${user.email}</td>
-                        <td>${user.name}</td>
-                        <td>${user.phone}</td>
-                        <td>${user.dob}</td>
-                        <!-- Gender column removed -->
-                        <td>
-                            <c:choose>
-                                <c:when test="${user.role == 0}">Admin</c:when>
-                                <c:when test="${user.role == 1}">Manager</c:when>
-                                <c:when test="${user.role == 2}">Customer</c:when>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <a href="#" class="detail-btn" 
-                               data-userid="${user.userId}"
-                               data-email="${user.email}"
-                               data-name="${user.name}"
-                               data-phone="${user.phone}"
-                               data-dob="${user.dob}"
-                               data-gender="${user.gender}"
-                               data-role="${user.role}">Detail</a>
-                        </td>
-                    </tr>
-                </c:forEach>
+                    <c:choose>
+                        <c:when test="${empty userList}">
+                            <tr>
+                                <td colspan="6" style="text-align:center; color:#e74c3c; font-weight:bold;">No accounts available</td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="user" items="${userList}">
+                                <tr>
+                                    <td>${user.userId}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.name}</td>
+                                    <td>${user.phone}</td>
+                                    <!-- Date of Birth column removed -->
+                                    <!-- Gender column removed -->
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${user.role == 0}">Admin</c:when>
+                                            <c:when test="${user.role == 1}">Manager</c:when>
+                                            <c:when test="${user.role == 2}">Customer</c:when>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="detail-btn" 
+                                            data-userid="${user.userId}"
+                                            data-email="${user.email}"
+                                            data-name="${user.name}"
+                                            data-phone="${user.phone}"
+                                            data-dob="${user.dob}"
+                                            data-gender="${user.gender}"
+                                            data-role="${user.role}"
+                                            data-createdat="${user.createdAt}"
+                                            data-updatedat="${user.updatedAt}">Detail</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
             </tbody>
                 </table>
             <!-- Modal for user detail -->
@@ -329,6 +340,8 @@
                         html += '<p><strong>Date of Birth:</strong> ' + btn.dataset.dob + '</p>';
                         html += '<p><strong>Gender:</strong> ' + (btn.dataset.gender == 'true' ? 'Male' : 'Female') + '</p>';
                         html += '<p><strong>Role:</strong> ' + (btn.dataset.role == '0' ? 'Admin' : (btn.dataset.role == '1' ? 'Manager' : 'Customer')) + '</p>';
+                        html += '<p><strong>Created At:</strong> ' + (btn.dataset.createdat ? btn.dataset.createdat : '-') + '</p>';
+                        html += '<p><strong>Updated At:</strong> ' + (btn.dataset.updatedat ? btn.dataset.updatedat : '-') + '</p>';
                         document.getElementById('modalContent').innerHTML = html;
                         document.getElementById('userDetailModal').style.display = 'flex';
                     });
