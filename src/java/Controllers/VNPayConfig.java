@@ -6,10 +6,11 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
 public class VNPayConfig {
-    public static String vnp_TmnCode    = "YOUR_SANDBOX_TMNCODE";
-    public static String vnp_HashSecret = "YOUR_SANDBOX_SECRET";
+    public static String vnp_TmnCode = "N9TT2C8W";
+    public static String vnp_HashSecret = "8VQAV9OU8Y3XOG9HITBIK1975ONMW389";
     public static String vnp_PayUrl     = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_Returnurl  = "http://localhost:9999/SWP_Hola_Cinema/vnpay_return";
+    public static String vnp_ApiUrl    = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String getRandomNumber(int len) {
         String chars = "0123456789";
