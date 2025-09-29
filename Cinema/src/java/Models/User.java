@@ -1,52 +1,118 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-
 public class User {
+
     private int userId;
     private String email;
     private String passwordHash;
     private String name;
     private String phone;
-    private LocalDate dob;
-    private boolean gender; // true = male, false = female
-    private int role;       // 0=admin, 1=manager, 2=customer
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private java.sql.Date dob;
+    private boolean gender;
+    private int role; // 0: admin, 1: staff, 2: customer
+    private java.sql.Timestamp createdAt;
+    private java.sql.Timestamp updatedAt;
 
-    // Getters & Setters
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public User() {
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public User(String email, String passwordHash, String name, String phone, java.sql.Date dob, boolean gender, int role) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.name = name;
+        this.phone = phone;
+        this.dob = dob;
+        this.gender = gender;
+        this.role = role;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public int getUserId() {
+        return userId;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getEmail() {
+        return email;
+    }
 
-    public LocalDate getDob() { return dob; }
-    public void setDob(LocalDate dob) { this.dob = dob; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public boolean isGender() { return gender; }
-    public void setGender(boolean gender) { this.gender = gender; }
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-    public int getRole() { return role; }
-    public void setRole(int role) { this.role = role; }
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public String getName() {
+        return name;
+    }
 
-    public Timestamp getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public java.sql.Date getDob() {
+        return dob;
+    }
+
+    public void setDob(java.sql.Date dob) {
+        this.dob = dob;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public java.sql.Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.sql.Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public java.sql.Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(java.sql.Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "userId=" + userId
+                + ", email='" + email + '\''
+                + ", name='" + name + '\''
+                + ", role=" + role
+                + '}';
+    }
 }
