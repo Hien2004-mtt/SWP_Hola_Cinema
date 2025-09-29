@@ -14,51 +14,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Chọn suất chiếu</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #fdf6e3;
-            padding: 40px;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .showtime-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .showtime-box {
-            border: 1px solid #ccc;
-            padding: 16px 24px;
-            border-radius: 8px;
-            background-color: white;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .showtime-box:hover {
-            background-color: #ffeaa7;
-        }
-        .showtime-radio {
-            display: none;
-        }
-        .showtime-label {
-            display: block;
-        }
-        .showtime-radio:checked + .showtime-label {
-            border: 2px solid #f39c12;
-            background-color: #fff8e1;
-        }
-        .submit-btn {
-            margin-top: 40px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/Showtime.css">
+    <link rel="stylesheet" href="css/Layout.css">
 </head>
 <body>
+    <div class="page-container">
+    <jsp:include page="/Inculude/Header.jsp" />
+    <div class="main-content">
     <h2>Chọn suất chiếu cho phim: <%= movieTitle %></h2>
 
     <% if (showtimes != null && !showtimes.isEmpty()) { %>
@@ -84,5 +46,8 @@
     <% } else { %>
         <p style="text-align:center; color:red;">Không có suất chiếu nào cho phim này.</p>
     <% } %>
+    </div>
+    <jsp:include page="/Inculude/Footer.jsp" />
+    </div>
 </body>
 </html>
