@@ -21,9 +21,14 @@ public class AccountListController extends HttpServlet {
 //        }
 
         String search = request.getParameter("search");
-        List<User> userList = new DAO().getAllUsers(search);
+        String sortField = request.getParameter("sortField");
+        String sortOrder = request.getParameter("sortOrder");
+
+        List<User> userList = new DAO().getAllUsers(search, sortField, sortOrder);
 
         request.setAttribute("userList", userList);
+        request.setAttribute("sortField", sortField);
+        request.setAttribute("sortOrder", sortOrder);
         request.getRequestDispatcher("/Views/admin/accountList.jsp").forward(request, response);
     }
 

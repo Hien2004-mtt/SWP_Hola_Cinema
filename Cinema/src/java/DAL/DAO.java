@@ -81,41 +81,52 @@ public class DAO {
         return null;
     }
     // Lấy danh sách người dùng, có thể tìm kiếm theo tên hoặc email
-    public java.util.List<User> getAllUsers(String search) {
-        java.util.List<User> userList = new java.util.ArrayList<>();
-        String sql;
-        if (search != null && !search.trim().isEmpty()) {
-            sql = "SELECT user_id, email, password_hash, name, phone, dob, gender, role, created_at, updated_at FROM Users WHERE email LIKE ? OR name LIKE ?";
-        } else {
-            sql = "SELECT user_id, email, password_hash, name, phone, dob, gender, role, created_at, updated_at FROM Users";
+        public java.util.List<User> getAllUsers(String search) {
+            return getAllUsers(search, null, null);
         }
-        try (java.sql.Connection conn = DBContext.getConnection();
-             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
-            if (search != null && !search.trim().isEmpty()) {
-                ps.setString(1, "%" + search + "%");
-                ps.setString(2, "%" + search + "%");
+
+        // Overload hỗ trợ sort
+        public java.util.List<User> getAllUsers(String search, String sortField, String sortOrder) {
+            java.util.List<User> userList = new java.util.ArrayList<>();
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT user_id, email, password_hash, name, phone, dob, gender, role, created_at, updated_at FROM Users");
+            boolean hasSearch = search != null && !search.trim().isEmpty();
+            if (hasSearch) {
+                sql.append(" WHERE email LIKE ? OR name LIKE ?");
             }
-            java.sql.ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User u = new User();
-                u.setUserId(rs.getInt("user_id"));
-                u.setEmail(rs.getString("email"));
-                u.setPasswordHash(rs.getString("password_hash"));
-                u.setName(rs.getString("name"));
-                u.setPhone(rs.getString("phone"));
-                java.sql.Date dob = rs.getDate("dob");
-                if (dob != null) u.setDob(dob.toLocalDate());
-                u.setGender(rs.getBoolean("gender"));
-                u.setRole(rs.getInt("role"));
-                u.setCreatedAt(rs.getTimestamp("created_at"));
-                u.setUpdatedAt(rs.getTimestamp("updated_at"));
-                userList.add(u);
+            // Validate sortField and sortOrder
+            String field = "user_id";
+            if ("role".equalsIgnoreCase(sortField)) field = "role";
+            String order = "ASC";
+            if ("desc".equalsIgnoreCase(sortOrder)) order = "DESC";
+            sql.append(" ORDER BY " + field + " " + order);
+            try (java.sql.Connection conn = DBContext.getConnection();
+                 java.sql.PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+                if (hasSearch) {
+                    ps.setString(1, "%" + search + "%");
+                    ps.setString(2, "%" + search + "%");
+                }
+                java.sql.ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setEmail(rs.getString("email"));
+                    u.setPasswordHash(rs.getString("password_hash"));
+                    u.setName(rs.getString("name"));
+                    u.setPhone(rs.getString("phone"));
+                    java.sql.Date dob = rs.getDate("dob");
+                    if (dob != null) u.setDob(dob.toLocalDate());
+                    u.setGender(rs.getBoolean("gender"));
+                    u.setRole(rs.getInt("role"));
+                    u.setCreatedAt(rs.getTimestamp("created_at"));
+                    u.setUpdatedAt(rs.getTimestamp("updated_at"));
+                    userList.add(u);
+                }
+            } catch (java.sql.SQLException e) {
+                e.printStackTrace();
             }
-        } catch (java.sql.SQLException e) {
-            e.printStackTrace();
+            return userList;
         }
-        return userList;
-    }
     // Xóa user theo id
     public boolean deleteUserById(int userId) {
         String sql = "DELETE FROM Users WHERE user_id = ?";
@@ -128,4 +139,18 @@ public class DAO {
             return false;
         }
     }
+
+        // Cập nhật role cho user
+        public boolean updateUserRole(int userId, int role) {
+            String sql = "UPDATE Users SET role = ? WHERE user_id = ?";
+            try (Connection conn = DBContext.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, role);
+                ps.setInt(2, userId);
+                return ps.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 }
