@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+.container {
+    background: #fff;
+    margin-top: 60px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    width: 450px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+h2 {
+    color: #a50064;
+    margin-bottom: 20px;
+}
+form {
+    margin: 15px 0;
+}
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 65%;
+    font-size: 14px;
+}
+button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 6px 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.btn-apply {
+    background: #3498db;
+    color: #fff;
+}
+.btn-apply:hover {
+    background: #217dbb;
+}
+.btn-momo {
+    background: #a50064;
+    color: #fff;
+}
+.btn-momo:hover {
+    background: #80004d;
+}
+.btn-vnpay {
+    background: #27ae60;
+    color: #fff;
+}
+.btn-vnpay:hover {
+    background: #1f8a4a;
+}
+.total-box {
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+.total-box p {
+    margin: 8px 0;
+}
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(15px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+
+.btn {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 5px;
+}
+.btn:hover {
+    background: #eee;
+}
+
