@@ -234,7 +234,7 @@
         </form>
         
         <p class="text-center mt-4 login-link">
-            Đã có tài khoản? <a href="${pageContext.request.contextPath}/auth/login">Đăng nhập ngay</a>
+            Đã có tài khoản? <a href="${pageContext.request.contextPath}/Views/login.jsp">Đăng nhập ngay</a>
         </p>
     </div>
 
