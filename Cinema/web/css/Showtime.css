@@ -1,27 +1,28 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Sep 29, 2025, 9:17:25 PM
-    Author     : USER
-*/
-
+/* =======================
+   Global styles
+   ======================= */
 body {
     font-family: sans-serif;
     background-color: #fdf6e3;
     padding: 40px;
+    margin: 0;
 }
+
 h2 {
     text-align: center;
     margin-bottom: 30px;
 }
+
+/* =======================
+   Showtime box styles
+   ======================= */
 .showtime-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
 }
+
 .showtime-box {
     border: 1px solid #ccc;
     padding: 16px 24px;
@@ -31,20 +32,66 @@ h2 {
     transition: 0.2s;
     text-align: center;
 }
+
 .showtime-box:hover {
     background-color: #ffeaa7;
 }
+
 .showtime-radio {
     display: none;
 }
+
 .showtime-label {
     display: block;
 }
+
 .showtime-radio:checked + .showtime-label {
     border: 2px solid #f39c12;
     background-color: #fff8e1;
 }
-.submit-btn {
+
+/* =======================
+   Button group styles
+   ======================= */
+.button-group {
+    display: flex;
+    justify-content: center;   /* căn giữa ngang */
+    align-items: center;
+    gap: 20px;
     margin-top: 40px;
-    text-align: center;
+    width: 100%;               /* chiếm hết chiều ngang để flex hoạt động */
+}
+
+.button-group form {
+    display: inline-flex;       /* tránh form chiếm full dòng */
+}
+
+.continue-button,
+.cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Nút tiếp tục */
+.continue-button {
+    background-color: #27ae60;
+    color: white;
+}
+
+.continue-button:hover {
+    background-color: #219150;
+}
+
+/* Nút hủy */
+.cancel-button {
+    background-color: #ddd;
+    color: #333;
+}
+
+.cancel-button:hover {
+    background-color: #bbb;
 }

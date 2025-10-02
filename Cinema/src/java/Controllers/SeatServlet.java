@@ -74,7 +74,7 @@ public class SeatServlet extends HttpServlet {
             request.setAttribute("error", "Không thể lấy danh sách ghế.");
         }
 
-        // ✅ Lấy showtimeId từ session
+        //Lấy showtimeId từ session
         HttpSession session = request.getSession();
         Object showtimeObj = session.getAttribute("selectedShowtimeId");
         if (showtimeObj == null) {
@@ -84,7 +84,7 @@ public class SeatServlet extends HttpServlet {
 
         int showtimeId = (int) showtimeObj;
 
-        // ✅ Lấy thông tin suất chiếu
+        //Lấy thông tin suất chiếu
         ShowtimeDAO showtimeDAO = new ShowtimeDAO();
         Showtime st = showtimeDAO.getShowtimeById(showtimeId);
 
@@ -93,7 +93,7 @@ public class SeatServlet extends HttpServlet {
             request.setAttribute("startTime", "Không xác định");
             request.setAttribute("basePrice", 0);
         } else {
-            // ✅ Lấy thông tin phim
+            //Lấy thông tin phim
             MovieDAO movieDAO = new MovieDAO();
             Movie m = movieDAO.getMovieById(st.getMovieId());
 
@@ -107,7 +107,7 @@ public class SeatServlet extends HttpServlet {
             request.setAttribute("basePrice", st.getBasePrice());
         }
 
-        // ✅ Truyền danh sách ghế
+        //Truyền danh sách ghế
         request.setAttribute("seats", seats);
         request.getRequestDispatcher("/Views/Seat.jsp").forward(request, response);
     }

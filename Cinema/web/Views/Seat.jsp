@@ -7,6 +7,11 @@
     String startTime = String.valueOf(request.getAttribute("startTime"));
     Double basePrice = (Double) request.getAttribute("basePrice");
 %>
+<%
+    int showtimeId = (Integer) request.getAttribute("showtimeId");
+    int movieId = (Integer) request.getAttribute("movieId");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
