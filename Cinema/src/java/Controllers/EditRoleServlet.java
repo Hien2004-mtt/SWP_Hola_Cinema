@@ -23,6 +23,11 @@ public class EditRoleServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input");
             return;
         }
+        // Không cho đổi role thành admin
+        if (role == 0) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Changing role to Admin is not allowed.");
+            return;
+        }
         boolean success = new DAO().updateUserRole(userId, role);
         if (success) {
             response.sendRedirect("accountList");

@@ -222,13 +222,26 @@
             <main>
                 <h2>User List</h2>
                 <form action="accountList" method="get" style="margin-bottom: 18px; display: flex; gap: 8px; justify-content: flex-start;">
-                                <input type="text" name="search" placeholder="Search by email or name">
-                                <button type="submit">Search</button>
-                                <button type="button" id="sortBtn" style="display: flex; align-items: center; gap: 6px; background: #f1c40f; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">
-                                    <span>Sort</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M6 12h12M9 18h6"/></svg>
-                                </button>
-                                <button type="button" onclick="showAllUsers()" style="background: #b2bec3; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">Show All</button>
+                                    <input type="text" name="search" placeholder="Search by email or name">
+                                    <button type="submit">Search</button>
+                                    <button type="button" id="sortBtn" style="display: flex; align-items: center; gap: 6px; background: #f1c40f; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">
+                                        <span>Sort</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M6 12h12M9 18h6"/></svg>
+                                    </button>
+                                    <div style="display:flex;align-items:center;gap:16px;margin-left:18px;">
+                                            <label style="display:flex;align-items:center;gap:6px;font-weight:500;">
+                                                <input type="radio" name="roleFilter" value="all" <c:if test='${roleFilter == null || roleFilter == "all"}'>checked</c:if>> Show All
+                                            </label>
+                                            <label style="display:flex;align-items:center;gap:6px;font-weight:500;">
+                                                <input type="radio" name="roleFilter" value="0" <c:if test='${roleFilter == "0"}'>checked</c:if>> Admin
+                                            </label>
+                                            <label style="display:flex;align-items:center;gap:6px;font-weight:500;">
+                                                <input type="radio" name="roleFilter" value="1" <c:if test='${roleFilter == "1"}'>checked</c:if>> Manager
+                                            </label>
+                                            <label style="display:flex;align-items:center;gap:6px;font-weight:500;">
+                                                <input type="radio" name="roleFilter" value="2" <c:if test='${roleFilter == "2"}'>checked</c:if>> Customer
+                                            </label>
+                                    </div>
                             <!-- Sort popup -->
                             <div id="sortPopup" style="display:none; position:absolute; top:70px; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 2px 16px rgba(44,62,80,0.18); border-radius:12px; padding:24px 18px; z-index:1001; min-width:220px;">
                                 <h3 style="margin-top:0; color:#2980b9;">Sort Options</h3>
@@ -247,10 +260,19 @@
                             </div>
                 </form>
                 <script>
-                function showAllUsers() {
-                    document.querySelector('input[name=search]').value = '';
-                    document.querySelector('form[action=accountList]').submit();
-                }
+                    // Xử lý radio lọc role
+                    document.querySelectorAll('input[name="roleFilter"]').forEach(function(radio) {
+                        radio.addEventListener('change', function() {
+                            const form = document.querySelector('form[action=accountList]');
+                            const params = new URLSearchParams(new FormData(form));
+                            if (radio.value === 'all') {
+                                params.delete('role');
+                            } else {
+                                params.set('role', radio.value);
+                            }
+                            window.location.href = form.action + '?' + params.toString();
+                        });
+                    });
                     // Hiện popup sort và giữ nguyên lựa chọn hiện tại
                     document.getElementById('sortBtn').addEventListener('click', function() {
                         // Lấy giá trị sort hiện tại từ biến JSP
@@ -286,14 +308,14 @@
                 <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Phone</th>
+                    <th style="text-align:center;">ID</th>
+                    <th style="text-align:center;">Email</th>
+                    <th style="text-align:center;">Name</th>
+                    <th style="text-align:center;">Phone</th>
                     <!-- Date of Birth column removed -->
                     <!-- Gender column removed -->
-                    <th>Role</th>
-                    <th>Action</th>
+                    <th style="text-align:center;">Role</th>
+                    <th style="text-align:center;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -330,10 +352,23 @@
                                                 data-role="${user.role}"
                                                 data-createdat="${user.createdAt}"
                                                 data-updatedat="${user.updatedAt}">Detail</a>
-                                            <a href="#" class="edit-role-btn" 
+                                            <c:choose>
+                                                <c:when test="${user.role == 0}">
+                                                    <a href="#" style="margin-left:8px; background:#b2bec3; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.95rem; font-weight:500; cursor:not-allowed; pointer-events:none;">Edit Role</a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="#" class="edit-role-btn" 
+                                                        data-userid="${user.userId}"
+                                                        data-role="${user.role}"
+                                                        style="margin-left:8px; background:#f39c12; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.95rem; font-weight:500;">Edit Role</a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <a href="#" class="edit-status-btn"
                                                 data-userid="${user.userId}"
-                                                data-role="${user.role}"
-                                                style="margin-left:8px; background:#f39c12; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.95rem; font-weight:500;">Edit Role</a>
+                                                data-status="${user.status}"
+                                                style="margin-left:8px; background:#3498db; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.95rem; font-weight:500;">
+                                                Status: <c:choose><c:when test="${user.status}">Active</c:when><c:otherwise>Locked</c:otherwise></c:choose>
+                                            </a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -349,8 +384,8 @@
                                 <input type="hidden" name="userId" id="editRoleUserId" />
                                 <div style="margin-bottom:24px;width:100%;">
                                     <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;">
-                                        <input type="radio" name="role" value="0" id="roleAdmin" style="accent-color:#f39c12;">
-                                        <label for="roleAdmin" style="font-size:1.08rem;">Admin</label>
+                                        <input type="radio" name="role" value="0" id="roleAdmin" style="accent-color:#f39c12;" disabled>
+                                        <label for="roleAdmin" style="font-size:1.08rem;color:#b2bec3;">Admin (not allowed)</label>
                                     </div>
                                     <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;">
                                         <input type="radio" name="role" value="1" id="roleManager" style="accent-color:#f39c12;">
@@ -452,12 +487,56 @@
                         html += '<p><strong>Role:</strong> ' + (btn.dataset.role == '0' ? 'Admin' : (btn.dataset.role == '1' ? 'Manager' : 'Customer')) + '</p>';
                         html += '<p><strong>Created At:</strong> ' + (btn.dataset.createdat ? btn.dataset.createdat : '-') + '</p>';
                         html += '<p><strong>Updated At:</strong> ' + (btn.dataset.updatedat ? btn.dataset.updatedat : '-') + '</p>';
+                        html += '<p><strong>Status:</strong> ' + (btn.dataset.status === 'true' ? 'Active' : 'Locked') + '</p>';
                         document.getElementById('modalContent').innerHTML = html;
                         document.getElementById('userDetailModal').style.display = 'flex';
                     });
                 });
             </script>
             </main>
+                <!-- Modal chỉnh sửa trạng thái -->
+                <div id="editStatusModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1002;align-items:center;justify-content:center;">
+                        <div style="background:#fff;padding:36px 32px 28px 32px;border-radius:16px;min-width:320px;max-width:400px;box-shadow:0 4px 24px rgba(44,62,80,0.18);position:relative;display:flex;flex-direction:column;align-items:center;">
+                            <h2 style="color:#3498db;margin-top:0;margin-bottom:18px;text-align:center;font-size:1.5rem;letter-spacing:1px;">Update Account Status</h2>
+                            <form id="editStatusForm" method="post" action="editStatus" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+                                <input type="hidden" name="userId" id="editStatusUserId" />
+                                <div style="margin-bottom:24px;width:100%;">
+                                    <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;">
+                                        <input type="radio" name="status" value="true" id="statusActive" style="accent-color:#3498db;">
+                                        <label for="statusActive" style="font-size:1.08rem;">Active</label>
+                                    </div>
+                                    <div style="display:flex;align-items:center;gap:12px;">
+                                        <input type="radio" name="status" value="false" id="statusLocked" style="accent-color:#3498db;">
+                                        <label for="statusLocked" style="font-size:1.08rem;">Locked</label>
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:14px;justify-content:center;width:100%;margin-top:8px;">
+                                    <button type="submit" style="background:linear-gradient(90deg,#3498db 60%,#27ae60 100%);color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:1.08rem;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(44,62,80,0.10);">Save</button>
+                                    <button type="button" id="closeEditStatusBtn" style="background:#f6f8fa;color:#2c3e50;border:1px solid #b2bec3;border-radius:8px;padding:10px 22px;font-size:1.08rem;font-weight:500;cursor:pointer;">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            <script>
+                // Xử lý nút Edit Status
+                document.querySelectorAll('.edit-status-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.getElementById('editStatusUserId').value = btn.dataset.userid;
+                        var status = btn.dataset.status === 'true';
+                        document.getElementById('statusActive').checked = status;
+                        document.getElementById('statusLocked').checked = !status;
+                        document.getElementById('editStatusModal').style.display = 'flex';
+                        setTimeout(function() {
+                            document.getElementById('editStatusModal').scrollIntoView({behavior: 'smooth'});
+                        }, 100);
+                    });
+                });
+                // Đóng modal Edit Status
+                document.getElementById('closeEditStatusBtn').addEventListener('click', function() {
+                    document.getElementById('editStatusModal').style.display = 'none';
+                });
+            </script>
             <footer>
                 <p>&copy; 2025 Cinema Booking System</p>
             </footer>

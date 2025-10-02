@@ -12,6 +12,7 @@ public class User {
     private String email;
     private String passwordHash;
     private String name;
+    private boolean status; // true = hoạt động, false = bị khóa
     private String phone;
     private LocalDate dob;
     private boolean gender; // true = male, false = female
@@ -42,6 +43,8 @@ public class User {
     public void setGender(boolean gender) { this.gender = gender; }
 
     public int getRole() { return role; }
+    public boolean isStatus() { return status; }
+    public void setStatus(boolean status) { this.status = status; }
     public void setRole(int role) { this.role = role; }
 
     public Timestamp getCreatedAt() { return createdAt; }
