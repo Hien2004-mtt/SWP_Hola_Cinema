@@ -116,15 +116,11 @@ public class RoleFilter implements Filter {
         String path = req.getRequestURI();
         int role = user.getRole();
 
-        if (path.contains("/dashboard") && role != 0) {
+        if (path.contains("/dashboard") && !(role == 0 || role == 1)) {
             res.sendRedirect(req.getContextPath() + "/unauthorized");
             return;
         }
 
-        if (path.contains("/dashboard") && role != 1) {
-            res.sendRedirect(req.getContextPath() + "/unauthorized");
-            return;
-        }
 
         if (path.contains("/home") && role != 2) {
             res.sendRedirect(req.getContextPath() + "/unauthorized");

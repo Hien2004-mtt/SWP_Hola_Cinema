@@ -26,8 +26,8 @@ public class LoginServlet extends HttpServlet {
         User user = (session != null) ? (User) session.getAttribute("user") : null;
         if (user != null) {
             switch (user.getRole()) {
-                case 0: response.sendRedirect("admin-home"); return;
-                case 1: response.sendRedirect("staff-home"); return;
+                case 0: response.sendRedirect("dashboard"); return;
+                case 1: response.sendRedirect("dashboard"); return;
                 case 2: response.sendRedirect("home"); return;
                 default: response.sendRedirect("home"); return;
             }
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Redirect theo role
                 switch (user.getRole()) {
-                    case 0: response.sendRedirect("admin-home"); break;
+                    case 0: response.sendRedirect("dashboard"); break;
                     case 1: response.sendRedirect("staff-home"); break;
                     case 2: response.sendRedirect("home"); break;
                     default: response.sendRedirect("home"); break;

@@ -56,6 +56,11 @@
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/Seat</url-pattern>
     </filter-mapping>
+   
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/Showtime</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>RoleFilter</filter-name>
         <url-pattern>/dashboard</url-pattern>
