@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Acer
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
 public class HomeServlet extends HttpServlet {
 
     /**
@@ -60,17 +59,19 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Check if user is logged in
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            // Not logged in, redirect to login page
-            response.sendRedirect("login");
-            return;
-        }
+        
 
         // User is logged in, forward to home page
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
+        HttpSession session = request.getSession(false);
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+        if(user == null){
+            request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
+        }
+        else{
+            request.setAttribute("user", user);
         request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
+        }
+        
     }
 
     /**
