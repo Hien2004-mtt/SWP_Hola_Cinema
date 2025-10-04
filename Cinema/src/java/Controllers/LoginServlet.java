@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                 // Redirect theo role
                 switch (user.getRole()) {
                     case 0: response.sendRedirect("dashboard"); break;
-                    case 1: response.sendRedirect("staff-home"); break;
+                    case 1: response.sendRedirect("dashboard"); break;
                     case 2: response.sendRedirect("home"); break;
                     default: response.sendRedirect("home"); break;
                 }
