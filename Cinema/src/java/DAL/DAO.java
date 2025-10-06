@@ -93,7 +93,8 @@ public class DAO {
     public java.util.List<User> getAllUsers(String search, String sortField, String sortOrder, String roleParam) {
         java.util.List<User> userList = new java.util.ArrayList<>();
         StringBuilder sql = new StringBuilder();
-sql.append("SELECT user_id, email, password_hash, name, phone, dob, gender, role, status, created_at, updated_at FROM Users");  
+        sql.append(
+                "SELECT user_id, email, password_hash, name, phone, dob, gender, role, status, created_at, updated_at FROM Users");
         boolean hasSearch = search != null && !search.trim().isEmpty();
         boolean hasRole = roleParam != null && !roleParam.equals("") && !roleParam.equals("all");
         if (hasSearch || hasRole) {
@@ -168,7 +169,7 @@ sql.append("SELECT user_id, email, password_hash, name, phone, dob, gender, role
         // Kiểm tra nếu user hiện tại là admin thì không cho đổi role
         String checkSql = "SELECT role FROM Users WHERE user_id = ?";
         try (Connection conn = DBContext.getConnection();
-             PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
+                PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
             checkPs.setInt(1, userId);
             ResultSet rs = checkPs.executeQuery();
             if (rs.next() && rs.getInt("role") == 0) {
@@ -192,15 +193,15 @@ sql.append("SELECT user_id, email, password_hash, name, phone, dob, gender, role
     }
 
     public boolean updateUserStatus(int userId, boolean status) {
-    String sql = "UPDATE Users SET status = ? WHERE user_id = ?";
-    try (Connection conn = DBContext.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setBoolean(1, status);
-        ps.setInt(2, userId);
-        return ps.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        String sql = "UPDATE Users SET status = ? WHERE user_id = ?";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, status);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 }

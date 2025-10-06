@@ -13,6 +13,29 @@
     <title>Account List</title>
     <link rel="stylesheet" href="css/admin.css">
     <style>
+        .pagination { margin-top:24px; display:flex; justify-content:center; gap:8px; }
+        .page-btn {
+            padding:8px 14px;
+            border-radius:6px;
+            border:1px solid #2980b9;
+            background:#fff;
+            color:#2980b9;
+            font-weight:500;
+            cursor:pointer;
+            transition:background 0.2s, color 0.2s;
+        }
+        .page-btn.active {
+            background:#2980b9;
+            color:#fff;
+            cursor:not-allowed;
+        }
+        .page-btn:disabled {
+            background:#eee;
+            color:#b2bec3;
+            cursor:not-allowed;
+        }
+    </style>
+    <style>
         .container {
             display: flex;
             min-height: 100vh;
@@ -376,6 +399,19 @@
                     </c:choose>
             </tbody>
                 </table>
+                <!-- Thanh phân trang -->
+                <div class="pagination">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <button 
+                            type="button"
+                            class="page-btn <c:if test='${i == currentPage}'>active</c:if>"
+                            <c:if test='${totalPages == 1 || i == currentPage}'>disabled</c:if>
+                            onclick="window.location.href='accountList?page=${i}'"
+                        >
+                            ${i}
+                        </button>
+                    </c:forEach>
+                </div>
                 <!-- Modal chỉnh sửa role -->
                 <div id="editRoleModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1001;align-items:center;justify-content:center;">
                         <div style="background:#fff;padding:36px 32px 28px 32px;border-radius:16px;min-width:320px;max-width:400px;box-shadow:0 4px 24px rgba(44,62,80,0.18);position:relative;display:flex;flex-direction:column;align-items:center;">

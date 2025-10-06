@@ -1,0 +1,12 @@
+build/web/WEB-INF/lib/activation-1.1.1.jar
+build/web/WEB-INF/lib/activation-1.1.jar
+build/web/WEB-INF/lib/jakarta.servlet.jsp.jstl-2.0.0.jar
+build/web/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-2.0.0.jar
+build/web/WEB-INF/lib/javax.mail-1.6.0.jar
+build/web/WEB-INF/lib/jaxb-api-2.1.jar
+build/web/WEB-INF/lib/jbcrypt-0.4.jar
+build/web/WEB-INF/lib/json-20210307.jar
+build/web/WEB-INF/lib/sqljdbc42.jar
+nbproject/private/private.properties
+nbproject/private/private.xml
+web/WEB-INF/web.xml
