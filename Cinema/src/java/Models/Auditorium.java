@@ -12,16 +12,26 @@ public class Auditorium {
     private int auditoriumId;
     private String name;
     private String seatLayoutMeta;
+    private boolean isDeleted; //1 da bi xoa ---- 0 chua bi xoa
 
     public Auditorium() {
     }
 
-    public Auditorium(int auditoriumId, String name, String seatLayoutMeta) {
+    public Auditorium(int auditoriumId, String name, String seatLayoutMeta, boolean isDeleted) {
         this.auditoriumId = auditoriumId;
         this.name = name;
         this.seatLayoutMeta = seatLayoutMeta;
+        this.isDeleted = isDeleted;
     }
 
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean deleted) {
+        this.isDeleted = deleted;
+    }
+   
     public int getAuditoriumId() {
         return auditoriumId;
     }
