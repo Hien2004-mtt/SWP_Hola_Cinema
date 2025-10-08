@@ -67,4 +67,13 @@ public class AuditoriumDAO {
         }
 
     }
+    public void delete(int id){
+        String sql ="UPDATE Auditorium SET is_deleted = 1 WHERE auditorium_id= ?";
+        try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
