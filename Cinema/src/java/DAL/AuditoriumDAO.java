@@ -14,7 +14,7 @@ import java.util.List;
  * @author Admin
  */
 public class AuditoriumDAO {
-    
+
     public List<Auditorium> getAll() {
         List<Auditorium> list = new ArrayList<>();
         String sql = " SELECT * FROM Auditorium WHERE is_deleted = 0";
@@ -26,7 +26,7 @@ public class AuditoriumDAO {
                         rs.getString("seat_layout_meta"),
                         rs.getBoolean("is_deleted")
                 ));
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,5 +49,22 @@ public class AuditoriumDAO {
             e.printStackTrace();
         }
     }
-     
+
+    public void update(Auditorium au) {
+        String sql = "UPDATE AUDITORIUM SET "
+                + "name = ?,"
+                + "seat_meta_layout = ?,"
+                + "is_deleted = ?"
+                + "WHERE auditorium_id = ?";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setString(1, au.getName());
+            ps.setString(2,au.getSeatLayoutMeta());
+            ps.setBoolean(3, au.isIsDeleted());
+            ps.setInt(4, au.getAuditoriumId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
