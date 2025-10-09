@@ -35,7 +35,7 @@ public class CheckoutController extends HttpServlet {
             String extraData = "";
 
             String requestId   = String.valueOf(System.currentTimeMillis());
-            String requestType = "payWithATM";   // 👈 dùng captureWallet cho MoMo
+            String requestType = "payWithATM";   // 
 
             // Chuỗi rawHash phải khớp với body JSON gửi đi
             String rawHash = "accessKey=" + MomoConfig.accessKey +
