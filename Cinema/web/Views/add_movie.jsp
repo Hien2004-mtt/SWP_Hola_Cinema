@@ -22,7 +22,7 @@
 
                 <!-- Right: Form -->
                 <form class="movie-form" action="${pageContext.request.contextPath}/add_movie" method="post">
-                    
+
                     <input type="hidden" name="posterUrl" id="posterUrl">
                     <div class="poster-section" onclick="openPosterModal()">
                         <div id="posterFrame" class="poster-frame">
@@ -129,6 +129,10 @@
                     <div class="form-actions">
                         <button type="submit">Add movie</button>
                         <button type="reset" class="cancel">Cancel</button>
+
+                        <c:if test="${not empty errorMessage}">
+                            <span class="error-message">${errorMessage}</span>
+                        </c:if>
                     </div>
                 </form>
             </div>

@@ -54,8 +54,7 @@ public class AddMovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            
-            
+
             // Lấy dữ liệu từ form
             String posterUrl = request.getParameter("posterUrl");
             String title = request.getParameter("title");
@@ -69,7 +68,14 @@ public class AddMovieServlet extends HttpServlet {
             String description = request.getParameter("description");
             String[] genreIdsArray = request.getParameterValues("genres[]");
             String[] actorIdsArray = request.getParameterValues("actors[]");
-            
+
+            if (movieDAO.movieExists(title, directorName)) {
+                request.setAttribute("errorMessage",
+                        "A movie with this title and director already exists!");
+                doGet(request, response);
+                return;
+            }
+
             int durationMinutes = 0;
             if (durationStr != null && !durationStr.trim().isEmpty()) {
                 try {
@@ -80,11 +86,11 @@ public class AddMovieServlet extends HttpServlet {
                     return;
                 }
             } else {
-                 request.setAttribute("errorMessage", "Duration is a required field.");
-                 doGet(request, response);
-                 return;
+                request.setAttribute("errorMessage", "Duration is a required field.");
+                doGet(request, response);
+                return;
             }
-            
+
             LocalDate releaseDate = null;
             if (releaseDateStr != null && !releaseDateStr.trim().isEmpty()) {
                 try {
@@ -95,7 +101,7 @@ public class AddMovieServlet extends HttpServlet {
                     return;
                 }
             }
-            
+
             List<Integer> genreList = new ArrayList<>();
             if (genreIdsArray != null) {
                 for (String g : genreIdsArray) {
@@ -124,15 +130,13 @@ public class AddMovieServlet extends HttpServlet {
             movie.setDescription(description);
             movie.setGenreIds(genreList);
             movie.setActorIds(actorList);
-            
+
             int newMovieId = movieDAO.addMovie(movie);
-            
+
             if (newMovieId != -1) {
                 movieDAO.addMovieGenres(newMovieId, movie.getGenreIds());
                 movieDAO.addMovieActors(newMovieId, movie.getActorIds());
             }
-            
-            
 
             response.sendRedirect(request.getContextPath() + "/Views/movies.jsp");
         } catch (Exception e) {
