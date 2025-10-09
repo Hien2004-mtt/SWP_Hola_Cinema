@@ -105,7 +105,7 @@
                                     <option value="${g[0]}">${g[1]}</option>
                                 </c:forEach>
                             </select>
-                            <button type="button" class="small-btn" onclick="openModal('genreModal')">+ New Genre</button>
+                            <button type="button" class="small-btn" onclick="openModal('genreModal')">Manage Genre</button>
                         </div>
                     </div>
 
@@ -117,7 +117,7 @@
                                     <option value="${a[0]}">${a[1]}</option>
                                 </c:forEach>
                             </select>
-                            <button type="button" class="small-btn" onclick="openModal('actorModal')">+ New Actor</button>
+                            <button type="button" class="small-btn" onclick="openModal('actorModal')">Manage Actor</button>
                         </div>
                     </div>
 
@@ -142,9 +142,19 @@
         <div id="genreModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('genreModal')">&times;</span>
-                <h3>Add New Genre</h3>
-                <input type="text" id="newGenre" placeholder="Genre name">
-                <button onclick="addNewOption('genres', 'newGenre')">Add</button>
+                <h3>Manage Genres</h3>
+                <div id="genreList">
+                    <c:forEach var="g" items="${genres}">
+                        <div class="list-item">
+                            <span>${g[1]}</span>
+                            <button type="button" class="delete-btn" onclick="removeItem(this, 'genres', '${g[1]}')">×</button>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="add-section">
+                    <input type="text" id="newGenre" placeholder="New genre name">
+                    <button onclick="addNewOption('genres', 'newGenre')">Add</button>
+                </div>
             </div>
         </div>
 
@@ -152,12 +162,21 @@
         <div id="actorModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('actorModal')">&times;</span>
-                <h3>Add New Actor</h3>
-                <input type="text" id="newActor" placeholder="Actor name">
-                <button onclick="addNewOption('actors', 'newActor')">Add</button>
+                <h3>Manage Actors</h3>
+                <div id="actorList">
+                    <c:forEach var="a" items="${actors}">
+                        <div class="list-item">
+                            <span>${a[1]}</span>
+                            <button type="button" class="delete-btn" onclick="removeItem(this, 'actors', '${a[1]}')">×</button>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="add-section">
+                    <input type="text" id="newActor" placeholder="New actor name">
+                    <button onclick="addNewOption('actors', 'newActor')">Add</button>
+                </div>
             </div>
         </div>
-    </body>
 </html>
 
 

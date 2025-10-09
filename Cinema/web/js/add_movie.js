@@ -8,9 +8,9 @@ $(document).ready(function () {
     $('#genres').select2({ width: '100%' });
     $('#actors').select2({ width: '100%' });
 
-    // Preview poster khi nhập URL
-    $("#posterUrl").on("input", function () {
-        let url = $(this).val();
+    // Khi thay đổi URL poster trong modal
+    $("#posterUrlInput").on("input", function () {
+        let url = $(this).val().trim();
         if (url) {
             $("#posterPreview").attr("src", url).show();
         } else {
@@ -19,36 +19,7 @@ $(document).ready(function () {
     });
 });
 
-// Mở modal
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-}
-
-// Đóng modal
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-
-// Thêm option mới vào select (genre hoặc actor)
-function addNewOption(selectId, inputId) {
-    let value = document.getElementById(inputId).value.trim();
-    if (value) {
-        // Kiểm tra trùng lặp
-        let exists = $('#' + selectId + ' option').filter(function () {
-            return $(this).text().toLowerCase() === value.toLowerCase();
-        }).length > 0;
-
-        if (!exists) {
-            let newOption = new Option(value, value, true, true);
-            $('#' + selectId).append(newOption).trigger('change');
-        }
-
-        // Reset input và đóng modal
-        document.getElementById(inputId).value = "";
-        closeModal(selectId === "genres" ? "genreModal" : "actorModal");
-    }
-}
-
+// ====== Poster ======
 function openPosterModal() {
     document.getElementById("posterModal").style.display = "block";
 }
@@ -60,15 +31,69 @@ function closePosterModal() {
 function setPoster() {
     let url = document.getElementById("posterUrlInput").value.trim();
     if (url) {
-        // Gán URL vào trường input ẩn
         document.getElementById("posterUrl").value = url;
-        
-        // Hiển thị poster preview
         document.getElementById("posterPreview").src = url;
         document.getElementById("posterPreview").style.display = "block";
         document.getElementById("posterIcon").style.display = "none";
         document.getElementById("posterText").style.display = "none";
     }
     closePosterModal();
-}   
-            
+}
+
+// ====== Modal Genre / Actor ======
+function openModal(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// ====== Add + Manage Genre / Actor ======
+function addNewOption(selectId, inputId, listId) {
+    let value = document.getElementById(inputId).value.trim();
+    if (value) {
+        // Kiểm tra trùng lặp
+        let exists = $('#' + selectId + ' option').filter(function () {
+            return $(this).text().toLowerCase() === value.toLowerCase();
+        }).length > 0;
+
+        if (exists) {
+            alert("This name already exists!");
+            return;
+        }
+
+        // Thêm vào select
+        let newOption = new Option(value, value, true, true);
+        $('#' + selectId).append(newOption).trigger('change');
+
+        // Thêm vào danh sách hiển thị
+        const list = document.getElementById(listId);
+        const item = document.createElement("div");
+        item.className = "item-tag";
+        item.innerHTML = `${value} <button type="button" class="remove-btn" onclick="removeItem(this, '${selectId}', '${value}')">&times;</button>`;
+        list.appendChild(item);
+
+        // Reset input và đóng modal
+        document.getElementById(inputId).value = "";
+        closeModal(selectId === "genres" ? "genreModal" : "actorModal");
+    }
+}
+
+// ====== Remove Genre / Actor ======
+function removeItem(button, selectId, name) {
+    // Xóa phần tử hiển thị
+    button.parentElement.remove();
+
+    // Xóa trong select2
+    const select = document.getElementById(selectId);
+    for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].text === name) {
+            select.remove(i);
+            break;
+        }
+    }
+    $('#' + selectId).trigger('change');
+}
+
+
