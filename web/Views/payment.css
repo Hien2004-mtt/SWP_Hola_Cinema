@@ -53,14 +53,14 @@ button {
 }
 .btn-momo {
     background: #a50064;
-    color: #fff;
+    color: black;
 }
 .btn-momo:hover {
     background: #80004d;
 }
 .btn-vnpay {
     background: #27ae60;
-    color: #fff;
+    color: black;
 }
 .btn-vnpay:hover {
     background: #1f8a4a;

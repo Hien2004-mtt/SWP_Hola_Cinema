@@ -29,57 +29,69 @@ public class CheckoutController extends HttpServlet {
 
    private void processMomo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
-        String orderId    = req.getParameter("orderId");
-        String orderInfo  = req.getParameter("orderInfo");
-        String amount     = req.getParameter("amount");
-        String extraData  = "";
+         String orderId   = req.getParameter("orderId");
+            String orderInfo = req.getParameter("orderInfo");
+            String amount    = req.getParameter("amount");
+            String extraData = "";
 
-        String requestId  = String.valueOf(System.currentTimeMillis());
-        String requestType= "payWithATM"; // ✅ Sửa lại cho đúng
+            String requestId   = String.valueOf(System.currentTimeMillis());
+            String requestType = "payWithATM";   // 
 
-        String rawHash = "accessKey=" + MomoConfig.accessKey +
-                "&amount=" + amount +
-                "&extraData=" + extraData +
-                "&ipnUrl=" + MomoConfig.ipnUrl +
-                "&orderId=" + orderId +
-                "&orderInfo=" + orderInfo +
-                "&partnerCode=" + MomoConfig.partnerCode +
-                "&redirectUrl=" + MomoConfig.redirectUrl +
-                "&requestId=" + requestId +
-                "&requestType=" + requestType;
+            // Chuỗi rawHash phải khớp với body JSON gửi đi
+            String rawHash = "accessKey=" + MomoConfig.accessKey +
+                    "&amount=" + amount +
+                    "&extraData=" + extraData +
+                    "&ipnUrl=" + MomoConfig.ipnUrl +  
+                    "&orderId=" + orderId +
+                    "&orderInfo=" + orderInfo +
+                    "&partnerCode=" + MomoConfig.partnerCode +
+                    "&redirectUrl=" + MomoConfig.redirectUrl +
+                    "&requestId=" + requestId +
+                    "&requestType=" + requestType;
 
-        String signature = Controllers.Util.HmacUtil.hmacSha256(rawHash, MomoConfig.secretKey);
+            // Ký SHA256
+            String signature = Controllers.Util.HmacUtil.hmacSha256(rawHash, MomoConfig.secretKey);
 
-        JsonObject body = new JsonObject();
-        body.addProperty("partnerCode", MomoConfig.partnerCode);
-        body.addProperty("partnerName", "Test");
-        body.addProperty("storeId", "MomoTestStore");
-        body.addProperty("requestId", requestId);
-        body.addProperty("amount", amount);
-        body.addProperty("orderId", orderId);
-        body.addProperty("orderInfo", orderInfo);
-        body.addProperty("redirectUrl", MomoConfig.redirectUrl);
-        body.addProperty("ipnUrl", MomoConfig.ipnUrl);
-        body.addProperty("lang", "vi");
-        body.addProperty("extraData", extraData);
-        body.addProperty("requestType", requestType);
-        body.addProperty("signature", signature);
+            // Tạo JSON body
+            JsonObject body = new JsonObject();
+            body.addProperty("partnerCode", MomoConfig.partnerCode);
+            body.addProperty("partnerName", "Test");
+            body.addProperty("storeId", "MomoTestStore");
+            body.addProperty("requestId", requestId);
+            body.addProperty("amount", amount);
+            body.addProperty("orderId", orderId);
+            body.addProperty("orderInfo", orderInfo);
+            body.addProperty("redirectUrl", MomoConfig.redirectUrl);
+                    body.addProperty("ipnUrl", MomoConfig.ipnUrl);   // gửi ipnUrl cho MoMo
 
-        String result = HttpUtil.execPostRequest(MomoConfig.endpoint, new Gson().toJson(body));
-        System.out.println("MoMo response: " + result); // ✅ Debug log
+            body.addProperty("lang", "vi");
+            body.addProperty("extraData", extraData);
+            body.addProperty("requestType", requestType);
+            body.addProperty("signature", signature);
 
-        JsonObject json = new Gson().fromJson(result, JsonObject.class);
+            // Gửi request đến endpoint MoMo
+           String result = HttpUtil.execPostRequest(MomoConfig.endpoint, new Gson().toJson(body));
+        com.google.gson.JsonObject json = new com.google.gson.Gson().fromJson(result, com.google.gson.JsonObject.class);
 
-        if (json.has("payUrl")) {
-            resp.sendRedirect(json.get("payUrl").getAsString()); // ✅ Redirect sang trang thanh toán MoMo
-        } else {
-            resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=MoMo Error");
+            // Parse JSON
+           // JsonObject json = new Gson().fromJson(result, JsonObject.class);
+
+            if (json != null && json.has("payUrl")) {
+                // Redirect người dùng sang trang sandbox MoMo
+                resp.sendRedirect(json.get("payUrl").getAsString());
+            } else {
+                String msg = (json != null && json.has("message"))
+                        ? json.get("message").getAsString()
+                        : "MoMo Error";
+                resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
+                        URLEncoder.encode(msg, "UTF-8"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
+                    URLEncoder.encode("Lỗi processMomo: " + e.getMessage(), "UTF-8"));
         }
-    } catch (Exception e) {
-        e.printStackTrace(); // ✅ log chi tiết
-        resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
-                URLEncoder.encode(e.getMessage(), "UTF-8"));
-    }
 }
 
     private void processVNPay(HttpServletRequest req, HttpServletResponse resp) throws IOException {
