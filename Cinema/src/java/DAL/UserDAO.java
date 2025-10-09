@@ -34,7 +34,6 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("❌ Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
             throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
         }
         return user;
