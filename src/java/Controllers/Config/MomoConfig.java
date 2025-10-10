@@ -1,4 +1,4 @@
-package Controllers;
+package Controllers.Config;
 
 public class MomoConfig {
     public static String endpoint    = "https://test-payment.momo.vn/v2/gateway/api/create";

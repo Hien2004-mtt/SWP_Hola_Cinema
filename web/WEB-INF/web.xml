@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="5.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd">
+    <display-name>SWP Hola Cinema</display-name>
+    <!-- ================== Payment ================== -->
+    <servlet>
+        <servlet-name>CheckoutController</servlet-name>
+        <servlet-class>Controllers.CheckoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MomoIpnServlet</servlet-name>
+        <servlet-class>Controllers.Config.MomoIpnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckoutController</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>QRCodeServlet</servlet-name>
+        <servlet-class>Controllers.QRCodeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QRCodeServlet</servlet-name>
+        <url-pattern>/qrcode</url-pattern>
+    </servlet-mapping>
+    <!-- Return từ MoMo -->
+    <servlet>
+        <servlet-name>ReturnServlet</servlet-name>
+        <servlet-class>Controllers.ReturnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReturnServlet</servlet-name>
+        <url-pattern>/return</url-pattern>
+    </servlet-mapping>
+    <!-- Return từ VNPay -->
+    <servlet>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <servlet-class>Controllers.VNPayReturnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <url-pattern>/vnpay_return</url-pattern>
+    </servlet-mapping>
+    <!-- ================== Voucher ================== -->
+    <servlet>
+        <servlet-name>VoucherServlet</servlet-name>
+        <servlet-class>Controllers.VoucherServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VoucherServlet</servlet-name>
+        <url-pattern>/voucher</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ApplyVoucherServlet</servlet-name>
+        <servlet-class>Controllers.ApplyVoucherServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ApplyVoucherServlet</servlet-name>
+        <url-pattern>/applyVoucher</url-pattern>
+    </servlet-mapping>
+    <!-- ================== Welcome ================== -->
+    <servlet-mapping>
+        <servlet-name>MomoIpnServlet</servlet-name>
+        <url-pattern>/momo_ipn</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>Views/payment.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

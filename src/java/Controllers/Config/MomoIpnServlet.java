@@ -1,5 +1,6 @@
-package Controllers;
+package Controllers.Config;
 
+import Controllers.Config.MomoConfig;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
