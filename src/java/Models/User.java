@@ -1,37 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package Models;
 
+public class User {
 
-
-import java.time.LocalDate;
-
-public class Users {
     private int userId;
     private String email;
     private String passwordHash;
     private String name;
     private String phone;
-    private LocalDate dob;
-    private boolean gender; // true = Male, false = Female
-    private int role;
-    
-    // getters & setters
-    // constructor
+    private java.sql.Date dob;
+    private boolean gender;
+    private int role; // 0: admin, 1: staff, 2: customer
+    private java.sql.Timestamp createdAt;
+    private java.sql.Timestamp updatedAt;
 
-    public Users(int userId, String email, String name, int role) {
-    this.userId = userId;
-    this.email = email;
-    this.name = name;
-    this.role = role;
-}
+    public User() {
+    }
 
-
-    public Users(int userId, String email, String passwordHash, String name, String phone, LocalDate dob, boolean gender, int role) {
-        this.userId = userId;
+    public User(String email, String passwordHash, String name, String phone, java.sql.Date dob, boolean gender, int role) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.name = name;
@@ -81,11 +66,11 @@ public class Users {
         this.phone = phone;
     }
 
-    public LocalDate getDob() {
+    public java.sql.Date getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(java.sql.Date dob) {
         this.dob = dob;
     }
 
@@ -104,11 +89,30 @@ public class Users {
     public void setRole(int role) {
         this.role = role;
     }
-    
+
+    public java.sql.Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.sql.Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public java.sql.Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(java.sql.Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "userId=" + userId
+                + ", email='" + email + '\''
+                + ", name='" + name + '\''
+                + ", role=" + role
+                + '}';
+    }
 }
-
-
-    // Constructors
-
-  
-
