@@ -107,6 +107,7 @@
         <url-pattern>/applyVoucher</url-pattern>
     </servlet-mapping>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- ================== Welcome ================== -->
     <servlet-mapping>
         <servlet-name>MomoIpnServlet</servlet-name>
@@ -115,6 +116,8 @@
     <welcome-file-list>
         <welcome-file>Views/payment.jsp</welcome-file>
     </welcome-file-list>
+=======
+>>>>>>> 222
 =======
     
     <servlet>
@@ -126,6 +129,10 @@
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
 
+<<<<<<< HEAD
+=======
+>>>>>>> main
+>>>>>>> 222
     <!-- ================== Welcome ================== -->
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>
