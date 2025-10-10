@@ -1,4 +1,4 @@
-package Controllers;
+package Controllers.Config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import javax.crypto.Mac;

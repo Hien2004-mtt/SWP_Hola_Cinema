@@ -8,7 +8,7 @@
     </servlet>
     <servlet>
         <servlet-name>MomoIpnServlet</servlet-name>
-        <servlet-class>Controllers.MomoIpnServlet</servlet-class>
+        <servlet-class>Controllers.Config.MomoIpnServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>

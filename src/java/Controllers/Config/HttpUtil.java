@@ -1,4 +1,4 @@
-package Controllers;
+package Controllers.Config;
 
 import java.net.URI;
 import java.net.http.HttpClient;
