@@ -38,8 +38,8 @@
                             <span class="close" onclick="closePosterModal()">&times;</span>
                             <h3>Add Poster URL</h3>
                             <input type="text" id="posterUrlInput" placeholder="Enter poster URL">
-                            <button onclick="setPoster()">OK</button>
-                        </div>
+                            <button type="button" onclick="setPoster()">OK</button>
+                        </div> 
                     </div>
 
                     <div class="form-group">

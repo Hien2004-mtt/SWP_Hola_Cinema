@@ -11,8 +11,21 @@ $(document).ready(function () {
     // Khi thay đổi URL poster
     $("#posterUrlInput").on("input", function () {
         let url = $(this).val().trim();
-        if (url) $("#posterPreview").attr("src", url).show();
-        else $("#posterPreview").hide();
+        if (url)
+            $("#posterPreview").attr("src", url).show();
+        else
+            $("#posterPreview").hide();
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".movie-form");
+    form.addEventListener("submit", function (e) {
+        const posterUrl = document.getElementById("posterUrl").value.trim();
+        if (posterUrl === "") {
+            e.preventDefault(); // chặn gửi form
+            alert("Poster URL cannot be empty!");
+        }
     });
 });
 
@@ -46,7 +59,8 @@ function closeModal(id) {
 // ====== Add Genre / Actor ======
 function addNewOption(selectId, inputId) {
     let value = document.getElementById(inputId).value.trim();
-    if (!value) return;
+    if (!value)
+        return;
 
     // Gửi AJAX lên servlet
     $.ajax({
@@ -54,7 +68,8 @@ function addNewOption(selectId, inputId) {
         type: "POST",
         data: {name: value},
         success: function (data) {
-            if (typeof data === "string") data = JSON.parse(data);
+            if (typeof data === "string")
+                data = JSON.parse(data);
 
             // Thêm vào dropdown select2
             let newOption = new Option(data.name, data.id, true, true);
@@ -89,13 +104,36 @@ function addNewOption(selectId, inputId) {
 function removeItem(button, selectId, name) {
     // Xóa dòng trong bảng
     const row = button.closest('tr');
-    if (row) row.remove();
+    if (row)
+        row.remove();
 
     // Xóa option trong select
     const select = document.getElementById(selectId);
     const option = Array.from(select.options).find(opt => opt.text === name);
-    if (option) option.remove();
+    if (option)
+        option.remove();
 }
 
+// ====== Đóng popup khi click ra ngoài ======
+window.addEventListener("click", function (event) {
+    const posterModal = document.getElementById("posterModal");
+    const genreModal = document.getElementById("genreModal");
+    const actorModal = document.getElementById("actorModal");
+
+    // Nếu click bên ngoài nội dung của poster modal
+    if (event.target === posterModal) {
+        closePosterModal();
+    }
+
+    // Nếu click bên ngoài nội dung của modal genre
+    if (event.target === genreModal) {
+        closeModal('genreModal');
+    }
+
+    // Nếu click bên ngoài nội dung của modal actor
+    if (event.target === actorModal) {
+        closeModal('actorModal');
+    }
+});
 
 

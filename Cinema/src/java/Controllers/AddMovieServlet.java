@@ -69,6 +69,12 @@ public class AddMovieServlet extends HttpServlet {
             String[] genreIdsArray = request.getParameterValues("genres[]");
             String[] actorIdsArray = request.getParameterValues("actors[]");
 
+            if (posterUrl == null || posterUrl.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Poster URL cannot be empty!");
+                doGet(request, response);
+                return;
+            }
+
             if (movieDAO.movieExists(title, directorName)) {
                 request.setAttribute("errorMessage",
                         "A movie with this title and director already exists!");

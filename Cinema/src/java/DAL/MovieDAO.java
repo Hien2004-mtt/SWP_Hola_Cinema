@@ -18,7 +18,9 @@ public class MovieDAO extends DBContext {
 
     // Check if movie exiests
     public boolean movieExists(String title, String directorName) {
-        String sql = "SELECT COUNT(*) FROM Movie WHERE title = ? AND director_name = ?";
+        String sql = "SELECT COUNT(*) FROM Movie "
+                + "WHERE LOWER(TRIM(title)) = LOWER(TRIM(?)) "
+                + "AND LOWER(TRIM(director_name)) = LOWER(TRIM(?))";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, title);
             stmt.setString(2, directorName);
@@ -34,7 +36,8 @@ public class MovieDAO extends DBContext {
 
     // Method to add a new movie and return its generated ID
     public int addMovie(Movie movie) {
-        String sql = "INSERT INTO Movie (title, description, duration_minutes, language, release_date, rating, poster_url, trailer_url, director_name, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Movie (title, description, duration_minutes, language, release_date, rating, poster_url, trailer_url, director_name, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int movieId = -1;
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
