@@ -1,1 +1,5 @@
-/Cinema/dist/
+
+/dist/
+/nbproject/private/
+
+/build/
