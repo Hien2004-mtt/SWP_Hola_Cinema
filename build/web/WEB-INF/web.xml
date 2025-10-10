@@ -57,12 +57,25 @@
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <url-pattern>/applyVoucher</url-pattern>
     </servlet-mapping>
+<<<<<<< HEAD
+=======
+    
+    <servlet>
+        <servlet-name>AccountListController</servlet-name>
+        <servlet-class>Controllers.AccountListController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountListController</servlet-name>
+        <url-pattern>/accountList</url-pattern>
+    </servlet-mapping>
+
+>>>>>>> main
     <!-- ================== Welcome ================== -->
     <servlet-mapping>
         <servlet-name>MomoIpnServlet</servlet-name>
         <url-pattern>/momo_ipn</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>Views/payment.jsp</welcome-file>
+        <welcome-file>Views/Payment.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
