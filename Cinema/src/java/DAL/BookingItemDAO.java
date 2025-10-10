@@ -31,5 +31,23 @@ public class BookingItemDAO {
             return false;
         }
     }
-    
+    public void insert(BookingItem item){
+        String sql ="INSERT INTO BookingItem("
+                +"booking_id,"
+                +"showtime_id,"
+                +"seat_id,"
+                +"price,"
+                +"ticket_type"
+                + ")";
+                try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)){
+                    ps.setInt(1, item.getBookingId());
+                    ps.setInt(2, item.getBookingItemId());
+                    ps.setInt(3, item.getSeat_id());
+                    ps.setDouble(4, item.getPrice());
+                    ps.setString(5, item.getTicketType());
+                    ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
