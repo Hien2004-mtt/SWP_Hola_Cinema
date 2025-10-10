@@ -100,7 +100,7 @@ public class DAO {
         if (hasSearch || hasRole) {
             sql.append(" WHERE ");
             if (hasSearch) {
-                sql.append("(email LIKE ? OR name LIKE ?)");
+                sql.append("(email LIKE ? OR name LIKE ? OR phone LIKE ?)");
             }
             if (hasSearch && hasRole) {
                 sql.append(" AND ");
@@ -121,8 +121,9 @@ public class DAO {
                 java.sql.PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             int idx = 1;
             if (hasSearch) {
-                ps.setString(idx++, "%" + search + "%");
-                ps.setString(idx++, "%" + search + "%");
+                ps.setString(idx++, "%" + search + "%"); // email
+                ps.setString(idx++, "%" + search + "%"); // name
+                ps.setString(idx++, "%" + search + "%"); // phone
             }
             if (hasRole) {
                 ps.setInt(idx++, Integer.parseInt(roleParam));

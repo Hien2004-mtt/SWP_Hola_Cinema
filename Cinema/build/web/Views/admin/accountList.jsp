@@ -245,7 +245,7 @@
             <main>
                 <h2>User List</h2>
                 <form action="accountList" method="get" style="margin-bottom: 18px; display: flex; gap: 8px; justify-content: flex-start;">
-                                    <input type="text" name="search" placeholder="Search by email or name">
+                                    <input type="text" name="search" placeholder="Search by email, name or phone">
                                     <button type="submit">Search</button>
                                     <button type="button" id="sortBtn" style="display: flex; align-items: center; gap: 6px; background: #f1c40f; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">
                                         <span>Sort</span>
