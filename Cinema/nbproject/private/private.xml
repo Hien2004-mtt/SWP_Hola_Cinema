@@ -3,22 +3,29 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/LoginServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/web/WEB-INF/web.xml</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/DAL/TestConnection.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/DAL/UserDAO.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Models/User.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/web/Views/register.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/web/Views/login.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/DAL/DBContext.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/HomeServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/LogoutServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/RegisterServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/DashboardServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/web/Views/home.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/nbproject/build-impl.xml</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/src/java/Controllers/BookingItemServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/Cinema/web/Inculude/Header.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/Seat.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/ShowtimeDAO.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/SeatServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/js/Seat.js</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/MovieDAO.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/Auditorium.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/LoginServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/BookingItemServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/AuditoriumDAO.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Inculude/Header.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/WEB-INF/web.xml</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/SeatDAO.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Models/Seat.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/css/Auditorium.css</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/LogoutServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/UserDAO.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/RegisterServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/AuditoriumServlet.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/EditAuditorium.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Filters/RoleFilter.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Filters/AuthFilter.java</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/Showtime.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Models/Auditorium.java</file>
         </group>
     </open-files>
 </project-private>

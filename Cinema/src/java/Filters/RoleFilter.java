@@ -127,6 +127,11 @@ public class RoleFilter implements Filter {
             return;
         }
 
+        if (path.contains("/auditorium" ) && !(role == 0 || role == 1)) {
+            res.sendRedirect(req.getContextPath() + "/unauthorized");
+            return;
+        }
+
         // Nếu hợp lệ → tiếp tục xử lý
         chain.doFilter(request, response);
     }
