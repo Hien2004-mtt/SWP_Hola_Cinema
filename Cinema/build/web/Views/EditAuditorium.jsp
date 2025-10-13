@@ -8,6 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Sửa phòng chiếu</title>
+        <link rel="stylesheet" href="css/Auditorium.css" />
     </head>
     <body>
         <h2>Sửa thông tin phòng chiếu</h2>
@@ -18,7 +19,7 @@
             <input type="text" name="name" value="<%= a.getName() %>" required><br><br>
 
             <label>Sơ đồ ghế:</label><br>
-            <input type="text" name="layout" value="<%= a.getSeatLayoutMeta() %>"><br><br>
+            <input type="text" name="layout" value="<%= a.getSeatLayoutMeta() %>" required><br><br>
 
             <button type="submit" name="action" value="update">Lưu thay đổi</button>
             <a href="auditorium">Hủy</a>

@@ -10,14 +10,33 @@
     <meta charset="UTF-8">
     <title>Quản lý phòng chiếu</title>
     <link rel="stylesheet" href="css/Auditorium.css" />
+    <script src="js/Auditorium.js"></script>
 </head>
 <body>
     <h2>Danh sách phòng chiếu</h2>
+    <div>
+        <input type="text" id="auditoriumSearch" placeholder="Tìm kiếm theo ID hoặc Tên phòng..." onkeyup="filterAuditoriums()" />
+    </div>
+    <p>
+        <a href="Views/AddAuditorium.jsp"><button type="button">Thêm</button></a>
+    </p>
     <table>
         <tr>
-            <th>ID</th>
-            <th>Tên phòng</th>
-            <th>Sơ đồ ghế</th>
+            <th>
+                <a href="auditorium?sort=id&dir=<%= ("id".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                    ID
+                </a>
+            </th>
+            <th>
+                <a href="auditorium?sort=name&dir=<%= ("name".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                    Tên phòng
+                </a>
+            </th>
+            <th>
+                <a href="auditorium?sort=layout&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                    Sơ đồ ghế
+                </a>
+            </th>
             <th>Hành động</th>
         </tr>
         <% if (list != null && !list.isEmpty()) {
@@ -48,11 +67,7 @@
         <% } %>
     </table>
 
-    <h3>Thêm phòng chiếu mới</h3>
-    <form method="post" action="auditorium">
-        <input type="text" name="name" placeholder="Tên phòng" required />
-        <input type="text" name="layout" placeholder="Sơ đồ ghế" />
-        <button type="submit" name="action" value="add">Thêm</button>
-    </form>
+    
+    
 </body>
 </html>
