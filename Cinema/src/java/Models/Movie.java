@@ -68,6 +68,7 @@ public class Movie {
 
     public void setRating(String rating) {
         this.rating = rating;
+
     }
 
     public int getDurationMinutes() {
@@ -100,6 +101,7 @@ public class Movie {
 
     public void setStatus(String status) {
         this.status = status;
+
     }
 
     public String getPosterUrl() {
@@ -150,5 +152,5 @@ public class Movie {
         this.actorIds = actorIds;
     }
     
-    
+
 }
