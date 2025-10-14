@@ -3,12 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/Controllers/AddMovieServlet.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/Controllers/AddGenreServlet.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/DAL/ActorDAO.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/web/js/add_movie.js</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/web/Views/add_movie.jsp</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/build/web/css/add_movie.css</file>
-            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/Controllers/AddActorServlet.java</file>
+            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/DAL/MovieDAO.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/Cinema/src/java/DAL/GenreDAO.java</file>
         </group>
     </open-files>
