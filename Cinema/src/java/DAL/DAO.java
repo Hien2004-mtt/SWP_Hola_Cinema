@@ -13,6 +13,35 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class DAO {
+    // Tìm người dùng theo số điện thoại
+    public User findByPhone(String phone) {
+        String sql = "SELECT * FROM Users WHERE phone = ?";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User u = new User();
+                u.setUserId(rs.getInt("user_id"));
+                u.setEmail(rs.getString("email"));
+                u.setPasswordHash(rs.getString("password_hash"));
+                u.setName(rs.getString("name"));
+                u.setPhone(rs.getString("phone"));
+                Date dob = rs.getDate("dob");
+                if (dob != null)
+                    u.setDob(dob.toLocalDate());
+                u.setGender(rs.getBoolean("gender"));
+                u.setRole(rs.getInt("role"));
+                u.setCreatedAt(rs.getTimestamp("created_at"));
+                u.setUpdatedAt(rs.getTimestamp("updated_at"));
+                u.setStatus(rs.getBoolean("status"));
+                return u;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     // ma hoa mat khau
     public static String hashPassword(String password) {
@@ -33,8 +62,8 @@ public class DAO {
 
     // dang ky nguoi dung
     public boolean register(User user) {
-        String sql = "INSERT INTO Users (email, password_hash, name, phone, dob, gender, role, created_at, updated_at) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
+        String sql = "INSERT INTO Users (email, password_hash, name, phone, dob, gender, role, status, created_at, updated_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
         try (Connection conn = DBContext.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getEmail());
@@ -45,7 +74,7 @@ public class DAO {
             ps.setBoolean(6, user.isGender());
             ps.setInt(7, user.getRole());
             ps.setBoolean(8, user.isStatus());
-
+            // ...existing code...
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +113,7 @@ public class DAO {
         return null;
     }
 
-    // Lấy danh sách người dùng, có thể tìm kiếm theo tên hoặc email
+    // Lấy danh sách người dùng, có thể tìm kiếm theo tên, email hoặc sđt
     public java.util.List<User> getAllUsers(String search) {
         return getAllUsers(search, null, null, null);
     }
@@ -152,18 +181,7 @@ public class DAO {
         return userList;
     }
 
-    // Xóa user theo id
-    public boolean deleteUserById(int userId) {
-        String sql = "DELETE FROM Users WHERE user_id = ?";
-        try (Connection conn = DBContext.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+
 
     // Cập nhật role cho user
     public boolean updateUserRole(int userId, int role) {

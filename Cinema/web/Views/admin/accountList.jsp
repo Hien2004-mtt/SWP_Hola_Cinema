@@ -448,23 +448,8 @@
                     </div>
                     <button onclick="closeModal()" id="closeModalBtn" style="position:absolute;top:12px;right:12px;background:transparent;color:#2980b9;border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;">&times;</button>
                     <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
-                        <button onclick="showDeleteConfirm()" id="deleteBtn" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
                         <button onclick="closeModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Close</button>
                     </div>
-                    <!-- Modal xác nhận xóa -->
-                    <div id="deleteConfirmModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1000;align-items:center;justify-content:center;">
-                        <div style="background:#fff;padding:28px 22px;border-radius:12px;min-width:280px;max-width:340px;box-shadow:0 2px 16px rgba(44,62,80,0.18);position:relative;">
-                            <h3 style="color:#e74c3c;margin-top:0;">Confirm Delete</h3>
-                            <p>Are you sure you want to delete this user?</p>
-                            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
-                                <button onclick="confirmDeleteUser()" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
-                                <button onclick="closeDeleteModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                    <form id="deleteUserForm" method="post" action="deleteUser" style="display:none;">
-                        <input type="hidden" name="user_id" id="deleteUserId" />
-                    </form>
                     <script>
                         // Xử lý nút Edit Role
                         document.querySelectorAll('.edit-role-btn').forEach(function(btn) {
@@ -483,26 +468,7 @@
                         document.getElementById('closeEditRoleBtn').addEventListener('click', function() {
                             document.getElementById('editRoleModal').style.display = 'none';
                         });
-                        let currentDeleteUserId = null;
-                        function showDeleteConfirm() {
-                            document.getElementById('deleteConfirmModal').style.display = 'flex';
-                        }
-                        function closeDeleteModal() {
-                            document.getElementById('deleteConfirmModal').style.display = 'none';
-                        }
-                        function confirmDeleteUser() {
-                            document.getElementById('deleteConfirmModal').style.display = 'none';
-                            document.getElementById('userDetailModal').style.display = 'none';
-                            document.getElementById('deleteUserForm').submit();
-                        }
                         // Gán userId cho form xóa khi mở modal chi tiết
-                        document.querySelectorAll('.detail-btn').forEach(function(btn) {
-                            btn.addEventListener('click', function(e) {
-                                // ...existing code...
-                                document.getElementById('deleteUserId').value = btn.dataset.userid;
-                                currentDeleteUserId = btn.dataset.userid;
-                            });
-                        });
                     </script>
                 </div>
             </div>
