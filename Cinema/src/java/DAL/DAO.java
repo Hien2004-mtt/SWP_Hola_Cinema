@@ -199,7 +199,7 @@ public class DAO {
             e.printStackTrace();
             return false;
         }
-        String sql = "UPDATE Users SET role = ? WHERE user_id = ?";
+    String sql = "UPDATE Users SET role = ?, updated_at = GETDATE() WHERE user_id = ?";
         try (Connection conn = DBContext.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, role);
@@ -212,7 +212,7 @@ public class DAO {
     }
 
     public boolean updateUserStatus(int userId, boolean status) {
-        String sql = "UPDATE Users SET status = ? WHERE user_id = ?";
+    String sql = "UPDATE Users SET status = ?, updated_at = GETDATE() WHERE user_id = ?";
         try (Connection conn = DBContext.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBoolean(1, status);
