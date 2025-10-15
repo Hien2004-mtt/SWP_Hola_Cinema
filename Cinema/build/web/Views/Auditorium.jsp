@@ -10,12 +10,14 @@
     <meta charset="UTF-8">
     <title>Quản lý phòng chiếu</title>
     <link rel="stylesheet" href="css/Auditorium.css" />
-    <script src="js/Auditorium.js"></script>
 </head>
 <body>
     <h2>Danh sách phòng chiếu</h2>
     <div>
-        <input type="text" id="auditoriumSearch" placeholder="Tìm kiếm theo ID hoặc Tên phòng..." onkeyup="filterAuditoriums()" />
+        <form method="get" action="auditorium">
+            <input type="text" name="q" id="auditoriumSearch" placeholder="Tìm kiếm theo ID hoặc Tên phòng..." value="<%= request.getAttribute("q") == null ? "" : request.getAttribute("q") %>" />
+            <button type="submit">Tìm</button>
+        </form>
     </div>
     <p>
         <a href="Views/AddAuditorium.jsp"><button type="button">Thêm</button></a>
@@ -23,17 +25,17 @@
     <table>
         <tr>
             <th>
-                <a href="auditorium?sort=id&dir=<%= ("id".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                <a href="auditorium?sort=id&dir=<%= ("id".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
                     ID
                 </a>
             </th>
             <th>
-                <a href="auditorium?sort=name&dir=<%= ("name".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                <a href="auditorium?sort=name&dir=<%= ("name".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
                     Tên phòng
                 </a>
             </th>
             <th>
-                <a href="auditorium?sort=layout&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %>">
+                <a href="auditorium?sort=layout&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
                     Sơ đồ ghế
                 </a>
             </th>

@@ -6,11 +6,11 @@
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/Seat.jsp</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/css/Auditorium.css</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/Auditorium.jsp</file>
+            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Models/Booking.java</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/EditAuditorium.jsp</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/Views/AddAuditorium.jsp</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Controllers/AuditoriumServlet.java</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/DAL/AuditoriumDAO.java</file>
-            <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/WEB-INF/web.xml</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/web/js/Auditorium.js</file>
             <file>file:/D:/abc/SWP_Hola_Cinema/Cinema/src/java/Models/Auditorium.java</file>
         </group>
