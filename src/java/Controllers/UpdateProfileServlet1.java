@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  * @author Acer
  */
 @WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/updateProfile"})
-public class UpdateProfileServlet extends HttpServlet {
+public class UpdateProfileServlet1 extends HttpServlet {
 
     private UserDAO userDAO;
 
