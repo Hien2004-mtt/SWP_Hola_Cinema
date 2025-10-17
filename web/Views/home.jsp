@@ -46,7 +46,10 @@
                         }
                     %>
                 </p>
-                <a href="logout" class="btn btn-danger">Đăng xuất</a>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <a href="${pageContext.request.contextPath}/updateProfile" class="btn btn-primary">Cập nhật hồ sơ</a>
+                    <a href="logout" class="btn btn-danger">Đăng xuất</a>
+                </div>
             </div>
         </div>
 

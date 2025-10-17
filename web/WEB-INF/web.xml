@@ -57,8 +57,7 @@
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <url-pattern>/applyVoucher</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
-=======
+
     
     <servlet>
         <servlet-name>AccountListController</servlet-name>
@@ -69,7 +68,7 @@
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
 
->>>>>>> main
+
     <!-- ================== Welcome ================== -->
     <servlet-mapping>
         <servlet-name>MomoIpnServlet</servlet-name>
