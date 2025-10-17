@@ -10,6 +10,7 @@ package Controllers;
  */
 import DAL.ScheduleDAO;
 import Models.User;
+import Models.ShowtimeSchedule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,6 +34,28 @@ public class ManageScheduleController extends HttpServlet {
     public void init() throws ServletException {
         dao = new ScheduleDAO();
     }
+    
+    // Phương thức helper để kết hợp date và time thành Timestamp
+    private Timestamp combineDateTime(String dateStr, String timeStr, SimpleDateFormat dateFormat, SimpleDateFormat timeFormat) throws ParseException {
+        java.util.Date date = dateFormat.parse(dateStr);
+        java.util.Date time = timeFormat.parse(timeStr);
+        
+        // Lấy thông tin ngày từ date
+        java.util.Calendar dateCal = java.util.Calendar.getInstance();
+        dateCal.setTime(date);
+        
+        // Lấy thông tin thời gian từ time
+        java.util.Calendar timeCal = java.util.Calendar.getInstance();
+        timeCal.setTime(time);
+        
+        // Kết hợp ngày và thời gian
+        dateCal.set(java.util.Calendar.HOUR_OF_DAY, timeCal.get(java.util.Calendar.HOUR_OF_DAY));
+        dateCal.set(java.util.Calendar.MINUTE, timeCal.get(java.util.Calendar.MINUTE));
+        dateCal.set(java.util.Calendar.SECOND, 0);
+        dateCal.set(java.util.Calendar.MILLISECOND, 0);
+        
+        return new Timestamp(dateCal.getTimeInMillis());
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,9 +66,26 @@ public class ManageScheduleController extends HttpServlet {
 //        }
 
         try {
-            request.setAttribute("upcomingMovies", dao.getUpcomingMovies());
+            // Thử lấy phim đang chiếu và sắp chiếu trước
+            java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
+            if (upcomingMovies.isEmpty()) {
+                upcomingMovies = dao.getAllMovies();
+            }
+
+            // Lấy danh sách lịch chiếu
+            java.util.List<ShowtimeSchedule> scheduleList = dao.getAllShowtimes();
+            java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
+            for (ShowtimeSchedule schedule : scheduleList) {
+                if (schedule.getEndTime() != null && schedule.getEndTime().before(now) && "active".equals(schedule.getStatus())) {
+                    // Chuyển trạng thái thành completed nếu đã qua thời gian kết thúc
+                    dao.updateShowtimeStatus(schedule.getShowtimeId(), "completed");
+                    schedule.setStatus("completed");
+                }
+            }
+
+            request.setAttribute("upcomingMovies", upcomingMovies);
             request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
-            request.setAttribute("scheduleList", dao.getAllShowtimes());
+            request.setAttribute("scheduleList", scheduleList);
             request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -66,20 +106,24 @@ public class ManageScheduleController extends HttpServlet {
             String action = request.getParameter("action");
             if (action == null) action = "add";
 
-            // Dùng chung parser thời gian
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            // Parser cho date và time riêng biệt
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             dateFormat.setLenient(false);
+            timeFormat.setLenient(false);
 
             switch (action) {
                 case "update": {
                     String showtimeIdStr = request.getParameter("showtimeId");
                     String movieIdStr = request.getParameter("movieId");
                     String auditoriumIdStr = request.getParameter("auditoriumId");
+                    String showDateStr = request.getParameter("showDate");
                     String startTimeStr = request.getParameter("startTime");
                     String endTimeStr = request.getParameter("endTime");
                     String basePriceStr = request.getParameter("basePrice");
 
-                    if (showtimeIdStr == null || movieIdStr == null || auditoriumIdStr == null || startTimeStr == null || endTimeStr == null || basePriceStr == null) {
+                    if (showtimeIdStr == null || movieIdStr == null || auditoriumIdStr == null || 
+                        showDateStr == null || startTimeStr == null || endTimeStr == null || basePriceStr == null) {
                         request.setAttribute("error", "Vui lòng điền đầy đủ thông tin cập nhật!");
                         break;
                     }
@@ -88,8 +132,10 @@ public class ManageScheduleController extends HttpServlet {
                     int movieId = Integer.parseInt(movieIdStr.trim());
                     int auditoriumId = Integer.parseInt(auditoriumIdStr.trim());
                     double basePrice = Double.parseDouble(basePriceStr.trim());
-                    Timestamp startTime = new Timestamp(dateFormat.parse(startTimeStr.trim()).getTime());
-                    Timestamp endTime = new Timestamp(dateFormat.parse(endTimeStr.trim()).getTime());
+                    
+                    // Kết hợp date và time thành Timestamp
+                    Timestamp startTime = combineDateTime(showDateStr.trim(), startTimeStr.trim(), dateFormat, timeFormat);
+                    Timestamp endTime = combineDateTime(showDateStr.trim(), endTimeStr.trim(), dateFormat, timeFormat);
 
                     boolean ok = dao.updateShowtime(showtimeId, movieId, auditoriumId, startTime, endTime, basePrice);
                     if (ok) {
@@ -99,18 +145,33 @@ public class ManageScheduleController extends HttpServlet {
                     }
                     break;
                 }
-                case "delete": {
+                case "cancel": {
                     String showtimeIdStr = request.getParameter("showtimeId");
                     if (showtimeIdStr == null) {
-                        request.setAttribute("error", "Thiếu mã lịch chiếu để xóa!");
+                        request.setAttribute("error", "Thiếu mã lịch chiếu để hủy!");
                         break;
                     }
                     int showtimeId = Integer.parseInt(showtimeIdStr.trim());
-                    boolean ok = dao.deleteShowtime(showtimeId);
+                    boolean ok = dao.cancelShowtime(showtimeId);
                     if (ok) {
-                        request.setAttribute("success", "Xóa lịch chiếu thành công!");
+                        request.setAttribute("success", "Hủy suất chiếu thành công!");
                     } else {
-                        request.setAttribute("error", "Không thể xóa lịch chiếu!");
+                        request.setAttribute("error", "Không thể hủy suất chiếu!");
+                    }
+                    break;
+                }
+                case "restore": {
+                    String showtimeIdStr = request.getParameter("showtimeId");
+                    if (showtimeIdStr == null) {
+                        request.setAttribute("error", "Thiếu mã lịch chiếu để khôi phục!");
+                        break;
+                    }
+                    int showtimeId = Integer.parseInt(showtimeIdStr.trim());
+                    boolean ok = dao.restoreShowtime(showtimeId);
+                    if (ok) {
+                        request.setAttribute("success", "Khôi phục suất chiếu thành công!");
+                    } else {
+                        request.setAttribute("error", "Không thể khôi phục suất chiếu!");
                     }
                     break;
                 }
@@ -118,31 +179,70 @@ public class ManageScheduleController extends HttpServlet {
                 default: {
                     String movieIdStr = request.getParameter("movieId");
                     String auditoriumIdStr = request.getParameter("auditoriumId");
+                    String showDateStr = request.getParameter("showDate");
                     String startTimeStr = request.getParameter("startTime");
                     String endTimeStr = request.getParameter("endTime");
                     String basePriceStr = request.getParameter("basePrice");
 
-                    if (movieIdStr == null || auditoriumIdStr == null || startTimeStr == null || endTimeStr == null || basePriceStr == null) {
+                    if (movieIdStr == null || auditoriumIdStr == null || showDateStr == null || 
+                        startTimeStr == null || endTimeStr == null || basePriceStr == null) {
                         request.setAttribute("error", "Vui lòng điền đầy đủ thông tin!");
+                        // Truyền lại dữ liệu đã nhập
+                        request.setAttribute("form_movieId", movieIdStr);
+                        request.setAttribute("form_auditoriumId", auditoriumIdStr);
+                        request.setAttribute("form_showDate", showDateStr);
+                        request.setAttribute("form_startTime", startTimeStr);
+                        request.setAttribute("form_endTime", endTimeStr);
+                        request.setAttribute("form_basePrice", basePriceStr);
                         break;
                     }
 
                     int movieId = Integer.parseInt(movieIdStr.trim());
                     int auditoriumId = Integer.parseInt(auditoriumIdStr.trim());
                     double basePrice = Double.parseDouble(basePriceStr.trim());
-                    Timestamp startTime = new Timestamp(dateFormat.parse(startTimeStr.trim()).getTime());
-                    Timestamp endTime = new Timestamp(dateFormat.parse(endTimeStr.trim()).getTime());
+
+                    // Kết hợp date và time thành Timestamp
+                    Timestamp startTime = combineDateTime(showDateStr.trim(), startTimeStr.trim(), dateFormat, timeFormat);
+                    Timestamp endTime = combineDateTime(showDateStr.trim(), endTimeStr.trim(), dateFormat, timeFormat);
+
+                    Timestamp now = new Timestamp(System.currentTimeMillis());
+                    if (endTime.before(now)) {
+                        request.setAttribute("error", "Không thể thêm lịch chiếu ở quá khứ!");
+                        // Truyền lại dữ liệu đã nhập
+                        request.setAttribute("form_movieId", movieIdStr);
+                        request.setAttribute("form_auditoriumId", auditoriumIdStr);
+                        request.setAttribute("form_showDate", showDateStr);
+                        request.setAttribute("form_startTime", startTimeStr);
+                        request.setAttribute("form_endTime", endTimeStr);
+                        request.setAttribute("form_basePrice", basePriceStr);
+                        break;
+                    }
 
                     int newId = dao.addShowtime(movieId, auditoriumId, startTime, endTime, basePrice);
                     if (newId > 0) {
                         request.setAttribute("success", "Thêm lịch chiếu thành công!");
                     } else {
                         request.setAttribute("error", "Xung đột thời gian hoặc lỗi khi thêm lịch!");
+                        // Truyền lại dữ liệu đã nhập
+                        request.setAttribute("form_movieId", movieIdStr);
+                        request.setAttribute("form_auditoriumId", auditoriumIdStr);
+                        request.setAttribute("form_showDate", showDateStr);
+                        request.setAttribute("form_startTime", startTimeStr);
+                        request.setAttribute("form_endTime", endTimeStr);
+                        request.setAttribute("form_basePrice", basePriceStr);
                     }
                 }
             }
 
-            request.setAttribute("upcomingMovies", dao.getUpcomingMovies());
+            // Thử lấy phim đang chiếu và sắp chiếu trước
+            java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
+            
+            // Nếu không có phim nào, thử lấy tất cả phim
+            if (upcomingMovies.isEmpty()) {
+                upcomingMovies = dao.getAllMovies();
+            }
+            
+            request.setAttribute("upcomingMovies", upcomingMovies);
             request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
             request.setAttribute("scheduleList", dao.getAllShowtimes());
             request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);
@@ -150,7 +250,14 @@ public class ManageScheduleController extends HttpServlet {
             try {
                 e.printStackTrace();
                 request.setAttribute("error", "Giá trị số không hợp lệ: " + e.getMessage());
-                request.setAttribute("upcomingMovies", dao.getUpcomingMovies());
+                
+                // Thử lấy phim đang chiếu và sắp chiếu trước
+                java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
+                if (upcomingMovies.isEmpty()) {
+                    upcomingMovies = dao.getAllMovies();
+                }
+                
+                request.setAttribute("upcomingMovies", upcomingMovies);
                 request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
                 request.setAttribute("scheduleList", dao.getAllShowtimes());
                 request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);
@@ -163,7 +270,14 @@ public class ManageScheduleController extends HttpServlet {
             try {
                 e.printStackTrace();
                 request.setAttribute("error", "Lỗi khi xử lý: " + e.getMessage());
-                request.setAttribute("upcomingMovies", dao.getUpcomingMovies());
+                
+                // Thử lấy phim đang chiếu và sắp chiếu trước
+                java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
+                if (upcomingMovies.isEmpty()) {
+                    upcomingMovies = dao.getAllMovies();
+                }
+                
+                request.setAttribute("upcomingMovies", upcomingMovies);
                 request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
                 request.setAttribute("scheduleList", dao.getAllShowtimes());
                 request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);

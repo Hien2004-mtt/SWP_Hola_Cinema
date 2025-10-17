@@ -15,6 +15,7 @@ public class ShowtimeSchedule {
     private Timestamp startTime;
     private Timestamp endTime;
     private double price;
+    private String status; // 'active', 'cancelled', 'completed'
 
     public ShowtimeSchedule(int showtimeId, int movieId, String movieName, int auditoriumId, String auditoriumName,
                            Timestamp startTime, Timestamp endTime, double price) {
@@ -26,6 +27,21 @@ public class ShowtimeSchedule {
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;
+        this.status = "active"; // Mặc định là active
+    }
+    
+    // Constructor với status
+    public ShowtimeSchedule(int showtimeId, int movieId, String movieName, int auditoriumId, String auditoriumName,
+                           Timestamp startTime, Timestamp endTime, double price, String status) {
+        this.showtimeId = showtimeId;
+        this.movieId = movieId;
+        this.movieName = movieName;
+        this.auditoriumId = auditoriumId;
+        this.auditoriumName = auditoriumName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
+        this.status = status;
     }
 
     // Getter và Setter
@@ -45,4 +61,6 @@ public class ShowtimeSchedule {
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
