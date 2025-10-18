@@ -66,6 +66,9 @@ public class ManageScheduleController extends HttpServlet {
 //        }
 
         try {
+            // Lấy filter từ request
+            String filter = request.getParameter("filter");
+
             // Thử lấy phim đang chiếu và sắp chiếu trước
             java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
             if (upcomingMovies.isEmpty()) {
@@ -81,6 +84,17 @@ public class ManageScheduleController extends HttpServlet {
                     dao.updateShowtimeStatus(schedule.getShowtimeId(), "completed");
                     schedule.setStatus("completed");
                 }
+            }
+
+            // Lọc theo trạng thái nếu có filter
+            if (filter != null && !filter.equals("all")) {
+                java.util.List<ShowtimeSchedule> filteredList = new java.util.ArrayList<>();
+                for (ShowtimeSchedule s : scheduleList) {
+                    if (filter.equals(s.getStatus())) {
+                        filteredList.add(s);
+                    }
+                }
+                scheduleList = filteredList;
             }
 
             request.setAttribute("upcomingMovies", upcomingMovies);
@@ -289,3 +303,4 @@ public class ManageScheduleController extends HttpServlet {
         }
     }
 }
+

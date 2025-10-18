@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<script>
+// Lưu vị trí scroll trước khi submit filter
+function saveScrollAndSubmit(form) {
+    localStorage.setItem('manageScheduleScroll', window.scrollY);
+    form.submit();
+}
+window.addEventListener('DOMContentLoaded', function() {
+    var scroll = localStorage.getItem('manageScheduleScroll');
+    if (scroll) {
+        window.scrollTo(0, parseInt(scroll));
+        localStorage.removeItem('manageScheduleScroll');
+    }
+});
+</script>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -114,7 +128,54 @@
             </div>
             <!-- Schedule List -->
             <div class="table-container">
-                <h2><i class="fas fa-list"></i> Danh Sách Lịch Chiếu</h2>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <h2 style="margin: 0; text-align: center;"><i class="fas fa-list"></i> Danh Sách Lịch Chiếu</h2>
+                    <div class="filter-buttons" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <style>
+                        .filter-buttons form { display: inline; }
+                        .filter-btn {
+                            border-radius: 20px;
+                            padding: 6px 18px;
+                            font-weight: 600;
+                            border: none;
+                            background: #f1f1f1;
+                            color: #333;
+                            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+                            cursor: pointer;
+                            outline: none;
+                        }
+                        .filter-btn.active, .filter-btn:focus {
+                            background: #007bff;
+                            color: #fff;
+                            box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+                        }
+                        .filter-btn:hover:not(.active) {
+                            background: #e0e0e0;
+                        }
+                        @media (max-width: 600px) {
+                            .filter-buttons { flex-wrap: wrap; gap: 4px; }
+                            .filter-btn { padding: 6px 10px; font-size: 14px; }
+                        }
+                        </style>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="all"/>
+                            <button type="submit" class="filter-btn${param.filter == null || param.filter == 'all' ? ' active' : ''}">Tất cả</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="active"/>
+                            <button type="submit" class="filter-btn${param.filter == 'active' ? ' active' : ''}">Hoạt động</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="completed"/>
+                            <button type="submit" class="filter-btn${param.filter == 'completed' ? ' active' : ''}">Hoàn thành</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="cancelled"/>
+                            <button type="submit" class="filter-btn${param.filter == 'cancelled' ? ' active' : ''}">Hủy</button>
+                        </form>
+                    </div>
+                </div>
                 <table>
                     <thead>
                         <tr>
