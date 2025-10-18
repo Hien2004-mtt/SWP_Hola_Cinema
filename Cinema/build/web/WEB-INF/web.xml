@@ -16,6 +16,10 @@
         <servlet-name>UnauthorizedServlet</servlet-name>
         <servlet-class>Controllers.UnauthorizedServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.AuditoriumServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Booking</servlet-name>
         <url-pattern>/Booking</url-pattern>
@@ -44,27 +48,7 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-    <filter>
-        <filter-name>RoleFilter</filter-name>
-        <filter-class>Filters.RoleFilter</filter-class>
-    </filter>
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>Filters.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/Seat</url-pattern>
-    </filter-mapping>
    
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/Showtime</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>RoleFilter</filter-name>
-        <url-pattern>/dashboard</url-pattern>
-    </filter-mapping>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>Controllers.RegisterServlet</servlet-class>
@@ -92,5 +76,9 @@
     <servlet-mapping>
         <servlet-name>UnauthorizedServlet</servlet-name>
         <url-pattern>/unauthorized</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuditoriumServlet</servlet-name>
+        <url-pattern>/auditorium</url-pattern>
     </servlet-mapping>
 </web-app>

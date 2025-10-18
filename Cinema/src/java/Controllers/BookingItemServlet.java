@@ -22,7 +22,6 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Admin
  */
-@WebServlet(name = "BookingItemServlet", urlPatterns = {"/BookingItem"})
 public class BookingItemServlet extends HttpServlet {
 
     /**
@@ -122,9 +121,11 @@ public class BookingItemServlet extends HttpServlet {
         BookingItem item = new BookingItem();
         item.setBookingId(bookingId);
         item.setShowtimeId(showtimeId);
-        item.setSeat_id(showtimeId);
+        item.setSeat_id(seat.getSeatId());
         item.setPrice(price);
         item.setTicketType(type);
+        b.insert(item);
+        totalPrice = totalPrice + price;
         }
         session.setAttribute("bookingTotal", totalPrice);
         response.sendRedirect("home");
