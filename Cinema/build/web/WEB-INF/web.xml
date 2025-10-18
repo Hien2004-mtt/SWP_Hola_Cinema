@@ -48,30 +48,7 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-    <filter>
-        <filter-name>RoleFilter</filter-name>
-        <filter-class>Filters.RoleFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>RoleFilter</filter-name>
-        <url-pattern>/auditorium</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>Filters.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/Seat</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/Showtime</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>RoleFilter</filter-name>
-        <url-pattern>/dashboard</url-pattern>
-    </filter-mapping>
+   
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>Controllers.RegisterServlet</servlet-class>
