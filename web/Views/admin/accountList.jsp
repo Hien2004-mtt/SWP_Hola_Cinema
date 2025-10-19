@@ -245,8 +245,13 @@
             <main>
                 <h2>User List</h2>
                 <form action="accountList" method="get" style="margin-bottom: 18px; display: flex; gap: 8px; justify-content: flex-start;">
-                                    <input type="text" name="search" placeholder="Search by email, name or phone">
+                                    <input type="text" name="search" placeholder="Search by email, name or phone" value="${param.search}">
                                     <button type="submit">Search</button>
+                                    <c:if test="${not empty param.search}">
+                                        <button type="button" onclick="window.location.href='accountList'" class="btn btn-secondary" style="border-radius: 18px; padding: 6px 18px; font-weight: 600; cursor: pointer; border: none; margin-left: 2px;">
+                                            <i class="fas fa-times"></i> Clear
+                                        </button>
+                                    </c:if>
                                     <button type="button" id="sortBtn" style="display: flex; align-items: center; gap: 6px; background: #f1c40f; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">
                                         <span>Sort</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M6 12h12M9 18h6"/></svg>
