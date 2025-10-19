@@ -66,6 +66,10 @@ public class ManageScheduleController extends HttpServlet {
 //        }
 
         try {
+            // Lấy filter và search từ request
+            String filter = request.getParameter("filter");
+            String search = request.getParameter("search");
+
             // Thử lấy phim đang chiếu và sắp chiếu trước
             java.util.List<ShowtimeSchedule> upcomingMovies = dao.getUpcomingMovies();
             if (upcomingMovies.isEmpty()) {
@@ -81,6 +85,32 @@ public class ManageScheduleController extends HttpServlet {
                     dao.updateShowtimeStatus(schedule.getShowtimeId(), "completed");
                     schedule.setStatus("completed");
                 }
+            }
+
+            // Lọc theo trạng thái nếu có filter
+            if (filter != null && !filter.equals("all")) {
+                java.util.List<ShowtimeSchedule> filteredList = new java.util.ArrayList<>();
+                for (ShowtimeSchedule s : scheduleList) {
+                    if (filter.equals(s.getStatus())) {
+                        filteredList.add(s);
+                    }
+                }
+                scheduleList = filteredList;
+            }
+
+            // Lọc theo search nếu có
+            if (search != null && !search.trim().isEmpty()) {
+                String searchLower = search.trim().toLowerCase();
+                java.util.List<ShowtimeSchedule> searchedList = new java.util.ArrayList<>();
+                for (ShowtimeSchedule s : scheduleList) {
+                    boolean match = false;
+                    if (s.getMovieName() != null && s.getMovieName().toLowerCase().contains(searchLower)) match = true;
+                    if (s.getAuditoriumName() != null && s.getAuditoriumName().toLowerCase().contains(searchLower)) match = true;
+                    if (s.getStatus() != null && s.getStatus().toLowerCase().contains(searchLower)) match = true;
+                    if (String.valueOf(s.getShowtimeId()).contains(searchLower)) match = true;
+                    if (match) searchedList.add(s);
+                }
+                scheduleList = searchedList;
             }
 
             request.setAttribute("upcomingMovies", upcomingMovies);
@@ -289,3 +319,4 @@ public class ManageScheduleController extends HttpServlet {
         }
     }
 }
+

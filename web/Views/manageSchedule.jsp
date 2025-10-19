@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Lịch Chiếu - Hola Cinema</title>
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/schedule.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -114,7 +114,67 @@
             </div>
             <!-- Schedule List -->
             <div class="table-container">
-                <h2><i class="fas fa-list"></i> Danh Sách Lịch Chiếu</h2>
+                <div style="margin-bottom: 10px;">
+                    <h2 style="margin: 0 0 16px 0; text-align: center;"><i class="fas fa-list"></i> Danh Sách Lịch Chiếu</h2>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 28px; margin-bottom: 18px;">
+                        <form method="get" action="manageSchedule" style="display: flex; gap: 8px; align-items: center; margin: 0;" onsubmit="saveScrollAndSubmitSearch(this); return false;">
+                            <input type="text" name="search" placeholder="Tìm kiếm theo tên phim, phòng, trạng thái..." value="${param.search}" style="padding: 6px 14px; border-radius: 18px; border: 1px solid #ccc; min-width: 220px; outline: none; font-size: 15px;">
+                            <button type="submit" class="btn btn-primary" style="border-radius: 18px; padding: 6px 18px; font-weight: 600;">
+                                <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                            <c:if test="${not empty param.search}">
+                                <button type="button" onclick="localStorage.setItem('manageScheduleScroll', window.scrollY); window.location.href='manageSchedule'" class="btn btn-secondary" style="border-radius: 18px; padding: 6px 18px; font-weight: 600; cursor: pointer; border: none; margin-left: 2px;">
+                                    <i class="fas fa-times"></i> Xóa tìm
+                                </button>
+                            </c:if>
+                        </form>
+                        <span style="display: inline-block; width: 1px; height: 32px; background: #e0e0e0; margin: 0 12px;"></span>
+                        <div class="filter-buttons" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                        <style>
+                        .filter-buttons form { display: inline; }
+                        .filter-btn {
+                            border-radius: 20px;
+                            padding: 6px 18px;
+                            font-weight: 600;
+                            border: none;
+                            background: #f1f1f1;
+                            color: #333;
+                            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+                            cursor: pointer;
+                            outline: none;
+                        }
+                        .filter-btn.active, .filter-btn:focus {
+                            background: #007bff;
+                            color: #fff;
+                            box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+                        }
+                        .filter-btn:hover:not(.active) {
+                            background: #e0e0e0;
+                        }
+                        @media (max-width: 600px) {
+                            .filter-buttons { flex-wrap: wrap; gap: 4px; }
+                            .filter-btn { padding: 6px 10px; font-size: 14px; }
+                        }
+                        </style>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="all"/>
+                            <button type="submit" class="filter-btn${param.filter == null || param.filter == 'all' ? ' active' : ''}">Tất cả</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="active"/>
+                            <button type="submit" class="filter-btn${param.filter == 'active' ? ' active' : ''}">Hoạt động</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="completed"/>
+                            <button type="submit" class="filter-btn${param.filter == 'completed' ? ' active' : ''}">Hoàn thành</button>
+                        </form>
+                        <form method="get" action="manageSchedule" onsubmit="saveScrollAndSubmit(this); return false;">
+                            <input type="hidden" name="filter" value="cancelled"/>
+                            <button type="submit" class="filter-btn${param.filter == 'cancelled' ? ' active' : ''}">Hủy</button>
+                        </form>
+                    </div>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -409,6 +469,32 @@
                         endTimeInput.value = endTimeString;
                     }
                 });
+            }
+        });
+
+        // Lưu vị trí scroll trước khi submit filter
+        function saveScrollAndSubmit(form) {
+            localStorage.setItem('manageScheduleScroll', window.scrollY);
+            form.submit();
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            var scroll = localStorage.getItem('manageScheduleScroll');
+            if (scroll) {
+                window.scrollTo(0, parseInt(scroll));
+                localStorage.removeItem('manageScheduleScroll');
+            }
+        });
+
+        // Lưu vị trí scroll trước khi submit tìm kiếm
+        function saveScrollAndSubmitSearch(form) {
+            localStorage.setItem('manageScheduleScroll', window.scrollY);
+            form.submit();
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            var scroll = localStorage.getItem('manageScheduleScroll');
+            if (scroll) {
+                window.scrollTo(0, parseInt(scroll));
+                localStorage.removeItem('manageScheduleScroll');
             }
         });
     </script>
