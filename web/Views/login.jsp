@@ -119,8 +119,8 @@
     </head>
     <body>
         <div class="login-container">
-            <h1 class="text-center"><i class="fa-solid fa-film"></i> Cinema Admin</h1>
-            <p class="text-center">Đăng nhập để vào hệ thống quản lý</p>
+            <h1 class="text-center"><i class="fa-solid fa-film"></i> Hola Cinema</h1>
+            <p class="text-center">Log in to access the management system</p>
 
             <% if (request.getAttribute("error") != null) { %>
             <div class="alert alert-danger" role="alert">
@@ -131,21 +131,21 @@
             <form action="login" method="post">
                 <div class="mb-3 input-group-custom">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                 </div>
                 <div class="mb-4 input-group-custom">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                 </div>
-                <button type="submit" class="btn btn-cinema w-100">Đăng nhập</button>
+                <button type="submit" class="btn btn-cinema w-100">Login</button>
             </form>
 
             <p class="text-center mt-4 register-link">
-                Chưa có tài khoản? <a href="register">Đăng ký ngay</a>
+                Don't have an account? <a href="register">Register now</a>
             </p>
             
              <p class="text-center mt-4 register-link">
-                Quên mật khẩu? <a href="forgotPassword.jsp">Lấy lại mật khẩu</a>
+                Forgot your password? <a href="forgotPassword.jsp">Recover it here</a>
             </p>
         </div>
 

@@ -135,7 +135,7 @@
 </head>
 <body>
     <div class="register-container">
-        <h1 class="text-center"><i class="fa-solid fa-film"></i> Tạo Tài Khoản Mới</h1>
+        <h1 class="text-center"><i class="fa-solid fa-film"></i> Create new account</h1>
         
         <%-- Lấy map lỗi từ request --%>
         <% Map<String, String> errors = (Map<String, String>) request.getAttribute("errors"); %>
@@ -149,7 +149,7 @@
         <form action="${pageContext.request.contextPath}/register" method="post">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="name" class="form-label">Họ và tên</label>
+                    <label for="name" class="form-label">Full name</label>
                     <div class="input-group-custom">
                         <i class="fa-solid fa-user"></i>
                         <input type="text" class="form-control" id="name" name="name" value="<%= request.getAttribute("name") != null ? request.getAttribute("name") : "" %>" required>
@@ -159,7 +159,7 @@
                     <% } %>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <label for="phone" class="form-label">Phone</label>
                     <div class="input-group-custom">
                         <i class="fa-solid fa-phone"></i>
                         <input type="text" class="form-control" id="phone" name="phone" value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>">
@@ -183,7 +183,7 @@
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="password" class="form-label">Mật khẩu</label>
+                    <label for="password" class="form-label">Password</label>
                     <div class="input-group-custom">
                          <i class="fa-solid fa-lock"></i>
                         <input type="password" class="form-control" id="password" name="password" required>
@@ -193,7 +193,7 @@
                     <% } %>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                    <label for="confirmPassword" class="form-label">Confirm password</label>
                     <div class="input-group-custom">
                          <i class="fa-solid fa-check-double"></i>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
@@ -206,22 +206,22 @@
             
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="dob" class="form-label">Ngày sinh</label>
+                    <label for="dob" class="form-label">Date of birth</label>
                     <input type="date" class="form-control" id="dob" name="dob" value="<%= request.getAttribute("dob") != null ? request.getAttribute("dob") : "" %>">
                     <% if (errors != null && errors.containsKey("dob")) { %>
                         <div class="error-message"><%= errors.get("dob") %></div>
                     <% } %>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Giới tính</label>
+                    <label class="form-label">Gender</label>
                     <div class="d-flex align-items-center h-100">
                         <div class="form-check me-3">
                             <input type="radio" class="form-check-input" id="male" name="gender" value="1" <%= "1".equals(request.getAttribute("gender")) ? "checked" : "" %> required>
-                            <label class="form-check-label" for="male">Nam</label>
+                            <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="female" name="gender" value="0" <%= "0".equals(request.getAttribute("gender")) ? "checked" : "" %>>
-                            <label class="form-check-label" for="female">Nữ</label>
+                            <label class="form-check-label" for="female">Female</label>
                         </div>
                     </div>
                      <% if (errors != null && errors.containsKey("gender")) { %>
@@ -230,11 +230,11 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-cinema w-100 mt-3">Tạo tài khoản</button>
+            <button type="submit" class="btn btn-cinema w-100 mt-3">Create account</button>
         </form>
         
         <p class="text-center mt-4 login-link">
-            Đã có tài khoản? <a href="${pageContext.request.contextPath}/Views/login.jsp">Đăng nhập ngay</a>
+            Already have an account? <a href="${pageContext.request.contextPath}/Views/login.jsp">Login now</a>
         </p>
     </div>
 
