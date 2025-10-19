@@ -25,7 +25,9 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/css/")
                 || path.contains("/js/")
                 || path.contains("/images/")
-                || path.contains("/fonts/")) {
+                || path.contains("/fonts/")
+                || path.contains("selectionShowtime")
+                || path.contains("confirmShowtime")) {
             chain.doFilter(req, res);
             return;
         }
@@ -37,7 +39,6 @@ public class AuthorizationFilter implements Filter {
             return;
         }
 
-        // 🔒 Nếu không phải admin(0) hoặc manager(1) mà lại muốn vào trang quản lý
         if (path.contains("listAuditorium")
                 || path.contains("addAuditorium")
                 || path.contains("updateAuditorium")

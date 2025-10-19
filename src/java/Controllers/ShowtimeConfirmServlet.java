@@ -34,7 +34,7 @@ public class ShowtimeConfirmServlet extends HttpServlet {
                 session.setAttribute("selectedShowtimeId", showtimeId);
 
                 // Chuyển hướng sang servlet hiển thị sơ đồ ghế
-                response.sendRedirect("SeatSelection");
+                response.sendRedirect("seat");
 
             } catch (NumberFormatException e) {
                 // Nếu ID không hợp lệ (không phải số)
