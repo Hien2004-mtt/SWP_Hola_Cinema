@@ -3,35 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Models/Auditorium.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Filters/AuthorizationFilter.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/WEB-INF/web.xml</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Filters/AuthorizationFilter.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Showtime.css</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/EditRoleServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/LoginServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/DBContext.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/Services/VoucherService.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/ShowtimeDAO.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/ShowtimeConfirmServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/AccountListController.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/dashboard.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/AddAuditoriumServlet.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/SeatServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/home.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/Auditorium.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Unauthorized.css</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAO/VoucherDAO.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Models/Movie.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/AuditoriumDAO.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/Unauthorized.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/js/Seat.js</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/SeatDAO.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/Unauthorized.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Inculude/Header.jsp</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Inculude/Footer.jsp</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Layout.css</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/MovieDAO.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/Showtime.jsp</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Models/Seat.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/UpdateAuditorium.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Auditorium.css</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/UpdateAuditoriumServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/ListAuditoriumServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Models/Showtime.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/DeleteAuditoriumServlet.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/Unauthorized.jsp</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/AddAuditorium.jsp</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/ShowtimeSelectionServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/login.jsp</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/Seat.jsp</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/Services/BookingService.java</file>
         </group>
     </open-files>
