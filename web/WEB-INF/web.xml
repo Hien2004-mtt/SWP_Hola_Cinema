@@ -2,7 +2,6 @@
 <web-app version="5.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd">
     <display-name>SWP Hola Cinema</display-name>
     <!-- ================== Payment ================== -->
-   
     <servlet>
         <servlet-name>CheckoutController</servlet-name>
         <servlet-class>Controllers.CheckoutController</servlet-class>
@@ -11,7 +10,8 @@
         <servlet-name>MomoIpnServlet</servlet-name>
         <servlet-class>Controllers.MomoIpnServlet</servlet-class>
     </servlet>
-   
+
+    
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
@@ -72,7 +72,9 @@
         <servlet-name>MomoIpnServlet</servlet-name>
         <url-pattern>/momo_ipn</url-pattern>
     </servlet-mapping>
+   
     
+       
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>
     </welcome-file-list>
@@ -90,7 +92,6 @@
         <servlet-name>DeleteAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.DeleteAuditoriumServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>DeleteAuditoriumServlet</servlet-name>
         <url-pattern>/deleteAuditorium</url-pattern>
@@ -100,7 +101,6 @@
         <servlet-name>UpdateAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.UpdateAuditoriumServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>UpdateAuditoriumServlet</servlet-name>
         <url-pattern>/updateAuditorium</url-pattern>
@@ -110,7 +110,6 @@
         <servlet-name>AddAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.AddAuditoriumServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>AddAuditoriumServlet</servlet-name>
         <url-pattern>/addAuditorium</url-pattern>
@@ -120,19 +119,55 @@
         <servlet-name>Unauthorized</servlet-name>
         <url-pattern>/unauthorized</url-pattern>
     </servlet-mapping>
-    
-     <servlet>
+    <servlet>
         <servlet-name>Unauthorized</servlet-name>
         <servlet-class>Controllers.Unauthorized</servlet-class>
     </servlet>
-     <filter>
-         
+    <filter>
         <filter-name>AuthorizationFilter</filter-name>
         <filter-class>Filters.AuthorizationFilter</filter-class>
     </filter>
-    
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+                 <!-- ======== Showtime ====== -->
+    <servlet>
+        <servlet-name>ShowtimeSelectionServlet</servlet-name>
+        <servlet-class>Controllers.ShowtimeSelectionServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ShowtimeSelectionServlet</servlet-name>
+        <url-pattern>/selectionShowtime</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ShowtimeConfirmServlet</servlet-name>
+        <servlet-class>Controllers.ShowtimeConfirmServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowtimeConfirmServlet</servlet-name>
+        <url-pattern>/confirmShowtime</url-pattern>
+    </servlet-mapping>
+                 <!-- ======== Seat ====== -->
+    <servlet>
+        <servlet-name>SeatSelectionServlet</servlet-name>
+        <servlet-class>Controllers.SeatSelectionServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SeatSelectionServlet</servlet-name>
+        <url-pattern>/selectSeat</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SeatComfirServlet</servlet-name>
+        <servlet-class>Controllers.SeatComfirServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SeatComfirServlet</servlet-name>
+        <url-pattern>/comfirSeat</url-pattern>
+    </servlet-mapping>
 </web-app>
