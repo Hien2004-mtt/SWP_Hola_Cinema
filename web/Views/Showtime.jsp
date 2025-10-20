@@ -16,8 +16,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Chọn suất chiếu</title>
-        <link rel="stylesheet" href="../css/Showtime.css">
-        <link rel="stylesheet" href="../css/Layout.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Showtime.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
+
     </head>
     <body>
         <div class="page-container">
