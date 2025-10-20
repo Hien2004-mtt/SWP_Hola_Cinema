@@ -4,38 +4,46 @@
  */
 package Models;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
- * @author USER
+ * @author dinhh
  */
 public class Movie {
     private int movieId;
     private String title;
-    private String description;
+    private String rating;
     private int durationMinutes;
     private String language;
-    private Date releaseDate;
-    private String rating;
-    private String posterUrl;
+    private LocalDate releaseDate;
     private String status;
-    private int directorId;
+    private String posterUrl;
+    private String trailerUrl;
+    private String directorName;
+    private String description;
+    private List<Integer> genreIds;
+    private List<Integer> actorIds;
 
-    public Movie() {
-    }
+    public Movie() {}
 
-    public Movie(int movieId, String title, String description, int durationMinutes, String language, Date releaseDate, String rating, String posterUrl, String status, int directorId) {
+    public Movie(int movieId, String title, String rating, int durationMinutes, String language, LocalDate releaseDate,
+                 String status, String posterUrl, String trailerUrl, String directorName, String description,
+                 List<Integer> genreIds, List<Integer> actorIds) {
         this.movieId = movieId;
         this.title = title;
-        this.description = description;
+        this.rating = rating;
         this.durationMinutes = durationMinutes;
         this.language = language;
         this.releaseDate = releaseDate;
-        this.rating = rating;
-        this.posterUrl = posterUrl;
         this.status = status;
-        this.directorId = directorId;
+        this.posterUrl = posterUrl;
+        this.trailerUrl = trailerUrl;
+        this.directorName = directorName;
+        this.description = description;
+        this.genreIds = genreIds;
+        this.actorIds = actorIds;
     }
 
     public int getMovieId() {
@@ -54,12 +62,13 @@ public class Movie {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getRating() {
+        return rating;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRating(String rating) {
+        this.rating = rating;
+
     }
 
     public int getDurationMinutes() {
@@ -78,20 +87,21 @@ public class Movie {
         this.language = language;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public String getRating() {
-        return rating;
+    public String getStatus() {
+        return status;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setStatus(String status) {
+        this.status = status;
+
     }
 
     public String getPosterUrl() {
@@ -102,21 +112,45 @@ public class Movie {
         this.posterUrl = posterUrl;
     }
 
-    public String getStatus() {
-        return status;
+    public String getTrailerUrl() {
+        return trailerUrl;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTrailerUrl(String trailerUrl) {
+        this.trailerUrl = trailerUrl;
     }
 
-    public int getDirectorId() {
-        return directorId;
+    public String getDirectorName() {
+        return directorName;
     }
 
-    public void setDirectorId(int directorId) {
-        this.directorId = directorId;
+    public void setDirectorName(String directorName) {
+        this.directorName = directorName;
     }
 
-      
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Integer> getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(List<Integer> genreIds) {
+        this.genreIds = genreIds;
+    }
+
+    public List<Integer> getActorIds() {
+        return actorIds;
+    }
+
+    public void setActorIds(List<Integer> actorIds) {
+        this.actorIds = actorIds;
+    }
+    
+
 }

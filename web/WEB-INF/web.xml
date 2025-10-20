@@ -155,4 +155,29 @@
         <url-pattern>/seat</url-pattern>
     </servlet-mapping>
     
+    <!-- ======== Movie ====== -->
+    <servlet>
+        <servlet-name>AddGenreServlet</servlet-name>
+        <servlet-class>Controllers.AddGenreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddActorServlet</servlet-name>
+        <servlet-class>Controllers.AddActorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovieManagementServlet</servlet-name>
+        <servlet-class>Controllers.MovieManagementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddGenreServlet</servlet-name>
+        <url-pattern>/AddGenreServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddActorServlet</servlet-name>
+        <url-pattern>/AddActorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieManagementServlet</servlet-name>
+        <url-pattern>/MovieManagementServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
