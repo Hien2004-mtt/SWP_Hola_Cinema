@@ -105,6 +105,9 @@ public class SeatServlet extends HttpServlet {
 
             request.setAttribute("startTime", st.getStartTime());
             request.setAttribute("basePrice", st.getBasePrice());
+            request.setAttribute("showtimeId", showtimeId);
+            request.setAttribute("movieId", st.getMovieId());
+
         }
 
         //Truyền danh sách ghế
