@@ -189,4 +189,70 @@ public class MovieDAO extends DBContext {
         }
         return list;
     }
+
+    // Lọc phim theo nhiều tiêu chí
+    public List<Movie> filterMovies(String keyword, String genreId, String actorId, String status, String director) throws SQLException {
+        List<Movie> list = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT DISTINCT m.* FROM Movie m "
+                + "LEFT JOIN Movie_Genre mg ON m.movie_id = mg.movie_id "
+                + "LEFT JOIN Movie_Actor ma ON m.movie_id = ma.movie_id "
+                + "WHERE 1=1 "
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append("AND m.title LIKE ? ");
+            params.add(keyword.trim() + "%");
+        }
+
+        if (genreId != null && !genreId.isEmpty()) {
+            sql.append("AND mg.genre_id = ? ");
+            params.add(Integer.parseInt(genreId));
+        }
+
+        if (actorId != null && !actorId.isEmpty()) {
+            sql.append("AND ma.actor_id = ? ");
+            params.add(Integer.parseInt(actorId));
+        }
+
+        if (status != null && !status.isEmpty()) {
+            sql.append("AND m.status = ? ");
+            params.add(status);
+        }
+
+        if (director != null && !director.trim().isEmpty()) {
+            sql.append("AND m.director_name LIKE ? ");
+            params.add(director.trim() + "%");
+        }
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Movie m = new Movie();
+                m.setMovieId(rs.getInt("movie_id"));
+                m.setTitle(rs.getString("title"));
+                m.setDescription(rs.getString("description"));
+                m.setDurationMinutes(rs.getInt("duration_minutes"));
+                m.setLanguage(rs.getString("language"));
+                m.setReleaseDate(rs.getDate("release_date") != null
+                        ? rs.getDate("release_date").toLocalDate() : null);
+                m.setRating(rs.getString("rating"));
+                m.setPosterUrl(rs.getString("poster_url"));
+                m.setTrailerUrl(rs.getString("trailer_url"));
+                m.setDirectorName(rs.getString("director_name"));
+                m.setStatus(rs.getString("status"));
+                list.add(m);
+            }
+        }
+
+        return list;
+    }
 }
