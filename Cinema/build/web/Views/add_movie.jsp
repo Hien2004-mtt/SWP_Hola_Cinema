@@ -13,6 +13,8 @@
 
 
         <link href="css/add_movie.css" rel="stylesheet" >
+        
+        
         <script src="js/add_movie.js"></script>
     </head>
     <body>

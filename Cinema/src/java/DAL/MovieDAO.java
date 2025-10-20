@@ -8,6 +8,7 @@ import Models.Movie;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,32 +104,89 @@ public class MovieDAO extends DBContext {
             e.printStackTrace();
         }
 
-        
     }
 
     public Movie getMovieById(int id) {
-    String sql = "SELECT * FROM Movie WHERE movie_id = ?";
-    try (Connection conn = DBContext.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            Movie m = new Movie();
-            m.setMovieId(rs.getInt("movie_id"));
-            m.setTitle(rs.getString("title"));
-            m.setDescription(rs.getString("description"));
-            m.setDurationMinutes(rs.getInt("duration_minutes"));
-            m.setLanguage(rs.getString("language"));
-            m.setReleaseDate(rs.getTimestamp("release_date"));
-            m.setRating(rs.getString("rating"));
-            m.setPosterUrl(rs.getString("poster_url"));
-            m.setDirectorId(rs.getInt("director_id"));
-            
-            return m;
+        String sql = "SELECT * FROM Movie WHERE movie_id = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Movie m = new Movie();
+                m.setMovieId(rs.getInt("movie_id"));
+                m.setTitle(rs.getString("title"));
+                m.setDescription(rs.getString("description"));
+                m.setDurationMinutes(rs.getInt("duration_minutes"));
+                m.setLanguage(rs.getString("language"));
+                LocalDate releaseDate = m.getReleaseDate();
+                if (releaseDate != null) {
+                    ps.setDate(5, Date.valueOf(releaseDate));
+                } else {
+                    ps.setNull(5, Types.DATE);
+                }
+                m.setRating(rs.getString("rating"));
+                m.setPosterUrl(rs.getString("poster_url"));
+//            m.setDirectorName(rs.getInt("director_id"));
+
+                return m;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
+
+    public List<Movie> getAllMovies() throws SQLException {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie";
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movie m = new Movie();
+                m.setMovieId(rs.getInt("movie_id"));
+                m.setTitle(rs.getString("title"));
+                m.setRating(rs.getString("rating"));
+                m.setDurationMinutes(rs.getInt("duration_minutes"));
+                m.setLanguage(rs.getString("language"));
+                m.setReleaseDate(rs.getDate("release_date") != null
+                        ? rs.getDate("release_date").toLocalDate() : null);
+                m.setStatus(rs.getString("status"));
+                m.setPosterUrl(rs.getString("poster_url"));
+                m.setTrailerUrl(rs.getString("trailer_url"));
+                m.setDirectorName(rs.getString("director_name"));
+                m.setDescription(rs.getString("description"));
+                list.add(m);
+            }
+        }
+        return list;
+    }
+
+    public List<Movie> searchMoviesByTitle(String keyword) throws SQLException {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE title LIKE ?";
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Movie m = new Movie();
+                    m.setMovieId(rs.getInt("movie_id"));
+                    m.setTitle(rs.getString("title"));
+                    m.setRating(rs.getString("rating"));
+                    m.setDurationMinutes(rs.getInt("duration_minutes"));
+                    m.setLanguage(rs.getString("language"));
+                    m.setReleaseDate(rs.getDate("release_date") != null
+                            ? rs.getDate("release_date").toLocalDate() : null);
+                    m.setStatus(rs.getString("status"));
+                    m.setPosterUrl(rs.getString("poster_url"));
+                    m.setTrailerUrl(rs.getString("trailer_url"));
+                    m.setDirectorName(rs.getString("director_name"));
+                    m.setDescription(rs.getString("description"));
+                    list.add(m);
+                }
+            }
+        }
+        return list;
+    }
 }

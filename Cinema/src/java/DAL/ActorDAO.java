@@ -41,4 +41,19 @@ public class ActorDAO {
         }
         return -1;
     }
+
+    public List<String> getActorsByMovieId(int movieId) throws SQLException {
+        List<String> actors = new ArrayList<>();
+        String sql = "SELECT a.name FROM Movie_Actor ma "
+                + "JOIN Actor a ON ma.actor_id = a.actor_id "
+                + "WHERE ma.movie_id = ?";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                actors.add(rs.getString("name"));
+            }
+        }
+        return actors;
+    }
 }

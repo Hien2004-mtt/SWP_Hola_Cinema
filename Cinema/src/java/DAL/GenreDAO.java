@@ -40,4 +40,19 @@ public class GenreDAO {
         }
         return -1;
     }
+
+    public List<String> getGenresByMovieId(int movieId) throws SQLException {
+        List<String> genres = new ArrayList<>();
+        String sql = "SELECT g.name FROM Movie_Genre mg "
+                + "JOIN Genre g ON mg.genre_id = g.genre_id "
+                + "WHERE mg.movie_id = ?";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                genres.add(rs.getString("name"));
+            }
+        }
+        return genres;
+    }
 }
