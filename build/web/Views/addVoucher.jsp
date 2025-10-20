@@ -18,7 +18,7 @@
 </c:if>
     
 </c:if>
-    <script src="${pageContext.request.contextPath}/Views/addVoucher.js" defer></script>
+    <script src="${pageContext.request.contextPath}/Views/js/addVoucher.js" defer></script>
 <form action="${pageContext.request.contextPath}/voucher" method="post">
     <input type="hidden" name="action" value="add" />
 

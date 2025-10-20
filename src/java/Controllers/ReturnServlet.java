@@ -60,7 +60,7 @@ public class ReturnServlet extends HttpServlet {
                 payment.setBookingId(Integer.parseInt(orderId));
 
                 payment.setAmount(Double.parseDouble(amount));
-                payment.setMethodId(1); // 1 = MoMo
+                payment.setMethod("MoMo"); // 1 = MoMo
                 payment.setTransactionRef(transId);
                 payment.setStatus("Success");
                 payment.setPaidAt(new Date());

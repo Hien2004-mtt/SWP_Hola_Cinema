@@ -5,7 +5,7 @@
 <head>
     <title>Danh sách Voucher</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/listVoucher.css">
-    <script src="${pageContext.request.contextPath}/Views/listVoucher.js" defer></script>
+    <script src="${pageContext.request.contextPath}/Views/js/listVoucher.js" defer></script>
 </head>
 <body>
 
@@ -16,28 +16,53 @@
 
 <!-- Container lưu message để JS đọc -->
 <div id="msg" data-message="${message}" data-error="${error}" hidden></div>
+<div class="filter-bar">
+    🔍 Tìm kiếm:
+    <input type="text" id="searchInput" placeholder="Nhập từ khóa...">
 
-<table>
+    <label for="sortColumn">Sắp xếp theo:</label>
+    <select id="sortColumn">
+        <option value="0">ID</option>
+        <option value="1">Code</option>
+        <option value="2">Loại</option>
+        <option value="3">Giá trị</option>
+        <option value="4">Ngày bắt đầu</option>
+        <option value="5">Ngày kết thúc</option>
+    </select>
+    <select id="sortOrder">
+        <option value="asc">️ Tăng dần</option>
+        <option value="desc">️ Giảm dần</option>
+    </select>
+</div>
+
+<table id="voucherTable">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Code</th>
-        <th>Loại</th>
-        <th>Giá trị</th>
-        <th>Bắt đầu</th>
-        <th>Kết thúc</th>
-        <th>Usage</th>
-        <th>Per User</th>
-        <th>Trạng thái</th>
-        <th>Hành động</th>
+      <th data-index="0">ID</th>
+      <th data-index="1">Code</th>
+      <th data-index="2">Loại</th>
+      <th data-index="3">Giá trị</th>
+      <th data-index="4">Bắt đầu</th>
+      <th data-index="5">Kết thúc</th>
+      <th data-index="6">Usage</th>
+      <th data-index="7">Per User</th>
+      <th data-index="8">Trạng thái</th>
+      <th data-index="9">Hành động</th>
     </tr>
-    </thead>
+  </thead>
     <tbody>
     <c:forEach var="v" items="${list}">
         <tr>
             <td>${v.voucherId}</td>
             <td>${v.code}</td>
-            <td>${v.type}</td>
+            <td>
+    <c:choose>
+        <c:when test="${v.type == 'percent'}">%</c:when>
+        <c:when test="${v.type == 'fixed'}">VNĐ</c:when>
+        
+        <c:otherwise>${v.type}</c:otherwise>
+    </c:choose>
+</td>
             <td>${v.value}</td>
             <td>${v.validFrom}</td>
             <td>${v.validTo}</td>
@@ -54,13 +79,13 @@
                 </c:choose>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/voucher?action=edit&id=${v.voucherId}" class="btn btn-edit">✏️ Sửa</a>
+                <a href="${pageContext.request.contextPath}/voucher?action=edit&id=${v.voucherId}" class="btn btn-edit">️ Sửa</a>
                 <c:choose>
                     <c:when test="${v.isActive}">
-                        <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" class="btn btn-disable">⛔ Vô hiệu</a>
+                        <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" class="btn btn-disable"> Vô hiệu</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/voucher?action=activate&id=${v.voucherId}" class="btn btn-activate">✅ Kích hoạt</a>
+                        <a href="${pageContext.request.contextPath}/voucher?action=activate&id=${v.voucherId}" class="btn btn-activate"> Kích hoạt</a>
                     </c:otherwise>
                 </c:choose>
             </td>

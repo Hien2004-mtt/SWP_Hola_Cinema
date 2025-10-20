@@ -33,7 +33,7 @@ public class VoucherService {
         if (voucher == null)
             throw new Exception(" Voucher không tồn tại hoặc đã bị xóa!");
 
-        if (!voucher.isIsValid())
+        if (!voucher.isIsActive())
             throw new Exception("️ Voucher đã bị vô hiệu hóa!");
 
         Date now = new Date();

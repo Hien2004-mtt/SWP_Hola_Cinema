@@ -56,7 +56,7 @@ public class VNPayReturnServlet extends HttpServlet {
                 Payment payment = new Payment();
                 payment.setBookingId(Integer.parseInt(vnp_TxnRef)); // giả sử booking_id chính là mã đơn
                 payment.setAmount(Double.parseDouble(vnp_Amount) / 100); // VNPay trả *100
-                payment.setMethodId(2); // 2 = VNPay
+                payment.setMethod("VNPay"); // 2 = VNPay
                 payment.setTransactionRef(vnp_TransactionNo);
                 payment.setStatus("Success");
                 payment.setPaidAt(new Date());
