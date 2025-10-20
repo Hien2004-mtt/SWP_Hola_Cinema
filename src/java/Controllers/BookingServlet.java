@@ -3,6 +3,7 @@ package Controllers;
 import DAL.BookingDAO;
 import DAL.BookingItemDAO;
 import DAL.SeatDAO;
+import Models.Booking;
 import Models.BookingItem;
 import Models.Seat;
 import Models.User;
@@ -24,7 +25,7 @@ public class BookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ✅ Bước 1: Lấy session hiện tại (để biết user đang đăng nhập)
+        //Lấy session hiện tại (để biết user đang đăng nhập)
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -34,10 +35,10 @@ public class BookingServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Bước 2: Lấy thông tin ghế và tổng tiền từ form confirmSeat.jsp
+        // Lấy thông tin ghế và tổng tiền từ form confirmSeat.jsp
         String[] selectedSeats = request.getParameterValues("selectedSeats");
-        System.out.println(">>> totalPrice param: " + request.getParameter("totalPrice"));
-        System.out.println(">>> basePrice param: " + request.getParameter("basePrice"));
+//        System.out.println(">>> totalPrice param: " + request.getParameter("totalPrice"));
+//        System.out.println(">>> basePrice param: " + request.getParameter("basePrice"));
 
         double basePrice = Double.parseDouble(request.getParameter("basePrice"));
         double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
@@ -49,7 +50,7 @@ public class BookingServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Bước 3: Tạo đối tượng BookingDAO để thêm booking mới
+        //Tạo đối tượng BookingDAO để thêm booking mới
         BookingDAO bookingDAO = new BookingDAO();
         int bookingId = bookingDAO.addBooking(user.getUserId(), showtimeId, totalPrice);
 
@@ -60,7 +61,7 @@ public class BookingServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Bước 4: Chuẩn bị danh sách BookingItem từ ghế đã chọn
+        // Chuẩn bị danh sách BookingItem từ ghế đã chọn
         SeatDAO seatDAO = new SeatDAO();
         List<BookingItem> items = new ArrayList<>();
 
@@ -86,17 +87,30 @@ public class BookingServlet extends HttpServlet {
             items.add(item);
         }
 
-        // ✅ Bước 5: Lưu tất cả các ghế vào bảng BookingItem
+        // Lưu tất cả các ghế vào bảng BookingItem
         BookingItemDAO itemDAO = new BookingItemDAO();
         itemDAO.addBookingItems(bookingId, items);
 
-        // ✅ Bước 6: Cập nhật session để hiển thị thông tin thành công
+        // Cập nhật session để hiển thị thông tin thành công
         session.setAttribute("bookingId", bookingId);
         session.setAttribute("bookedSeats", selectedSeats);
         session.setAttribute("totalPrice", totalPrice);
-        response.getWriter().println("Total Price from form = " + request.getParameter("totalPrice"));
-
-        // ✅ Bước 7: Chuyển hướng sang trang thành công
-        response.sendRedirect("Views/BookingSuccess.jsp");
+//        response.getWriter().println("Total Price from form = " + request.getParameter("totalPrice"));
+        //Nếu k thanh toán sau 10p thì booking tự động chuyển từ pending sang cancel
+        new Thread(() -> {
+            try {
+                Thread.sleep(600000);//10phut
+                BookingDAO bd = new BookingDAO();
+                Booking b = bd.getBookingById(bookingId);
+                if(b != null && b.getStatus().equalsIgnoreCase("pending")){
+                    bd.updateBookingStatus(bookingId, "cancel");
+                    System.out.println("Vui lòng reload lại trang ");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+        // Chuyển hướng sang trang thanh toán
+        response.sendRedirect("Views/payment.jsp");
     }
 }
