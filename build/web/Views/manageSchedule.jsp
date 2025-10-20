@@ -7,12 +7,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Lịch Chiếu - Hola Cinema</title>
-    <link rel="stylesheet" href="css/schedule.css">
+    <link rel="stylesheet" href="Views/css/schedule.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="main-content fade-in">
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <nav>
+                <a href="Views/agenda.jsp">
+                    <i class="fas fa-calendar-alt" style="margin-right:8px;"></i> Lịch Chiếu Phim
+                </a>
+                <a href="Views/manageSchedule.jsp" class="active">
+                    <i class="fas fa-cogs" style="margin-right:8px;"></i> Quản Lý Lịch Chiếu
+                </a>
+            </nav>
+        </div>
+        <div class="main-content fade-in" style="margin-left:250px;">
             <h1><i class="fas fa-calendar-alt"></i> Quản Lý Lịch Chiếu</h1>
             
             <!-- Alert Messages -->
