@@ -71,7 +71,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
                 movieId = Integer.parseInt(movie_raw);
                 session.setAttribute("movieId", movieId);
             } else{
-                movieId = (Integer) session.getAttribute("moviId");
+                movieId = (Integer) session.getAttribute("movieId");
             }
             if(movieId == null){ // nếu movie id k hợp lệ
                 request.setAttribute("error", "Vui lòng chọn lại phim");
@@ -80,7 +80,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
             }
             //Lấy danh sách suất chiếu từ db
             List<Showtime> st = std.getAllShowtimeByMovieId(movieId);
-            request.setAttribute("showtime", st);
+            request.setAttribute("showtimes", st);
             //Lấy tiêu đề phim từ movie id
             Movie m = md.getMovieById(movieId);
             if(m !=  null){
