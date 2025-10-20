@@ -78,7 +78,7 @@ public class SeatServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Object showtimeObj = session.getAttribute("selectedShowtimeId");
         if (showtimeObj == null) {
-            response.sendRedirect("Showtime"); // hoặc trang báo lỗi
+            response.sendRedirect("selectionShowtime"); // hoặc trang báo lỗi
             return;
         }
 
