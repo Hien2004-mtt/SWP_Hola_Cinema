@@ -11,13 +11,13 @@ public class Voucher {
     private Date validTo;
     private int usageLimit;
     private int perUserLimit;
-    private boolean isValid;
+    private boolean isActive;
 
     public Voucher() {
     }
 
     public Voucher(int voucherId, String code, String type, double value,
-                   Date validFrom, Date validTo, int usageLimit, int perUserLimit, boolean isValid) {
+                   Date validFrom, Date validTo, int usageLimit, int perUserLimit, boolean isActive) {
         this.voucherId = voucherId;
         this.code = code;
         this.type = type;
@@ -26,7 +26,7 @@ public class Voucher {
         this.validTo = validTo;
         this.usageLimit = usageLimit;
         this.perUserLimit = perUserLimit;
-        this.isValid = isValid;
+        this.isActive = isActive;
     }
 
     // Getter
@@ -71,13 +71,14 @@ public class Voucher {
         this.perUserLimit = perUserLimit;
     }
 
-    public boolean isIsValid() {
-        return isValid;
+    public boolean isIsActive() {
+        return isActive;
     }
 
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
-    
+
+   
     
 }

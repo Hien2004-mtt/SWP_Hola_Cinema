@@ -6,8 +6,8 @@
 <html>
 <head>
     <title>Thanh toán</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Views/payment.css" />
-    <script src="${pageContext.request.contextPath}/Views/payment.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Views/css/payment.css" />
+    <script src="${pageContext.request.contextPath}/Views/js/payment.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -22,13 +22,14 @@
 
     <!-- Tổng tiền -->
     <div class="total-box">
-        <p><b>Tổng gốc:</b> ${originalTotal} VND</p>
-        <p><b>Sau giảm:</b> ${discountedTotal} VND</p>
-    </div>
+    <p><b>Tổng gốc:</b> ${originalTotal} VND</p>
+    <p><b>Sau giảm:</b> ${discountedTotal != null ? discountedTotal : originalTotal} VND</p>
+</div>
 <form action="checkout" method="post">
     <input type="hidden" name="orderId" value="<%=System.currentTimeMillis() % 1_000_000_000L%>" /> 
     <input type="hidden" name="orderInfo" value="Thanh toán đơn hàng HolaCinema" /> 
-    <input type="hidden" name="amount" value="20000" /> 
+    <input type="hidden" name="amount" 
+           value="20000" /> 
     <input type="hidden" name="redirectUrl" value="http://localhost:9999/SWP_Hola_Cinema_1/return" /> 
     <input type="hidden" name="extraData" value="" /> 
     <button type="submit" name="method" value="momo" class="btn"> 

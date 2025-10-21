@@ -6,7 +6,7 @@ public class Payment {
     private int paymentId;
     private int bookingId;
     private double amount;
-    private int methodId;
+     private String method;
     private String transactionRef;
     private String status;
     private Date paidAt;
@@ -14,11 +14,11 @@ public class Payment {
 
     public Payment() {}
 
-    public Payment(int bookingId, double amount, int methodId, String transactionRef,
+    public Payment(int bookingId, double amount, String method, String transactionRef,
                    String status, Date paidAt, String qrCodeUrl) {
         this.bookingId = bookingId;
         this.amount = amount;
-        this.methodId = methodId;
+        this.method = method;
         this.transactionRef = transactionRef;
         this.status = status;
         this.paidAt = paidAt;
@@ -44,8 +44,15 @@ public class Payment {
     public double getAmount() { return amount; }
     public void setAmount(double amount) { this.amount = amount; }
 
-    public int getMethodId() { return methodId; }
-    public void setMethodId(int methodId) { this.methodId = methodId; }
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    
 
     public String getTransactionRef() { return transactionRef; }
     public void setTransactionRef(String transactionRef) { this.transactionRef = transactionRef; }
