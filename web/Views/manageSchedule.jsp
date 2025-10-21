@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Lịch Chiếu - Hola Cinema</title>
-    <link rel="stylesheet" href="Views/css/schedule.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/schedule.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -15,10 +15,10 @@
         <div class="sidebar">
             <h2>Menu</h2>
             <nav>
-                <a href="Views/agenda.jsp">
+                <a href="${pageContext.request.contextPath}/agenda">
                     <i class="fas fa-calendar-alt" style="margin-right:8px;"></i> Lịch Chiếu Phim
                 </a>
-                <a href="Views/manageSchedule.jsp" class="active">
+                <a href="${pageContext.request.contextPath}/manageSchedule" class="active">
                     <i class="fas fa-cogs" style="margin-right:8px;"></i> Quản Lý Lịch Chiếu
                 </a>
             </nav>
@@ -186,29 +186,29 @@
                         </form>
                     </div>
                 </div>
-                <table>
+                <table style="table-layout: auto;">
                     <thead>
                         <tr>
-                            <th><i class="fas fa-hashtag"></i> ID</th>
-                            <th><i class="fas fa-film"></i> Tên Phim</th>
-                            <th><i class="fas fa-door-open"></i> Phòng</th>
+                            <th style="white-space: nowrap;"><i class="fas fa-hashtag"></i> ID</th>
+                            <th style="white-space: nowrap;"><i class="fas fa-film"></i> Tên Phim</th>
+                            <th style="white-space: nowrap;"><i class="fas fa-door-open"></i> Phòng</th>
                             <th><i class="fas fa-clock"></i> Bắt đầu</th>
                             <th><i class="fas fa-clock"></i> Kết thúc</th>
                             <th><i class="fas fa-money-bill-wave"></i> Giá vé</th>
-                            <th><i class="fas fa-info-circle"></i> Trạng thái</th>
-                            <th><i class="fas fa-cogs"></i> Thao tác</th>
+                            <th style="white-space: nowrap;"><i class="fas fa-info-circle"></i> Trạng thái</th>
+                            <th style="white-space: nowrap;"><i class="fas fa-cogs"></i> Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="schedule" items="${scheduleList}">
                             <tr class="schedule-row status-${schedule.status}">
-                                <td><strong>#${schedule.showtimeId}</strong></td>
-                                <td>${schedule.movieName}</td>
-                                <td><span class="status-badge status-active">${schedule.auditoriumName}</span></td>
+                                <td style="white-space: nowrap;"><strong>#${schedule.showtimeId}</strong></td>
+                                <td style="white-space: nowrap;">${schedule.movieName}</td>
+                                <td style="white-space: nowrap;"><span class="status-badge status-active">${schedule.auditoriumName}</span></td>
                                 <td><fmt:formatDate value="${schedule.startTime}" pattern="dd/MM/yyyy HH:mm"/></td>
                                 <td><fmt:formatDate value="${schedule.endTime}" pattern="dd/MM/yyyy HH:mm"/></td>
                                 <td><strong><fmt:formatNumber value="${schedule.price}" type="currency" currencyCode="VND"/></strong></td>
-                                <td>
+                                <td style="white-space: nowrap;">
                                     <c:choose>
                                         <c:when test="${schedule.status == 'active'}">
                                             <span class="status-badge status-active">

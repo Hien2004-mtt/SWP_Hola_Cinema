@@ -54,7 +54,7 @@ public class AccountListController extends HttpServlet {
         request.setAttribute("sortField", sortField);
         request.setAttribute("sortOrder", sortOrder);
         request.setAttribute("roleFilter", roleParam);
-        request.getRequestDispatcher("/Views/admin/accountList.jsp").forward(request, response);
+        request.getRequestDispatcher("Views/admin/accountList.jsp").forward(request, response);
     }
 
     // Phương thức kiểm tra quyền admin (giả sử lưu thông tin người dùng trong session)
