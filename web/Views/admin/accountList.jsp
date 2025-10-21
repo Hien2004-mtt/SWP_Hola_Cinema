@@ -13,6 +13,29 @@
     <title>Account List</title>
     <link rel="stylesheet" href="css/admin.css">
     <style>
+        .pagination { margin-top:24px; display:flex; justify-content:center; gap:8px; }
+        .page-btn {
+            padding:8px 14px;
+            border-radius:6px;
+            border:1px solid #2980b9;
+            background:#fff;
+            color:#2980b9;
+            font-weight:500;
+            cursor:pointer;
+            transition:background 0.2s, color 0.2s;
+        }
+        .page-btn.active {
+            background:#2980b9;
+            color:#fff;
+            cursor:not-allowed;
+        }
+        .page-btn:disabled {
+            background:#eee;
+            color:#b2bec3;
+            cursor:not-allowed;
+        }
+    </style>
+    <style>
         .container {
             display: flex;
             min-height: 100vh;
@@ -222,8 +245,13 @@
             <main>
                 <h2>User List</h2>
                 <form action="accountList" method="get" style="margin-bottom: 18px; display: flex; gap: 8px; justify-content: flex-start;">
-                                    <input type="text" name="search" placeholder="Search by email or name">
+                                    <input type="text" name="search" placeholder="Search by email, name or phone" value="${param.search}">
                                     <button type="submit">Search</button>
+                                    <c:if test="${not empty param.search}">
+                                        <button type="button" onclick="window.location.href='accountList'" class="btn btn-secondary" style="border-radius: 18px; padding: 6px 18px; font-weight: 600; cursor: pointer; border: none; margin-left: 2px;">
+                                            <i class="fas fa-times"></i> Clear
+                                        </button>
+                                    </c:if>
                                     <button type="button" id="sortBtn" style="display: flex; align-items: center; gap: 6px; background: #f1c40f; color: #2c3e50; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer;">
                                         <span>Sort</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M6 12h12M9 18h6"/></svg>
@@ -376,6 +404,19 @@
                     </c:choose>
             </tbody>
                 </table>
+                <!-- Thanh phân trang -->
+                <div class="pagination">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <button 
+                            type="button"
+                            class="page-btn <c:if test='${i == currentPage}'>active</c:if>"
+                            <c:if test='${totalPages == 1 || i == currentPage}'>disabled</c:if>
+                            onclick="window.location.href='accountList?page=${i}'"
+                        >
+                            ${i}
+                        </button>
+                    </c:forEach>
+                </div>
                 <!-- Modal chỉnh sửa role -->
                 <div id="editRoleModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1001;align-items:center;justify-content:center;">
                         <div style="background:#fff;padding:36px 32px 28px 32px;border-radius:16px;min-width:320px;max-width:400px;box-shadow:0 4px 24px rgba(44,62,80,0.18);position:relative;display:flex;flex-direction:column;align-items:center;">
@@ -412,23 +453,8 @@
                     </div>
                     <button onclick="closeModal()" id="closeModalBtn" style="position:absolute;top:12px;right:12px;background:transparent;color:#2980b9;border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;">&times;</button>
                     <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
-                        <button onclick="showDeleteConfirm()" id="deleteBtn" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
                         <button onclick="closeModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Close</button>
                     </div>
-                    <!-- Modal xác nhận xóa -->
-                    <div id="deleteConfirmModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.25);z-index:1000;align-items:center;justify-content:center;">
-                        <div style="background:#fff;padding:28px 22px;border-radius:12px;min-width:280px;max-width:340px;box-shadow:0 2px 16px rgba(44,62,80,0.18);position:relative;">
-                            <h3 style="color:#e74c3c;margin-top:0;">Confirm Delete</h3>
-                            <p>Are you sure you want to delete this user?</p>
-                            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
-                                <button onclick="confirmDeleteUser()" style="background:#e74c3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Delete</button>
-                                <button onclick="closeDeleteModal()" style="background:#2980b9;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                    <form id="deleteUserForm" method="post" action="deleteUser" style="display:none;">
-                        <input type="hidden" name="user_id" id="deleteUserId" />
-                    </form>
                     <script>
                         // Xử lý nút Edit Role
                         document.querySelectorAll('.edit-role-btn').forEach(function(btn) {
@@ -447,26 +473,7 @@
                         document.getElementById('closeEditRoleBtn').addEventListener('click', function() {
                             document.getElementById('editRoleModal').style.display = 'none';
                         });
-                        let currentDeleteUserId = null;
-                        function showDeleteConfirm() {
-                            document.getElementById('deleteConfirmModal').style.display = 'flex';
-                        }
-                        function closeDeleteModal() {
-                            document.getElementById('deleteConfirmModal').style.display = 'none';
-                        }
-                        function confirmDeleteUser() {
-                            document.getElementById('deleteConfirmModal').style.display = 'none';
-                            document.getElementById('userDetailModal').style.display = 'none';
-                            document.getElementById('deleteUserForm').submit();
-                        }
                         // Gán userId cho form xóa khi mở modal chi tiết
-                        document.querySelectorAll('.detail-btn').forEach(function(btn) {
-                            btn.addEventListener('click', function(e) {
-                                // ...existing code...
-                                document.getElementById('deleteUserId').value = btn.dataset.userid;
-                                currentDeleteUserId = btn.dataset.userid;
-                            });
-                        });
                     </script>
                 </div>
             </div>

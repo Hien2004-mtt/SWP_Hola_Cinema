@@ -17,8 +17,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Chọn ghế</title>
-        <link rel="stylesheet" href="css/Seat.css">
-        <link rel="stylesheet" href="css/Layout.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Seat.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
 
         <script src="js/Seat.js"></script>
     </head>
