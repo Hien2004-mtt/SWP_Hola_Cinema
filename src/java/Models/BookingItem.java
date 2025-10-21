@@ -8,7 +8,6 @@ public class BookingItem {
     private int bookingId;
     private int seatId;
     private double price;
-    private String seatType;
     private Date createdAt;
 
     public BookingItem() {
@@ -19,7 +18,6 @@ public class BookingItem {
         this.bookingId = bookingId;
         this.seatId = seatId;
         this.price = price;
-        this.seatType = seatType;
         this.createdAt = createdAt;
     }
 
@@ -53,14 +51,6 @@ public class BookingItem {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getSeatType() {
-        return seatType;
-    }
-
-    public void setSeatType(String seatType) {
-        this.seatType = seatType;
     }
 
     public Date getCreatedAt() {

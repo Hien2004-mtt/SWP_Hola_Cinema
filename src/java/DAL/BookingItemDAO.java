@@ -3,42 +3,41 @@ package DAL;
 import java.sql.*;
 import Models.BookingItem;
 import java.util.List;
+import java.util.ArrayList;
 
 public class BookingItemDAO {
 
     /**
-     *  Thêm danh sách ghế vào bảng BookingItem
+     * Thêm danh sách ghế vào bảng BookingItem
      */
-    public void addBookingItems(int bookingId, List<BookingItem> items) {
-        String sql = "INSERT INTO BookingItem (booking_id, seat_id, price, seat_type, created_at) VALUES (?, ?, ?, ?, GETDATE())";
+    public void addBookingItems(int bookingId, int showtimeId, List<BookingItem> items) {
+        String sql = "INSERT INTO BookingItem (booking_id, showtime_id, seat_id, price) VALUES (?, ?, ?, ?)";
 
-        try (
-                Connection conn = DBContext.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             for (BookingItem item : items) {
                 ps.setInt(1, bookingId);
-                ps.setInt(2, item.getSeatId());
-                ps.setDouble(3, item.getPrice());
-                ps.setString(4, item.getSeatType());
-                ps.addBatch(); // gom nhiều ghế lại insert 1 lần
+                ps.setInt(2, showtimeId); // ✅ BẮT BUỘC CÓ
+                ps.setInt(3, item.getSeatId());
+                ps.setDouble(4, item.getPrice());
+                ps.addBatch();
             }
 
-            ps.executeBatch(); // thực thi toàn bộ insert 1 lượt
-
+            ps.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     *  Lấy danh sách ghế trong một booking (để hiển thị chi tiết đơn hàng)
+     * Lấy danh sách ghế trong 1 booking (để hiển thị chi tiết đơn hàng)
      */
     public List<BookingItem> getItemsByBookingId(int bookingId) {
-        List<BookingItem> list = new java.util.ArrayList<>();
+        List<BookingItem> list = new ArrayList<>();
         String sql = "SELECT * FROM BookingItem WHERE booking_id = ?";
 
-        try (
-                Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, bookingId);
             ResultSet rs = ps.executeQuery();
 
@@ -48,8 +47,7 @@ public class BookingItemDAO {
                 bi.setBookingId(rs.getInt("booking_id"));
                 bi.setSeatId(rs.getInt("seat_id"));
                 bi.setPrice(rs.getDouble("price"));
-                bi.setSeatType(rs.getString("seat_type"));
-                bi.setCreatedAt(rs.getTimestamp("created_at"));
+                // ❌ Không còn seat_type ở bảng này, nên bỏ dòng setSeatType()
                 list.add(bi);
             }
 

@@ -3,6 +3,7 @@ package Controllers;
 import DAL.BookingDAO;
 import DAL.BookingItemDAO;
 import DAL.SeatDAO;
+import DAL.ShowtimeDAO;
 import Models.Booking;
 import Models.BookingItem;
 import Models.Seat;
@@ -66,7 +67,11 @@ public class BookingServlet extends HttpServlet {
         List<BookingItem> items = new ArrayList<>();
 
         for (String seatCode : selectedSeats) {
-            Seat s = seatDAO.getSeatByCode(seatCode);
+            // Lấy auditoriumId từ Showtime
+            ShowtimeDAO showtimeDAO = new ShowtimeDAO();
+            int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
+
+            Seat s = seatDAO.getSeatByCode(seatCode, auditoriumId);
 
             if (s == null) {
                 continue;
@@ -83,13 +88,19 @@ public class BookingServlet extends HttpServlet {
             item.setBookingId(bookingId);
             item.setSeatId(s.getSeatId());
             item.setPrice(seatPrice);
-            item.setSeatType(s.getSeatType());
             items.add(item);
         }
 
         // Lưu tất cả các ghế vào bảng BookingItem
         BookingItemDAO itemDAO = new BookingItemDAO();
-        itemDAO.addBookingItems(bookingId, items);
+        itemDAO.addBookingItems(bookingId, showtimeId, items);// Tạo ra booking Item mới
+        ShowtimeDAO showtimeDAO = new ShowtimeDAO();
+        int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
+
+        for (String seatCode : selectedSeats) {
+            // Khóa ghế sau khi chọn
+            seatDAO.updateSeatStatusByCode(seatCode, false, auditoriumId);
+        }
 
         // Cập nhật session để hiển thị thông tin thành công
         session.setAttribute("bookingId", bookingId);
@@ -97,13 +108,20 @@ public class BookingServlet extends HttpServlet {
         session.setAttribute("totalPrice", totalPrice);
 //        response.getWriter().println("Total Price from form = " + request.getParameter("totalPrice"));
         //Nếu k thanh toán sau 10p thì booking tự động chuyển từ pending sang cancel
+        session.setMaxInactiveInterval(10);
         new Thread(() -> {
             try {
-                Thread.sleep(600000);//10phut
+                Thread.sleep(10000);//10phut
                 BookingDAO bd = new BookingDAO();
                 Booking b = bd.getBookingById(bookingId);
-                if(b != null && b.getStatus().equalsIgnoreCase("pending")){
-                    bd.updateBookingStatus(bookingId, "cancel");
+                if (b != null && b.getStatus().equalsIgnoreCase("pending")) {
+                    bd.updateBookingStatus(bookingId, "cancelled");
+                    BookingItemDAO it = new BookingItemDAO();
+                    List<BookingItem> booked = it.getItemsByBookingId(bookingId);
+                    SeatDAO sd = new SeatDAO();
+                    for (BookingItem bi : booked) {
+                        sd.updateSeatStatusById(bi.getSeatId(), true); // update trường is_active, chuyển từ 0 ---> 1, từ không thể chọn ---> có thể chọn
+                    }
                     System.out.println("Vui lòng reload lại trang ");
                 }
             } catch (Exception e) {

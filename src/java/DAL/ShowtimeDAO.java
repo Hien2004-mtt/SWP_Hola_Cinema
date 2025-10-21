@@ -60,4 +60,20 @@ public class ShowtimeDAO {
         return null;
     }
 
+    public int getAuditoriumIdByShowtime(int showtimeId) {
+        int auditoriumId = -1;
+        String sql = "SELECT auditorium_id FROM Showtime WHERE showtime_id = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, showtimeId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    auditoriumId = rs.getInt("auditorium_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return auditoriumId;
+    }
+
 }
