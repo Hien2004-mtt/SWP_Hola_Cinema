@@ -37,16 +37,17 @@ public class SeatDAO {
         return seat;
     }
 
-    public Seat getSeatByCode(String seatCode) {
+    public Seat getSeatByCode(String seatCode, int auditoriumId) {
         Seat seat = null;
         try {
-            String row = seatCode.substring(0, 1); // lay chu cai lam row
-            int number = Integer.parseInt(seatCode.substring(1)); // lay so dung sau row
+            String row = seatCode.substring(0, 1); // Ví dụ: "A" từ "A10"
+            int number = Integer.parseInt(seatCode.substring(1)); // Ví dụ: 10
 
-            String sql = "SELECT * FROM Seat WHERE row = ? AND number = ?";
+            String sql = "SELECT * FROM Seat WHERE row = ? AND number = ? AND auditorium_id = ?";
             try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
                 ps.setString(1, row);
                 ps.setInt(2, number);
+                ps.setInt(3, auditoriumId);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -64,6 +65,40 @@ public class SeatDAO {
             e.printStackTrace();
         }
         return seat;
+    }
+
+    public boolean updateSeatStatusById(int seatId, boolean isActive) { // set trường is_active theo id ghế
+        String sql = "UPDATE Seat SET is_active = ? WHERE seat_id = ?";
+        try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBoolean(1, isActive);
+            ps.setInt(2, seatId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateSeatStatusByCode(String seatCode, boolean isActive, int auditoriumId) {
+        try {
+            // Tách row và number từ seatCode (VD: "B10" -> row = "B", number = 10)
+            String row = seatCode.substring(0, 1);
+            int number = Integer.parseInt(seatCode.substring(1));
+
+            String sql = "UPDATE Seat SET is_active = ? WHERE row = ? AND number = ? AND auditorium_id = ?";
+            try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setBoolean(1, isActive);
+                ps.setString(2, row);
+                ps.setInt(3, number);
+                ps.setInt(4, auditoriumId);
+
+                return ps.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
