@@ -18,7 +18,7 @@ public class DeleteUserServlet extends HttpServlet {
             try {
                 int userId = Integer.parseInt(userIdStr);
                 DAO dao = new DAO();
-                boolean success = dao.deleteUserById(userId);
+              //  boolean success = dao.deleteUserById(userId);
                 // Chuyển hướng về lại trang accountList sau khi xóa
                 response.sendRedirect("accountList");
             } catch (NumberFormatException e) {

@@ -1,34 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <web-app version="5.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd">
     <display-name>SWP Hola Cinema</display-name>
-=======
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
-                             https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
-         version="5.0">
-
-    <display-name>SWP Hola Cinema</display-name>
-
->>>>>>> main
     <!-- ================== Payment ================== -->
     <servlet>
         <servlet-name>CheckoutController</servlet-name>
         <servlet-class>Controllers.CheckoutController</servlet-class>
     </servlet>
-<<<<<<< HEAD
+
     <servlet>
         <servlet-name>MomoIpnServlet</servlet-name>
         <servlet-class>Controllers.Config.MomoIpnServlet</servlet-class>
     </servlet>
-=======
->>>>>>> main
+
+
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
+
     <servlet>
         <servlet-name>QRCodeServlet</servlet-name>
         <servlet-class>Controllers.QRCodeServlet</servlet-class>
@@ -37,9 +26,9 @@
         <servlet-name>QRCodeServlet</servlet-name>
         <url-pattern>/qrcode</url-pattern>
     </servlet-mapping>
-=======
 
->>>>>>> main
+
+
     <!-- Return từ MoMo -->
     <servlet>
         <servlet-name>ReturnServlet</servlet-name>
@@ -49,10 +38,9 @@
         <servlet-name>ReturnServlet</servlet-name>
         <url-pattern>/return</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
-=======
 
->>>>>>> main
+
+
     <!-- Return từ VNPay -->
     <servlet>
         <servlet-name>VNPayReturnServlet</servlet-name>
@@ -62,8 +50,8 @@
         <servlet-name>VNPayReturnServlet</servlet-name>
         <url-pattern>/vnpay_return</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
-=======
+
+
 
     <!-- ================== IPN ================== -->
     <servlet>
@@ -84,7 +72,7 @@
         <url-pattern>/vnpay_ipn</url-pattern>
     </servlet-mapping>
 
->>>>>>> main
+
     <!-- ================== Voucher ================== -->
     <servlet>
         <servlet-name>VoucherServlet</servlet-name>
@@ -94,10 +82,7 @@
         <servlet-name>VoucherServlet</servlet-name>
         <url-pattern>/voucher</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
-=======
 
->>>>>>> main
     <servlet>
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <servlet-class>Controllers.ApplyVoucherServlet</servlet-class>
@@ -106,20 +91,13 @@
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <url-pattern>/applyVoucher</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     <!-- ================== Welcome ================== -->
-    <servlet-mapping>
-        <servlet-name>MomoIpnServlet</servlet-name>
-        <url-pattern>/momo_ipn</url-pattern>
-    </servlet-mapping>
+    
     <welcome-file-list>
         <welcome-file>Views/payment.jsp</welcome-file>
     </welcome-file-list>
-=======
->>>>>>> 222
-=======
-    
+
     <servlet>
         <servlet-name>AccountListController</servlet-name>
         <servlet-class>Controllers.AccountListController</servlet-class>
@@ -129,14 +107,89 @@
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
 
-<<<<<<< HEAD
-=======
->>>>>>> main
->>>>>>> 222
-    <!-- ================== Welcome ================== -->
-    <welcome-file-list>
-        <welcome-file>Views/Payment.jsp</welcome-file>
-    </welcome-file-list>
+   
+   
+    
+    <!-- ======== List Auditorium ====== -->
+    <servlet>
+        <servlet-name>ListAuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.ListAuditoriumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListAuditoriumServlet</servlet-name>
+        <url-pattern>/listAuditorium</url-pattern>
+    </servlet-mapping>
+    <!-- ======== Delete Auditorium ====== -->
+    <servlet>
+        <servlet-name>DeleteAuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.DeleteAuditoriumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteAuditoriumServlet</servlet-name>
+        <url-pattern>/deleteAuditorium</url-pattern>
+    </servlet-mapping>
+    <!-- ======== Update Auditorium ====== -->
+    <servlet>
+        <servlet-name>UpdateAuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.UpdateAuditoriumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateAuditoriumServlet</servlet-name>
+        <url-pattern>/updateAuditorium</url-pattern>
+    </servlet-mapping>
+    <!-- ======== Add Auditorium ====== -->
+    <servlet>
+        <servlet-name>AddAuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.AddAuditoriumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddAuditoriumServlet</servlet-name>
+        <url-pattern>/addAuditorium</url-pattern>
+    </servlet-mapping>
+    <!-- ======== Phân quyền ====== -->
+    <servlet-mapping>
+        <servlet-name>Unauthorized</servlet-name>
+        <url-pattern>/unauthorized</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Unauthorized</servlet-name>
+        <servlet-class>Controllers.Unauthorized</servlet-class>
+    </servlet>
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>Filters.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- ======== Showtime ====== -->
+    <servlet>
+        <servlet-name>ShowtimeSelectionServlet</servlet-name>
+        <servlet-class>Controllers.ShowtimeSelectionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowtimeSelectionServlet</servlet-name>
+        <url-pattern>/selectionShowtime</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ShowtimeConfirmServlet</servlet-name>
+        <servlet-class>Controllers.ShowtimeConfirmServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowtimeConfirmServlet</servlet-name>
+        <url-pattern>/confirmShowtime</url-pattern>
+    </servlet-mapping>
+    <!-- ======== Seat ====== -->
+    <servlet>
+        <servlet-name>SeatServlet</servlet-name>
+        <servlet-class>Controllers.SeatServlet</servlet-class>
+    </servlet> 
+   
+    <servlet-mapping>
+        <servlet-name>SeatServlet</servlet-name>
+        <url-pattern>/seat</url-pattern>
+    </servlet-mapping>
+    
 
->>>>>>> main
 </web-app>
