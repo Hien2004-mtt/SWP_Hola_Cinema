@@ -30,6 +30,10 @@
         <servlet-name>SeatDeleteServlet</servlet-name>
         <servlet-class>Controllers.SeatDeleteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SeatDetailServlet</servlet-name>
+        <servlet-class>Controllers.SeatDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
@@ -109,6 +113,10 @@
     <servlet-mapping>
         <servlet-name>SeatDeleteServlet</servlet-name>
         <url-pattern>/seatDelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatDetailServlet</servlet-name>
+        <url-pattern>/seatDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>

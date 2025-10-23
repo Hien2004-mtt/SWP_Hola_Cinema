@@ -1,106 +1,66 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controllers;
 
+import DAL.AuditoriumDAO;
 import DAL.SeatDAO;
+import Models.Auditorium;
 import Models.Seat;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Admin
- */
 public class SeatAddServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SeatAddServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SeatAddServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String auditoriumId = request.getParameter("auditoriumId");
-        if (auditoriumId == null) {
-            response.getWriter().println(" Thiếu auditoriumId");
-            return;
-        }
-        request.setAttribute("auditoriumId", auditoriumId);
+
+        // Lấy danh sách phòng để hiển thị trong dropdown
+        AuditoriumDAO audDAO = new AuditoriumDAO();
+        List<Auditorium> auditoriums = audDAO.getAll();
+
+        request.setAttribute("auditoriums", auditoriums);
         request.getRequestDispatcher("Views/AddSeat.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int auditoirumId = Integer.parseInt(request.getParameter("auditoriumId"));
-        String row = request.getParameter("row");
-        int number = Integer.parseInt(request.getParameter("number"));
-        String seatType = request.getParameter("seatType");
-        System.out.println("DEBUG >>> row=" + row);
-        Seat s = new Seat();
-        s.setAuditoriumId(auditoirumId);
-        s.setRow(row);
-        s.setNumber(number);
-        s.setSeatType(seatType);
-        s.setIsActivate(true);
-        SeatDAO sd = new SeatDAO();
-        sd.addSeat(s);
-        response.sendRedirect("seatList?auditoriumId=" + auditoirumId);
+        try {
+            int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
+            int rows = Integer.parseInt(request.getParameter("rows"));
+            int cols = Integer.parseInt(request.getParameter("cols"));
+            String seatType = request.getParameter("seatType");
+
+            List<Seat> seats = new ArrayList<>();
+            for (int i = 0; i < rows; i++) {
+                char rowChar = (char) ('A' + i);
+                for (int j = 1; j <= cols; j++) {
+                    Seat s = new Seat();
+                    s.setAuditoriumId(auditoriumId);
+                    s.setRow(String.valueOf(rowChar));
+                    s.setNumber(j);
+                    s.setSeatType(seatType);
+                    s.setIsActivate(true);
+                    seats.add(s);
+                }
+            }
+
+            SeatDAO seatDAO = new SeatDAO();
+            boolean success = seatDAO.addMultipleSeats(seats);
+
+            if (success) {
+                response.sendRedirect("seatDetail?auditoriumId=" + auditoriumId);
+            } else {
+                response.getWriter().println( "Lỗi khi thêm ghế vào phòng!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Lỗi khi xử lý dữ liệu!");
+        }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

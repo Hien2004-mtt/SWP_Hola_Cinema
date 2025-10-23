@@ -2,7 +2,7 @@ let selectedCount = 0;
 let selectedType = null;
 let totalPrice = 0;
 
-// 🟢 Cập nhật danh sách ghế đã chọn (hiển thị text)
+// Cập nhật danh sách ghế đã chọn
 function updateSelectedSeatsText() {
     const selected = document.querySelectorAll('input[name="selectedSeats"]:checked');
     const seatCodes = Array.from(selected).map(cb => cb.value);
@@ -10,44 +10,39 @@ function updateSelectedSeatsText() {
             seatCodes.length > 0 ? seatCodes.join(", ") : "Chưa chọn";
 }
 
-// 🟢 Xử lý khi click chọn / bỏ chọn ghế
+// Xử lý click ghế
 function toggleSeat(seatCode, checkboxId, divId, seatType) {
     const checkbox = document.getElementById(checkboxId);
     const div = document.getElementById(divId);
     const basePriceInput = document.getElementById("basePrice");
-
-    if (!checkbox || !div || !basePriceInput) {
-        console.error("❌ Không tìm thấy phần tử HTML cần thiết!");
+    if (!checkbox || !div || !basePriceInput)
         return;
-    }
 
     const basePrice = parseFloat(basePriceInput.value);
-    if (isNaN(basePrice)) {
-        console.error("❌ Base price không hợp lệ:", basePriceInput.value);
+    if (isNaN(basePrice))
         return;
-    }
 
-    // Nếu ghế bị disable → bỏ qua
+    // Nếu ghế bị vô hiệu → bỏ qua
     if (checkbox.disabled)
         return;
 
     const isSelecting = !checkbox.checked;
     let seatPrice = basePrice;
 
-    // Tính giá theo loại ghế
-    if (seatType.toLowerCase() === "vip") {
+    // Cộng thêm theo loại ghế
+    if (seatType.toLowerCase() === "vip")
         seatPrice += 70000;
-    } else if (seatType.toLowerCase() === "sweetbox") {
+    else if (seatType.toLowerCase() === "sweetbox")
         seatPrice += 100000;
-    }
 
-    // ✅ Chọn ghế
+    // 🟢 Khi người dùng chọn thêm ghế
     if (isSelecting) {
         if (selectedCount >= 8) {
             alert("Bạn chỉ được chọn tối đa 8 ghế.");
             return;
         }
 
+        // 🟢 Kiểm tra xem loại ghế có trùng không
         if (selectedType && selectedType !== seatType) {
             alert("Bạn chỉ được chọn ghế cùng loại: " + selectedType);
             return;
@@ -56,37 +51,41 @@ function toggleSeat(seatCode, checkboxId, divId, seatType) {
         checkbox.checked = true;
         div.classList.add("selected");
         selectedCount++;
-        selectedType = seatType;
+        selectedType = seatType; // gán loại ghế khi chọn
         totalPrice += seatPrice;
     }
-    // ❌ Bỏ chọn ghế
+    // 🔴 Khi người dùng bỏ chọn ghế
     else {
         checkbox.checked = false;
         div.classList.remove("selected");
         selectedCount--;
         totalPrice -= seatPrice;
 
+        // Nếu không còn ghế nào được chọn → reset loại ghế
         if (selectedCount === 0) {
             selectedType = null;
         }
     }
 
-    // 🟢 Cập nhật giao diện
     updateUI();
 }
 
-// 🟢 Hàm cập nhật giao diện tổng tiền và ghế đã chọn
+// 🟢 Hàm cập nhật hiển thị tổng tiền + loại ghế + danh sách ghế
 function updateUI() {
     const totalDisplay = document.getElementById("totalPrice");
     const totalInput = document.getElementById("totalPriceInput");
+    const seatTypeDisplay = document.getElementById("selectedSeatType");
 
     totalDisplay.innerText = totalPrice.toLocaleString() + " VND";
     totalInput.value = totalPrice;
 
+    // Cập nhật loại ghế hiển thị
+    seatTypeDisplay.innerText = selectedType ? selectedType : "Chưa chọn";
+
     updateSelectedSeatsText();
 }
 
-// 🟢 Kiểm tra trước khi submit form
+// 🟢 Kiểm tra trước khi submit
 function validateSelection() {
     if (selectedCount === 0) {
         alert("Bạn chưa chọn ghế nào.");

@@ -113,4 +113,18 @@ public class AuditoriumDAO {
         return null;
     }
 
+    public String getAuditoriumNameById(int auditoriumId) {
+        String sql = "SELECT name FROM Auditorium WHERE auditorium_id = ?";
+        try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, auditoriumId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Không rõ phòng chiếu";
+    }
+
 }
