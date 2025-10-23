@@ -107,16 +107,16 @@ public class SeatDAO {
                 + "row,"
                 + "number,"
                 + "seat_type,"
-                + "is_active)"
+                + "is_active"
                 + ")"
-                + "VALUES(?,?,?,?,?)";
+                + "VALUES(?,?,?,?,1)";
         try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);){
             ps.setInt(1, seat.getAuditoriumId());
             ps.setString(2, seat.getRow());
             ps.setInt(3, seat.getNumber());
             ps.setString(4,seat.getSeatType());
-            ps.setBoolean(5, seat.isIsActivate());
-            return ps.executeUpdate() > 0; 
+           
+            return ps.executeUpdate()>0;
         }catch(SQLException e){
             e.printStackTrace();
         }
