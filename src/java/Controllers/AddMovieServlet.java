@@ -144,7 +144,7 @@ public class AddMovieServlet extends HttpServlet {
                 movieDAO.addMovieActors(newMovieId, movie.getActorIds());
             }
 
-            response.sendRedirect(request.getContextPath() + "/Views/movies.jsp");
+            response.sendRedirect(request.getContextPath() + "/movie_management");
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServletException(e);

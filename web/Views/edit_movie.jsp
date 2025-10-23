@@ -1,34 +1,38 @@
+<%-- 
+    Document   : edit_movie
+    Created on : Oct 22, 2025, 9:09:01 AM
+    Author     : dinhh
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Add Movie</title>
+        <title>Edit Movie</title>
         <meta charset="UTF-8">
-
-        <!-- Select2 -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-        <link href="css/add_movie.css" rel="stylesheet" >
+        <link href="css/add_movie.css" rel="stylesheet">
         <script src="js/add_movie.js"></script>
     </head>
     <body>
         <div class="container">
-            <h2>Add Movie</h2>
+            <h2>Edit Movie</h2>
             <div class="form-wrapper">
+                <form class="movie-form" action="${pageContext.request.contextPath}/edit_movie" method="post">
+                    <input type="hidden" name="movieId" value="${movie.movieId}">
+                    <input type="hidden" name="posterUrl" id="posterUrl" value="${movie.posterUrl}">
 
-                <!-- Right: Form -->
-                <form class="movie-form" action="${pageContext.request.contextPath}/add_movie" method="post">
-
-                    <input type="hidden" name="posterUrl" id="posterUrl">
                     <div class="poster-section" onclick="openPosterModal()">
                         <div id="posterFrame" class="poster-frame">
-                            <span id="posterIcon">+</span>
-                            <p id="posterText">Add poster</p>
-                            <img id="posterPreview" src="" alt="Poster preview" style="display:none;">
+                            <img id="posterPreview" src="${movie.posterUrl}" alt="Poster preview"
+                                 style="${empty movie.posterUrl ? 'display:none;' : 'display:block;'}">
+                            <c:if test="${empty movie.posterUrl}">
+                                <span id="posterIcon">+</span>
+                                <p id="posterText">Add poster</p>
+                            </c:if>
                         </div>
                     </div>
 
@@ -36,38 +40,38 @@
                     <div id="posterModal" class="modal">
                         <div class="modal-content">
                             <span class="close" onclick="closePosterModal()">&times;</span>
-                            <h3>Add Poster URL</h3>
-                            <input type="text" id="posterUrlInput" placeholder="Enter poster URL">
+                            <h3>Edit Poster URL</h3>
+                            <input type="text" id="posterUrlInput" placeholder="Enter poster URL" value="${movie.posterUrl}">
                             <button type="button" onclick="setPoster()">OK</button>
-                        </div> 
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" maxlength="300" required>
+                        <input type="text" name="title" value="${movie.title}" required>
                     </div>
 
                     <div class="form-group">
                         <label>Rating</label>
                         <select name="rating">
-                            <option value="G">G</option>
-                            <option value="PG">PG</option>
-                            <option value="PG-13">PG-13</option>
-                            <option value="R">R</option>
+                            <option value="G" ${movie.rating == 'G' ? 'selected' : ''}>G</option>
+                            <option value="PG" ${movie.rating == 'PG' ? 'selected' : ''}>PG</option>
+                            <option value="PG-13" ${movie.rating == 'PG-13' ? 'selected' : ''}>PG-13</option>
+                            <option value="R" ${movie.rating == 'R' ? 'selected' : ''}>R</option>
                         </select>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group half">
                             <label>Duration (min)</label>
-                            <input type="number" name="duration" min="60" required>
+                            <input type="number" name="duration" min="60" value="${movie.durationMinutes}" required>
                         </div>
                         <div class="form-group half">
                             <label>Language</label>
                             <select name="language">
-                                <option value="English">English</option>
-                                <option value="Vietnamese">Vietnamese</option>
-                                <option value="Other">Other</option>
+                                <option value="English" ${movie.language == 'English' ? 'selected' : ''}>English</option>
+                                <option value="Vietnamese" ${movie.language == 'Vietnamese' ? 'selected' : ''}>Vietnamese</option>
+                                <option value="Other" ${movie.language == 'Other' ? 'selected' : ''}>Other</option>
                             </select>
                         </div>
                     </div>
@@ -75,26 +79,26 @@
                     <div class="form-row">
                         <div class="form-group half">
                             <label>Release Date</label>
-                            <input type="date" name="releaseDate" required>
+                            <input type="date" name="releaseDate" value="${movie.releaseDate}" required>
                         </div>
                         <div class="form-group half">
                             <label>Status</label>
-                            <select name="status" required>
-                                <option value="coming soon">Coming Soon</option>
-                                <option value="now showing">Now Showing</option>
-                                <option value="archived">Archived</option>
+                            <select name="status">
+                                <option value="coming soon" ${movie.status == 'coming soon' ? 'selected' : ''}>Coming Soon</option>
+                                <option value="now showing" ${movie.status == 'now showing' ? 'selected' : ''}>Now Showing</option>
+                                <option value="archived" ${movie.status == 'archived' ? 'selected' : ''}>Archived</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Trailer URL</label>
-                        <input type="text" name="trailerUrl" maxlength="300" required>
+                        <input type="text" name="trailerUrl" value="${movie.trailerUrl}" required>
                     </div>
 
                     <div class="form-group">
                         <label>Director</label>
-                        <input type="text" name="directorName" maxlength="300" required>
+                        <input type="text" name="directorName" value="${movie.directorName}" required>
                     </div>
 
                     <div class="form-group">
@@ -102,7 +106,13 @@
                         <div class="inline-input">
                             <select id="genres" name="genres[]" multiple>
                                 <c:forEach var="g" items="${genres}">
-                                    <option value="${g[0]}">${g[1]}</option>
+                                    <c:set var="isSelected" value="false" />
+                                    <c:forEach var="gid" items="${movieGenreIds}">
+                                        <c:if test="${gid == g[0]}">
+                                            <c:set var="isSelected" value="true" />
+                                        </c:if>
+                                    </c:forEach>
+                                    <option value="${g[0]}" ${isSelected ? 'selected' : ''}>${g[1]}</option>
                                 </c:forEach>
                             </select>
                             <button type="button" class="small-btn" onclick="openModal('genreModal')">Manage Genre</button>
@@ -114,7 +124,13 @@
                         <div class="inline-input">
                             <select id="actors" name="actors[]" multiple>
                                 <c:forEach var="a" items="${actors}">
-                                    <option value="${a[0]}">${a[1]}</option>
+                                    <c:set var="isSelected" value="false" />
+                                    <c:forEach var="aid" items="${movieActorIds}">
+                                        <c:if test="${aid == a[0]}">
+                                            <c:set var="isSelected" value="true" />
+                                        </c:if>
+                                    </c:forEach>
+                                    <option value="${a[0]}" ${isSelected ? 'selected' : ''}>${a[1]}</option>
                                 </c:forEach>
                             </select>
                             <button type="button" class="small-btn" onclick="openModal('actorModal')">Manage Actor</button>
@@ -123,18 +139,14 @@
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea name="description" minlength="255" required></textarea>
+                        <textarea name="description" minlength="255" required>${movie.description}</textarea>
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit">Add movie</button>
+                        <button type="submit">Update Movie</button>
                         <button type="button" class="cancel-btn" onclick="window.location.href = '${pageContext.request.contextPath}/movie_management'">
                             Cancel
                         </button>
-
-                        <c:if test="${not empty errorMessage}">
-                            <span class="error-message">${errorMessage}</span>
-                        </c:if>
                     </div>
                 </form>
             </div>
@@ -213,6 +225,3 @@
         </div>
     </body>
 </html>
-
-
-

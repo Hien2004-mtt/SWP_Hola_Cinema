@@ -44,11 +44,25 @@ public class MovieManagementServlet extends HttpServlet {
         String genreId = request.getParameter("genreId");
         String actorId = request.getParameter("actorId");
         String status = request.getParameter("status");
+        String rating = request.getParameter("rating");
         String director = request.getParameter("director");
-
+        
         try {
+            int page = 1;
+            int pageSize = 20; // số phim mỗi trang
+            String pageParam = request.getParameter("page");
+            
+            if (pageParam != null) {
+                try {
+                    page = Integer.parseInt(pageParam);
+                } catch (NumberFormatException e) {
+                    page = 1;
+                }
+            }
+            
+            int offset = (page - 1) * pageSize;
             // Gọi DAO để lọc dữ liệu
-            List<Movie> movies = movieDAO.filterMovies(keyword, genreId, actorId, status, director);
+            List<Movie> movies = movieDAO.filterMoviesWithPaging(keyword, genreId, actorId, status, rating, director, offset, pageSize);
 
             // Lấy danh sách genre và actor cho dropdown filter
             request.setAttribute("genres", genreDAO.getAllGenres());
@@ -62,6 +76,9 @@ public class MovieManagementServlet extends HttpServlet {
                 movieActors.put(m.getMovieId(), actorDAO.getActorsByMovieId(m.getMovieId()));
             }
 
+            int totalMovies = movieDAO.countFilteredMovies(keyword, genreId, actorId, status, director);
+            int totalPages = (int) Math.ceil((double) totalMovies / pageSize);
+
             // Gửi dữ liệu sang JSP
             request.setAttribute("movieList", movies);
             request.setAttribute("movieGenres", movieGenres);
@@ -73,6 +90,10 @@ public class MovieManagementServlet extends HttpServlet {
             request.setAttribute("actorId", actorId);
             request.setAttribute("status", status);
             request.setAttribute("director", director);
+            
+            
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
 
             // Forward sang JSP
             request.getRequestDispatcher("/Views/movie_management.jsp").forward(request, response);
