@@ -16,7 +16,7 @@ public class AuditoriumDAO {
                 list.add(new Auditorium(
                         rs.getInt("auditorium_id"),
                         rs.getString("name"),
-                        rs.getString("seat_layout_meta"),
+                        rs.getString("description"),
                         rs.getBoolean("is_deleted")
                 ));
             }
@@ -39,7 +39,7 @@ public class AuditoriumDAO {
                     list.add(new Auditorium(
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
-                            rs.getString("seat_layout_meta"),
+                            rs.getString("description"),
                             rs.getBoolean("is_deleted")
                     ));
                 }
@@ -52,7 +52,7 @@ public class AuditoriumDAO {
     }
 
     public void insert(Auditorium au) {
-        String sql = "INSERT INTO Auditorium (name, seat_layout_meta, is_deleted) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Auditorium (name, description, is_deleted) VALUES (?, ?, ?)";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
             ps.setString(1, au.getName());
             ps.setString(2, au.getSeatLayoutMeta());
@@ -67,7 +67,7 @@ public class AuditoriumDAO {
     public void update(Auditorium au) {
         String sql = "UPDATE Auditorium SET "
                 + "name = ?, "
-                + "seat_layout_meta = ?, "
+                + "description = ?, "
                 + "is_deleted = ? "
                 + "WHERE auditorium_id = ?";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
@@ -102,7 +102,7 @@ public class AuditoriumDAO {
                     return new Auditorium(
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
-                            rs.getString("seat_layout_meta"),
+                            rs.getString("description"),
                             rs.getBoolean("is_deleted")
                     );
                 }
