@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/home")
+@WebServlet("/home1")
 public class HomeController extends HttpServlet {
 
     private final MovieDAO movieDAO = new MovieDAO();
@@ -26,12 +26,12 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
 
         // 🔹 Lấy danh sách phim
-        List<Movie> nowShowing = movieDAO.getNowShowingMovies();
-        List<Movie> comingSoon = movieDAO.getComingSoonMovies();
-
-        // 🔹 Gửi dữ liệu sang JSP
-        request.setAttribute("moviesNow", nowShowing);
-        request.setAttribute("moviesComing", comingSoon);
+//        List<Movie> nowShowing = movieDAO.getNowShowingMovies();
+//        List<Movie> comingSoon = movieDAO.getComingSoonMovies();
+//
+//        // 🔹 Gửi dữ liệu sang JSP
+//        request.setAttribute("moviesNow", nowShowing);
+//        request.setAttribute("moviesComing", comingSoon);
 
         // 🔹 Kiểm tra session (để hiển thị phần user nếu đã login)
         HttpSession session = request.getSession(false);

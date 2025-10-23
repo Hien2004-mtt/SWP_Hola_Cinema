@@ -54,10 +54,7 @@
 
 
     <!-- ================== IPN ================== -->
-    <servlet>
-        <servlet-name>MomoIpnServlet</servlet-name>
-        <servlet-class>Controllers.Ipn.MomoIpnServlet</servlet-class>
-    </servlet>
+    
     <servlet-mapping>
         <servlet-name>MomoIpnServlet</servlet-name>
         <url-pattern>/ipn</url-pattern>
