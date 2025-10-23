@@ -14,82 +14,40 @@ import java.util.List;
  */
 public class ActorDAO {
 
+    private Connection con;
     private DBContext db = new DBContext();
 
-    // ✅ Lấy tất cả actor còn hoạt động
     public List<String[]> getAllActors() throws SQLException {
         List<String[]> actors = new ArrayList<>();
-        String sql = "SELECT actor_id, name FROM Actor WHERE is_active = 1 ORDER BY name";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        String sql = "SELECT actor_id, name FROM Actor ORDER BY name";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                actors.add(new String[]{
-                    String.valueOf(rs.getInt("actor_id")),
-                    rs.getString("name")
-                });
+                actors.add(new String[]{String.valueOf(rs.getInt("actor_id")), rs.getString("name")});
             }
         }
         return actors;
     }
 
-    /**
-     * ✅ Thêm mới hoặc kích hoạt lại actor nếu đã tồn tại nhưng is_active = 0
-     * @return -2 nếu đã tồn tại và active
-     *         id (>=1) nếu thêm mới hoặc kích hoạt lại thành công
-     *         -1 nếu lỗi khác
-     */
-    public int insertOrReactivateActor(String name) throws SQLException {
-        String checkSql = "SELECT actor_id, is_active FROM Actor WHERE name = ?";
-        String reactivateSql = "UPDATE Actor SET is_active = 1 WHERE actor_id = ?";
-        String insertSql = "INSERT INTO Actor (name, is_active) VALUES (?, 1)";
+    public int insertActor(String name) throws SQLException {
+        String sql = "INSERT INTO Actor (name) VALUES (?)";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.executeUpdate();
 
-        try (Connection conn = db.getConnection()) {
-            // Kiểm tra actor đã tồn tại chưa
-            try (PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
-                checkPs.setString(1, name);
-                ResultSet rs = checkPs.executeQuery();
-
-                if (rs.next()) {
-                    int id = rs.getInt("actor_id");
-                    boolean isActive = rs.getBoolean("is_active");
-
-                    if (isActive) {
-                        // Đã active → báo lỗi
-                        return -2;
-                    } else {
-                        // Bị soft delete → kích hoạt lại
-                        try (PreparedStatement reactivatePs = conn.prepareStatement(reactivateSql)) {
-                            reactivatePs.setInt(1, id);
-                            reactivatePs.executeUpdate();
-                        }
-                        return id;
-                    }
-                }
-            }
-
-            // Nếu chưa tồn tại → thêm mới
-            try (PreparedStatement insertPs = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
-                insertPs.setString(1, name);
-                insertPs.executeUpdate();
-
-                ResultSet rs = insertPs.getGeneratedKeys();
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         }
         return -1;
     }
 
-    // ✅ Lấy danh sách actor theo movie
     public List<String> getActorsByMovieId(int movieId) throws SQLException {
         List<String> actors = new ArrayList<>();
         String sql = "SELECT a.name FROM Movie_Actor ma "
                 + "JOIN Actor a ON ma.actor_id = a.actor_id "
                 + "WHERE ma.movie_id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, movieId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -97,16 +55,5 @@ public class ActorDAO {
             }
         }
         return actors;
-    }
-
-    // ✅ Soft delete actor
-    public boolean softDeleteActor(int actorId) throws SQLException {
-        String sql = "UPDATE Actor SET is_active = 0 WHERE actor_id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, actorId);
-            int rows = stmt.executeUpdate();
-            return rows > 0;
-        }
     }
 }

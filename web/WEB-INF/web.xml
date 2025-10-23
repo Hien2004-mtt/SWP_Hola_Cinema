@@ -70,6 +70,7 @@
         <servlet-name>MomoIpnServlet</servlet-name>
         <url-pattern>/momo_ipn</url-pattern>
     </servlet-mapping>
+   
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>
     </welcome-file-list>
@@ -147,52 +148,36 @@
     <servlet>
         <servlet-name>SeatServlet</servlet-name>
         <servlet-class>Controllers.SeatServlet</servlet-class>
-    </servlet>
+    </servlet> 
+   
     <servlet-mapping>
         <servlet-name>SeatServlet</servlet-name>
         <url-pattern>/seat</url-pattern>
     </servlet-mapping>
+    
     <!-- ======== Movie ====== -->
+    <servlet>
+        <servlet-name>AddGenreServlet</servlet-name>
+        <servlet-class>Controllers.AddGenreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddActorServlet</servlet-name>
+        <servlet-class>Controllers.AddActorServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>MovieManagementServlet</servlet-name>
         <servlet-class>Controllers.MovieManagementServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ActorManagementServlet</servlet-name>
-        <servlet-class>Controllers.ActorManagementServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GenreManagementServlet</servlet-name>
-        <servlet-class>Controllers.GenreManagementServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>MovieListServlet</servlet-name>
-        <servlet-class>Controllers.MovieListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>EditMovieServlet</servlet-name>
-        <servlet-class>Controllers.EditMovieServlet</servlet-class>
-    </servlet>
-
+    <servlet-mapping>
+        <servlet-name>AddGenreServlet</servlet-name>
+        <url-pattern>/AddGenreServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddActorServlet</servlet-name>
+        <url-pattern>/AddActorServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MovieManagementServlet</servlet-name>
         <url-pattern>/MovieManagementServlet</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ActorManagementServlet</servlet-name>
-        <url-pattern>/ActorManagementServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GenreManagementServlet</servlet-name>
-        <url-pattern>/GenreManagementServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MovieListServlet</servlet-name>
-        <url-pattern>/MovieListServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EditMovieServlet</servlet-name>
-        <url-pattern>/EditMovieServlet</url-pattern>
-    </servlet-mapping>
-
 </web-app>

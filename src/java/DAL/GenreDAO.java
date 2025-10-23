@@ -16,62 +16,26 @@ public class GenreDAO {
 
     private DBContext db = new DBContext();
 
-    // Lấy tất cả genre còn hoạt động
     public List<String[]> getAllGenres() throws SQLException {
         List<String[]> genres = new ArrayList<>();
-        String sql = "SELECT genre_id, name FROM Genre WHERE is_active = 1 ORDER BY name";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        String sql = "SELECT genre_id, name FROM Genre ORDER BY name";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                genres.add(new String[]{
-                    String.valueOf(rs.getInt("genre_id")),
-                    rs.getString("name")
-                });
+                genres.add(new String[]{String.valueOf(rs.getInt("genre_id")), rs.getString("name")});
             }
         }
         return genres;
     }
 
-    
-    public int insertOrReactivateGenre(String name) throws SQLException {
-        String checkSql = "SELECT genre_id, is_active FROM Genre WHERE name = ?";
-        String reactivateSql = "UPDATE Genre SET is_active = 1 WHERE genre_id = ?";
-        String insertSql = "INSERT INTO Genre (name, is_active) VALUES (?, 1)";
+    public int insertGenre(String name) throws SQLException {
+        String sql = "INSERT INTO Genre (name) VALUES (?)";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.executeUpdate();
 
-        try (Connection conn = db.getConnection()) {
-            // Kiểm tra xem genre đã tồn tại chưa
-            try (PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
-                checkPs.setString(1, name);
-                ResultSet rs = checkPs.executeQuery();
-
-                if (rs.next()) {
-                    int id = rs.getInt("genre_id");
-                    boolean isActive = rs.getBoolean("is_active");
-
-                    if (isActive) {
-                        // Đã active => báo lỗi
-                        return -2;
-                    } else {
-                        // Bị soft delete => kích hoạt lại
-                        try (PreparedStatement reactivatePs = conn.prepareStatement(reactivateSql)) {
-                            reactivatePs.setInt(1, id);
-                            reactivatePs.executeUpdate();
-                        }
-                        return id;
-                    }
-                }
-            }
-
-            // Nếu chưa tồn tại => thêm mới
-            try (PreparedStatement insertPs = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
-                insertPs.setString(1, name);
-                insertPs.executeUpdate();
-
-                ResultSet rs = insertPs.getGeneratedKeys();
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // trả về id mới
             }
         }
         return -1;
@@ -82,8 +46,7 @@ public class GenreDAO {
         String sql = "SELECT g.name FROM Movie_Genre mg "
                 + "JOIN Genre g ON mg.genre_id = g.genre_id "
                 + "WHERE mg.movie_id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, movieId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -91,30 +54,5 @@ public class GenreDAO {
             }
         }
         return genres;
-    }
-
-    // Không cần dùng nữa nếu đã có insertOrReactivateGenre()
-    public boolean genreExists(String name) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM Genre WHERE name = ? AND is_active = 1";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        }
-        return false;
-    }
-
-    // Xóa mềm genre
-    public boolean softDeleteGenre(int genreId) throws SQLException {
-        String sql = "UPDATE Genre SET is_active = 0 WHERE genre_id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, genreId);
-            int rows = stmt.executeUpdate();
-            return rows > 0;
-        }
     }
 }

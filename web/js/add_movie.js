@@ -31,9 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ====== Poster ======
 function openPosterModal() {
-    document.getElementById("posterModal").style.display = "flex";
+    document.getElementById("posterModal").style.display = "block";
 }
-
 function closePosterModal() {
     document.getElementById("posterModal").style.display = "none";
 }
@@ -51,13 +50,11 @@ function setPoster() {
 
 // ====== Modal Genre / Actor ======
 function openModal(id) {
-    document.getElementById(id).style.display = "flex"; // không dùng block
+    document.getElementById(id).style.display = "block";
 }
-
 function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
-
 
 // ====== Add Genre / Actor ======
 function addNewOption(selectId, inputId) {
@@ -65,11 +62,11 @@ function addNewOption(selectId, inputId) {
     if (!value)
         return;
 
-    // Gửi AJAX lên servlet (thêm action = 'add')
+    // Gửi AJAX lên servlet
     $.ajax({
-        url: selectId === "genres" ? "manageGenre" : "manageActor",
+        url: selectId === "genres" ? "addGenreAjax" : "addActorAjax",
         type: "POST",
-        data: {action: "add", name: value}, // <-- thêm action ở đây
+        data: {name: value},
         success: function (data) {
             if (typeof data === "string")
                 data = JSON.parse(data);
@@ -79,17 +76,18 @@ function addNewOption(selectId, inputId) {
             $('#' + selectId).append(newOption).trigger('change');
 
             // Thêm dòng mới vào bảng
-            let tableId = selectId === "genres" ? "#genreTableBody" : "#actorList";
+            let tableId = selectId === "genres" ? "#genreList" : "#actorList";
             $(tableId).append(`
                 <tr>
                     <td>${data.name}</td>
                     <td>
                         <button type="button" class="delete-btn"
-                            onclick="removeItem(this, '${selectId}', '${data.id}')">×</button>
+                            onclick="removeItem(this, '${selectId}', '${data.name}')">×</button>
                     </td>
                 </tr>
             `);
 
+            // Xóa nội dung input
             document.getElementById(inputId).value = "";
         },
         error: function (xhr) {
@@ -103,23 +101,17 @@ function addNewOption(selectId, inputId) {
 }
 
 // ====== Remove Genre / Actor ======
-function removeItem(btn, type, id) {
-    $.ajax({
-        url: type === "genres" ? "manageGenre" : "manageActor",
-        type: "POST",
-        data: {action: "delete", id: id},
-        success: function () {
-            // Xóa dòng trong bảng
-            $(btn).closest('tr').remove();
+function removeItem(button, selectId, name) {
+    // Xóa dòng trong bảng
+    const row = button.closest('tr');
+    if (row)
+        row.remove();
 
-            // Xóa option khỏi dropdown Select2
-            $('#' + type + ' option[value="' + id + '"]').remove();
-            $('#' + type).trigger('change'); // Cập nhật lại select2 hiển thị
-        },
-        error: function () {
-            alert("Error deleting " + (type === "genres" ? "genre" : "actor"));
-        }
-    });
+    // Xóa option trong select
+    const select = document.getElementById(selectId);
+    const option = Array.from(select.options).find(opt => opt.text === name);
+    if (option)
+        option.remove();
 }
 
 // ====== Đóng popup khi click ra ngoài ======

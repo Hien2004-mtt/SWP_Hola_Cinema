@@ -128,9 +128,7 @@
 
                     <div class="form-actions">
                         <button type="submit">Add movie</button>
-                        <button type="button" class="cancel-btn" onclick="window.location.href = '${pageContext.request.contextPath}/movie_management'">
-                            Cancel
-                        </button>
+                        <button type="reset" class="cancel">Cancel</button>
 
                         <c:if test="${not empty errorMessage}">
                             <span class="error-message">${errorMessage}</span>
@@ -146,32 +144,29 @@
                 <span class="close" onclick="closeModal('genreModal')">&times;</span>
                 <h3>Manage Genres</h3>
 
-                <div class="manage-table-container">
-                    <table class="manage-table">
-                        <thead>
+                <table class="manage-table">
+                    <thead>
+                        <tr>
+                            <th>Genre Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="genreList">
+                        <c:forEach var="g" items="${genres}">
                             <tr>
-                                <th>Genre Name</th>
-                                <th>Action</th>
+                                <td>${g[1]}</td>
+                                <td>
+                                    <button type="button" class="delete-btn"
+                                            onclick="removeItem(this, 'genres', '${g[1]}')">×</button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody id="genreTableBody">
-                            <c:forEach var="g" items="${genres}">
-                                <tr>
-                                    <td>${g[1]}</td>
-                                    <td>
-                                        <button type="button" class="delete-btn"
-                                                onclick="removeItem(this, 'genres', ${g[0]})">×</button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                        </c:forEach>
+                    </tbody>
+                </table>
 
                 <div class="add-section">
                     <input type="text" id="newGenre" placeholder="New genre name">
-                    <button id="addGenreBtn" class="small-btn"
-                            onclick="addNewOption('genres', 'newGenre')">Add</button>
+                    <button onclick="addNewOption('genres', 'newGenre')">Add</button>
                 </div>
             </div>
         </div>
@@ -182,36 +177,32 @@
                 <span class="close" onclick="closeModal('actorModal')">&times;</span>
                 <h3>Manage Actors</h3>
 
-                <div class="manage-table-container">
-                    <table class="manage-table">
-                        <thead>
+                <table class="manage-table">
+                    <thead>
+                        <tr>
+                            <th>Actor Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="actorList">
+                        <c:forEach var="a" items="${actors}">
                             <tr>
-                                <th>Actor Name</th>
-                                <th>Action</th>
+                                <td>${a[1]}</td>
+                                <td>
+                                    <button type="button" class="delete-btn"
+                                            onclick="removeItem(this, 'actors', '${a[1]}')">×</button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody id="actorList">
-                            <c:forEach var="a" items="${actors}">
-                                <tr>
-                                    <td>${a[1]}</td>
-                                    <td>
-                                        <button type="button" class="delete-btn"
-                                                onclick="removeItem(this, 'actors', ${a[0]})">×</button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                        </c:forEach>
+                    </tbody>
+                </table>
 
                 <div class="add-section">
                     <input type="text" id="newActor" placeholder="New actor name">
-                    <button id="addActorBtn" class="small-btn"
-                            onclick="addNewOption('actors', 'newActor')">Add</button>
+                    <button onclick="addNewOption('actors', 'newActor')">Add</button>
                 </div>
             </div>
         </div>
-    </body>
 </html>
 
 

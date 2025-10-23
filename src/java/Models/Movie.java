@@ -12,7 +12,6 @@ import java.util.List;
  * @author dinhh
  */
 public class Movie {
-
     private int movieId;
     private String title;
     private String rating;
@@ -26,16 +25,12 @@ public class Movie {
     private String description;
     private List<Integer> genreIds;
     private List<Integer> actorIds;
-    private List<String> genres;
-    private List<String> actors;
-    
 
-    public Movie() {
-    }
+    public Movie() {}
 
     public Movie(int movieId, String title, String rating, int durationMinutes, String language, LocalDate releaseDate,
-            String status, String posterUrl, String trailerUrl, String directorName, String description,
-            List<Integer> genreIds, List<Integer> actorIds) {
+                 String status, String posterUrl, String trailerUrl, String directorName, String description,
+                 List<Integer> genreIds, List<Integer> actorIds) {
         this.movieId = movieId;
         this.title = title;
         this.rating = rating;
@@ -156,21 +151,6 @@ public class Movie {
     public void setActorIds(List<Integer> actorIds) {
         this.actorIds = actorIds;
     }
-
-    public List<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
-    }
-
-    public List<String> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<String> actors) {
-        this.actors = actors;
-    }
+    
 
 }
