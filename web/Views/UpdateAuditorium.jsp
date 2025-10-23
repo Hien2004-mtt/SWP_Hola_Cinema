@@ -20,7 +20,7 @@
         <label for="name">Tên phòng:</label><br>
         <input type="text" id="name" name="name" value="<%= a.getName() %>" required><br><br>
 
-        <label for="layout">Sơ đồ ghế:</label><br>
+        <label for="layout">Mô tả phòng chiếu:</label><br>
         <input type="text" id="layout" name="layout" value="<%= a.getSeatLayoutMeta() %>" required><br><br>
 
         <button type="submit">Lưu thay đổi</button>
