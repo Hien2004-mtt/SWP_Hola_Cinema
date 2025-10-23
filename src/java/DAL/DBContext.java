@@ -14,14 +14,14 @@ import java.sql.SQLException;
  */
 public class DBContext {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false";
-    private static final String USER = "quyennb";     // thay bằng username của bạn
-    private static final String PASS = "123456"; // thay bằng password của bạn
+    private static final String USER = "sa";     // thay bằng username của bạn
+    private static final String PASS = "123"; // thay bằng password của bạn
 
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("❌ Không tìm thấy SQLServer JDBC Driver", e);
+            throw new RuntimeException(" Không tìm thấy SQLServer JDBC Driver", e);
         }
         return DriverManager.getConnection(URL, USER, PASS);
     }

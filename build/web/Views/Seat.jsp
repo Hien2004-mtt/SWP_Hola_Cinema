@@ -29,8 +29,11 @@
         <h2 style="text-align:center;">Chọn ghế cho phim: "<%= movieTitle %>"</h2>
         <p style="text-align:center;">Suất chiếu: <%= startTime %></p>
 
-        <form action="Seat" method="post" onsubmit="return validateSelection();">
+        <form action="booking" method="post" onsubmit="return validateSelection();">
             <input type="hidden" id="basePrice" value="<%= basePrice %>" />
+            <input type="hidden" name="showtimeId" value="<%= showtimeId %>">
+            <input type="hidden" name="basePrice" value="<%= basePrice %>">
+            <input type="hidden" id="totalPriceInput" name="totalPrice" value="0">
 
             <div class="layout">
                 <!-- Sơ đồ ghế -->
