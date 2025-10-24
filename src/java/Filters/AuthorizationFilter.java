@@ -25,6 +25,8 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/css/")
                 || path.contains("/js/")
                 || path.contains("/images/")
+                || path.contains("/home")
+                || path.contains("/movieDetail")
                 || path.contains("/fonts/")
                 || path.contains("selectionShowtime")
                 || path.contains("confirmShowtime")) {
