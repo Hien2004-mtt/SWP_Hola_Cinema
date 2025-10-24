@@ -36,7 +36,7 @@
             </th>
             <th>
                 <a href="listAuditorium?sort=layout&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
-                    Sơ đồ ghế
+                    Mô tả phòng chiếu
                 </a>
             </th>
             <th>Hành động</th>

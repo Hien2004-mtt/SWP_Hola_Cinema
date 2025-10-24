@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAL.AuditoriumDAO;
 import DAL.MovieDAO;
 import DAL.SeatDAO;
 import DAL.ShowtimeDAO;
@@ -87,7 +88,8 @@ public class SeatServlet extends HttpServlet {
         //Lấy thông tin suất chiếu
         ShowtimeDAO showtimeDAO = new ShowtimeDAO();
         Showtime st = showtimeDAO.getShowtimeById(showtimeId);
-
+        AuditoriumDAO aud = new AuditoriumDAO();
+        String auditoriumName = aud.getAuditoriumNameById(showtimeId);
         if (st == null) {
             request.setAttribute("movieTitle", "Không tìm thấy suất chiếu");
             request.setAttribute("startTime", "Không xác định");
@@ -102,9 +104,12 @@ public class SeatServlet extends HttpServlet {
             } else {
                 request.setAttribute("movieTitle", "Không tìm thấy phim");
             }
-
+            request.setAttribute("auditoriumName", auditoriumName);
             request.setAttribute("startTime", st.getStartTime());
             request.setAttribute("basePrice", st.getBasePrice());
+            request.setAttribute("showtimeId", showtimeId);
+            request.setAttribute("movieId", st.getMovieId());
+
         }
 
         //Truyền danh sách ghế
