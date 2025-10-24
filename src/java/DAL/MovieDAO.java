@@ -397,4 +397,46 @@ public class MovieDAO extends DBContext {
         }
         return 0;
     }
+
+    public List<Movie> getNowShowingMovies() {
+        return getMoviesByStatus("nơw showing");
+    }
+
+    public List<Movie> getComingSoonMovies() {
+        return getMoviesByStatus("coming soon");
+    }
+
+    private List<Movie> getMoviesByStatus(String status) {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE status = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(extractMovie(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private Movie extractMovie(ResultSet rs) throws SQLException {
+        Movie m = new Movie();
+        m.setMovieId(rs.getInt("movie_id"));
+        m.setTitle(rs.getString("title"));
+        m.setDescription(rs.getString("description"));
+        m.setDurationMinutes(rs.getInt("duration_minutes"));
+        m.setLanguage(rs.getString("language"));
+        m.setReleaseDate(rs.getDate("release_date") != null
+                ? rs.getDate("release_date").toLocalDate() : null);
+        m.setRating(rs.getString("rating"));
+        m.setPosterUrl(rs.getString("poster_url"));
+        m.setDirectorName(rs.getString("director_name"));
+        m.setStatus(rs.getString("status"));
+        return m;
+    }
 }
