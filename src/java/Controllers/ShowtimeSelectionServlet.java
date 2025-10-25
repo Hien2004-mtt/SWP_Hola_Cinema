@@ -17,6 +17,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println(">>> ShowtimeSelectionServlet triggered!");
 
         HttpSession session = request.getSession();
         ShowtimeDAO showtimeDAO = new ShowtimeDAO();
@@ -35,7 +36,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
 
             if (movieId == null) {
                 request.setAttribute("error", " Vui lòng chọn lại phim.");
-                request.getRequestDispatcher("Views/home.jsp").forward(request, response);
+                response.sendRedirect("home");
                 return;
             }
 
@@ -50,7 +51,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
 
             //  Nếu phim không có suất chiếu nào
             if (showtimes == null || showtimes.isEmpty()) {
-                request.setAttribute("noShowtime", "Không có suất chiếu nào cho phim này.");
+                request.setAttribute("noShowtime", "Xin lỗi, hiện tại phim đang không có suất chiếu,xin hãy chọn vào một ngày khác");
             }
 
         } catch (Exception e) {
