@@ -2,15 +2,18 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Models.Showtime" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-
+<%@ page import="Models.User" %>
 <%
     List<Showtime> showtimes = (List<Showtime>) request.getAttribute("showtimes");
     Integer movieId = (Integer) request.getAttribute("movieId");
     String movieTitle = (String) request.getAttribute("movieTitle");
+    String error = (String) request.getAttribute("error"); // lỗi do người dùng
+    String noShowtime = (String) request.getAttribute("noShowtime"); // lỗi do DB
+
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    User user = (User) session.getAttribute("user");
 %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,8 +21,8 @@
         <title>Chọn suất chiếu</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Showtime.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
-
     </head>
+
     <body>
         <div class="page-container">
             <jsp:include page="/Inculude/Header.jsp" />
@@ -27,9 +30,15 @@
             <div class="main-content">
                 <h2 style="text-align:center;">Chọn suất chiếu cho phim: <%= movieTitle %></h2>
 
-                <% String error = (String) request.getAttribute("error"); %>
+                <!-- Hiển thị lỗi nếu có -->
                 <% if (error != null) { %>
-                <p style="color:red; text-align:center;"><%= error %></p>
+                <p style="color:red; text-align:center; font-weight:bold;">
+                    <%= error %>
+                </p>
+                <% } else if (noShowtime != null) { %>
+                <p style="color:red; text-align:center; font-weight:bold;">
+                    <%= noShowtime %>
+                </p>
                 <% } %>
 
                 <% if (showtimes != null && !showtimes.isEmpty()) { %>
@@ -57,15 +66,13 @@
                     </div>
                 </form>
 
-                <!-- Form riêng cho nút Hủy -->
+                <!-- Nút Hủy -->
                 <div class="button-group">
                     <form action="home" method="get">
                         <button type="submit" class="cancel-button">Hủy chọn suất chiếu</button>
                     </form>
                 </div>
 
-                <% } else { %>
-                <p style="text-align:center; color:red;">Không có suất chiếu nào cho phim này.</p>
                 <% } %>
             </div>
 

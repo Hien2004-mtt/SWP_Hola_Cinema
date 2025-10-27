@@ -35,11 +35,13 @@ public class HomeController extends HttpServlet {
 
         // 🔹 Kiểm tra session (để hiển thị phần user nếu đã login)
         HttpSession session = request.getSession(false);
+       
         if (session != null && session.getAttribute("user") != null) {
-            request.setAttribute("loggedUser", session.getAttribute("user"));
+            request.setAttribute("user", session.getAttribute("user"));
+            request.setAttribute("role", session.getAttribute("role"));
         }
 
         // 🔹 Chuyển hướng sang trang JSP view
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("Views/home.jsp").forward(request, response);
     }
 }

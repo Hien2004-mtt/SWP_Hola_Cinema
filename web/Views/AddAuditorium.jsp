@@ -14,7 +14,7 @@
         <label for="name">Tên phòng:</label><br>
         <input type="text" id="name" name="name" placeholder="Nhập tên phòng chiếu" required><br><br>
 
-        <label for="layout">Sơ đồ ghế:</label><br>
+        <label for="layout">Mô tả phòng chiếu:</label><br>
         <input type="text" id="layout" name="layout" placeholder="Mô tả sơ đồ ghế (VD: 10x12)" required><br><br>
 
         <button type="submit">Thêm</button>

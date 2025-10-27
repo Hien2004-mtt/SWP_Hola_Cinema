@@ -12,6 +12,26 @@
         <servlet-class>Controllers.Config.MomoIpnServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>SeatListServlet</servlet-name>
+        <servlet-class>Controllers.SeatListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatAddServlet</servlet-name>
+        <servlet-class>Controllers.SeatAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatEditServlet</servlet-name>
+        <servlet-class>Controllers.SeatEditServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatDeleteServlet</servlet-name>
+        <servlet-class>Controllers.SeatDeleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatDetailServlet</servlet-name>
+        <servlet-class>Controllers.SeatDetailServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
@@ -104,10 +124,31 @@
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
 
-   
-   
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatListServlet</servlet-name>
+        <url-pattern>/seatList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatAddServlet</servlet-name>
+        <url-pattern>/seatAdd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatEditServlet</servlet-name>
+        <url-pattern>/seatEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatDeleteServlet</servlet-name>
+        <url-pattern>/seatDelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatDetailServlet</servlet-name>
+        <url-pattern>/seatDetail</url-pattern>
+    </servlet-mapping>
     
-    <!-- ======== List Auditorium ====== -->
     <servlet>
         <servlet-name>ListAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.ListAuditoriumServlet</servlet-class>
