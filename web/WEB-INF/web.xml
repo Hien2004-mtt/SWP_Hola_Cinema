@@ -123,7 +123,10 @@
         <servlet-name>AccountListController</servlet-name>
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
-
+<servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>Controllers.BookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/booking</url-pattern>
