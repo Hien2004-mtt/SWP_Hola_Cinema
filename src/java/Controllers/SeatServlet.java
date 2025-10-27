@@ -66,55 +66,54 @@ public class SeatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SeatDAO seatDAO = new SeatDAO();
-        List<Seat> seats = null;
         try {
-            seats = seatDAO.getAllSeat();
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Không thể lấy danh sách ghế.");
-        }
+            HttpSession session = request.getSession();
+            Object showtimeObj = session.getAttribute("selectedShowtimeId");
+            if (showtimeObj == null) {
+                response.sendRedirect("selectionShowtime");
+                return;
+            }
 
-        //Lấy showtimeId từ session
-        HttpSession session = request.getSession();
-        Object showtimeObj = session.getAttribute("selectedShowtimeId");
-        if (showtimeObj == null) {
-            response.sendRedirect("selectionShowtime"); // hoặc trang báo lỗi
-            return;
-        }
+            int showtimeId = (int) showtimeObj;
 
-        int showtimeId = (int) showtimeObj;
+            // 🔹 Lấy suất chiếu
+            ShowtimeDAO showtimeDAO = new ShowtimeDAO();
+            Showtime st = showtimeDAO.getShowtimeById(showtimeId);
+            if (st == null) {
+                request.setAttribute("error", "Không tìm thấy suất chiếu!");
+                request.getRequestDispatcher("Views/Error.jsp").forward(request, response);
+                return;
+            }
 
-        //Lấy thông tin suất chiếu
-        ShowtimeDAO showtimeDAO = new ShowtimeDAO();
-        Showtime st = showtimeDAO.getShowtimeById(showtimeId);
-        AuditoriumDAO aud = new AuditoriumDAO();
-        String auditoriumName = aud.getAuditoriumNameById(showtimeId);
-        if (st == null) {
-            request.setAttribute("movieTitle", "Không tìm thấy suất chiếu");
-            request.setAttribute("startTime", "Không xác định");
-            request.setAttribute("basePrice", 0);
-        } else {
-            //Lấy thông tin phim
+            // 🔹 Lấy thông tin phim
             MovieDAO movieDAO = new MovieDAO();
             Movie m = movieDAO.getMovieById(st.getMovieId());
 
-            if (m != null) {
-                request.setAttribute("movieTitle", m.getTitle());
-            } else {
-                request.setAttribute("movieTitle", "Không tìm thấy phim");
-            }
+            // 🔹 Lấy tên và ID phòng chiếu
+            int auditoriumId = st.getAuditoriumId(); // cần có trường này trong model Showtime
+            AuditoriumDAO audDAO = new AuditoriumDAO();
+            String auditoriumName = audDAO.getAuditoriumNameById(auditoriumId);
+
+            // 🔹 Lấy danh sách ghế thuộc phòng chiếu đó
+            SeatDAO seatDAO = new SeatDAO();
+            List<Seat> seats = seatDAO.getSeatByAuditoriumId(auditoriumId);
+
+            // 🔹 Gửi dữ liệu sang JSP
+            request.setAttribute("movieTitle", m != null ? m.getTitle() : "Không tìm thấy phim");
             request.setAttribute("auditoriumName", auditoriumName);
             request.setAttribute("startTime", st.getStartTime());
             request.setAttribute("basePrice", st.getBasePrice());
             request.setAttribute("showtimeId", showtimeId);
             request.setAttribute("movieId", st.getMovieId());
+            request.setAttribute("seats", seats);
 
+            request.getRequestDispatcher("/Views/Seat.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "⚠️ Lỗi khi tải danh sách ghế!");
+            request.getRequestDispatcher("/Views/Error.jsp").forward(request, response);
         }
-
-        //Truyền danh sách ghế
-        request.setAttribute("seats", seats);
-        request.getRequestDispatcher("/Views/Seat.jsp").forward(request, response);
     }
 
     /**

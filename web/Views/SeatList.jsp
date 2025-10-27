@@ -157,22 +157,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="a" items="${auditoriums}">
-                    <tr>
-                        <td>#${a.auditoriumId}</td>
-                        <td>
-                            <a href="updateAuditorium?id=${a.auditoriumId}">
-                                <button class="btn btn-update">Update</button>
-                            </a>
-                            <a href="seatAdd?auditoriumId=${a.auditoriumId}">
-                                <button class="btn btn-add">Add</button>
-                            </a>
-                            <a href="seatDetail?auditoriumId=${a.auditoriumId}">
-                                <button class="btn btn-detail">Detail</button>
-                            </a>
-                        </td>
-                    </tr>
-                </c:forEach>
+                    <c:forEach var="a" items="${auditoriums}">
+                        <tr>
+                            <td>#${a.auditoriumId}</td>
+                            <td>
+                                <a href="updateSeat?id=${a.auditoriumId}">
+                                    <button class="btn btn-update">Update</button>
+                                </a>
+                                <a href="seatAdd?auditoriumId=${a.auditoriumId}">
+                                    <button class="btn btn-add">Add</button>
+                                </a>
+                                <a href="seatDetail?auditoriumId=${a.auditoriumId}">
+                                    <button class="btn btn-detail">Detail</button>
+                                </a>
+                                <a href="seatAddRowForm?auditoriumId=${a.auditoriumId}">
+                                    <button class="btn btn-add">Add Row</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
 

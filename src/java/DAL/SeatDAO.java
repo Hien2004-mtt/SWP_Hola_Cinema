@@ -200,4 +200,60 @@ public class SeatDAO {
         }
         return null;
     }
+
+    public List<Seat> getSeatByRow(int auditoriumId, String row) {
+        List<Seat> list = new ArrayList<>();
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? AND row = ? ORDER BY number";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Seat s = new Seat();
+                s.setSeatId(rs.getInt("seat_id"));
+                s.setAuditoriumId(rs.getInt("auditorium_id"));
+                s.setRow(rs.getString("row"));
+                s.setNumber(rs.getInt("number"));
+                s.setSeatType(rs.getString("seat_type"));
+                s.setIsActivate(rs.getBoolean("is_active"));
+                s.setIsShowing(rs.getBoolean("is_showing"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean isSeatExists(int auditoriumId, String row, int number) {
+        String sql = "SELECT 1 FROM Seat WHERE auditorium_id = ? AND row = ? AND number = ?";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ps.setInt(3, number);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateSeatShowingStatus(int auditoriumId, String row, int number) {
+        String sql = "UPDATE Seat SET is_showing = 1 WHERE auditorium_id = ? AND [row] = ? AND [number] = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ps.setInt(3, number);
+
+            int affected = ps.executeUpdate();
+            return affected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
