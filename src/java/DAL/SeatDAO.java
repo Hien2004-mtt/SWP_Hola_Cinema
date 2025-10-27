@@ -143,17 +143,7 @@ public class SeatDAO {
         return false;
     }
 
-    public boolean deleteSeat(int seatId) {
-        String sql = "UPDATE Seat SET is_active = 0 WHERE seat_id =?";
-        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
-            ps.setInt(1, seatId);
-            return ps.executeUpdate() > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+   
 
     public List<Seat> getSeatByAuditoriumId(int auditoriumId) {
         List<Seat> list = new ArrayList<>();
@@ -240,7 +230,7 @@ public class SeatDAO {
     }
 
     public boolean updateSeatShowingStatus(int auditoriumId, String row, int number) {
-        String sql = "UPDATE Seat SET is_showing = 1 WHERE auditorium_id = ? AND [row] = ? AND [number] = ?";
+        String sql = "UPDATE Seat SET is_showing = 0 WHERE auditorium_id = ? AND [row] = ? AND [number] = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, auditoriumId);
