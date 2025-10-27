@@ -18,9 +18,11 @@ public class AuthorizationFilter implements Filter {
         String path = request.getRequestURI();
         System.out.println("🔍 Path detected: " + path);
 
+
         // 🟢 Các đường dẫn public (không cần đăng nhập)
         if (isPublicPath(path)) {
             System.out.println("✅ Public path allowed: " + path);
+
             chain.doFilter(req, res);
             return;
         }
