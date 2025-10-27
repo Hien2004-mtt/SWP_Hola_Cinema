@@ -5,9 +5,12 @@
         <group>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/src/java/Controllers/SeatServlet.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/build/web/Views/add_movie.jsp</file>
+            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/build/web/Views/home.jsp</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/build/web/Views/Seat.jsp</file>
+            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/src/java/Filters/AuthorizationFilter.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/src/java/DAL/MovieDAO.java</file>
             <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/src/java/Controllers/HomeController.java</file>
+            <file>file:/C:/Users/dinhh/OneDrive/Documents/GitHub/SWP_Hola_Cinema/src/java/Models/Movie.java</file>
         </group>
     </open-files>
 </project-private>
