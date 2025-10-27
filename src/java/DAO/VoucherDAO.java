@@ -30,16 +30,27 @@ public class VoucherDAO {
 
     //  Lấy tất cả voucher (admin)
     public List<Voucher> getAll() throws SQLException {
-        List<Voucher> list = new ArrayList<>();
-        String sql = "SELECT * FROM Voucher ORDER BY voucher_id DESC";
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                list.add(mapVoucher(rs));
-            }
-        }
-        return list;
+    // 🧠 Tự động vô hiệu hóa nếu voucher đã hết hạn
+    String autoDeactivateSQL = """
+        UPDATE Voucher 
+        SET isActive = 0 
+        WHERE valid_to < GETDATE() AND isActive = 1
+    """;
+    try (Statement st = conn.createStatement()) {
+        st.executeUpdate(autoDeactivateSQL);
     }
+
+    List<Voucher> list = new ArrayList<>();
+    String sql = "SELECT * FROM Voucher ORDER BY voucher_id DESC";
+    try (Statement st = conn.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+        while (rs.next()) {
+            list.add(mapVoucher(rs));
+        }
+    }
+    return list;
+}
+
 
     // Thêm voucher
     public void insert(Voucher v) throws SQLException {
@@ -76,12 +87,27 @@ public class VoucherDAO {
 
     //  Giảm usageLimit khi voucher được dùng
     public void decreaseUsage(String code) throws SQLException {
-        String sql = "UPDATE Voucher SET usage_limit = usage_limit - 1 WHERE code = ? AND usage_limit > 0";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, code);
-            ps.executeUpdate();
-        }
+    String sql = """
+        UPDATE Voucher 
+        SET usage_limit = usage_limit - 1 
+        WHERE code = ? AND usage_limit > 0
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, code);
+        ps.executeUpdate();
     }
+
+    //  Nếu usage_limit hoặc per_user_limit về 0 → vô hiệu
+    String check = """
+        UPDATE Voucher 
+        SET isActive = 0 
+        WHERE (usage_limit <= 0 OR per_user_limit <= 0)
+    """;
+    try (Statement st = conn.createStatement()) {
+        st.executeUpdate(check);
+    }
+}
+
 
     //  Mapper helper
     private Voucher mapVoucher(ResultSet rs) throws SQLException {
@@ -135,9 +161,16 @@ public class VoucherDAO {
     return null;
 }
 
-public void update(int id, String type, double value, Date validFrom, Date validTo,
-                   int usageLimit, int perUserLimit) throws SQLException {
-    String sql = "UPDATE Voucher SET type=?, value=?, valid_from=?, valid_to=?, usage_limit=?, per_user_limit=? WHERE voucher_id=?";
+public void update(int id, String type, double value, Date validFrom, Date validTo, int usageLimit, int perUserLimit) throws SQLException {
+    String sql = """
+        UPDATE Voucher 
+        SET type=?, value=?, valid_from=?, valid_to=?, usage_limit=?, per_user_limit=?,
+            isActive = CASE 
+                WHEN ? < GETDATE() THEN 0      -- nếu vẫn quá hạn => tắt
+                ELSE 1                         -- nếu cập nhật lại ngày mới => bật
+            END
+        WHERE voucher_id=?
+    """;
     try (PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, type);
         ps.setDouble(2, value);
@@ -145,8 +178,28 @@ public void update(int id, String type, double value, Date validFrom, Date valid
         ps.setDate(4, new java.sql.Date(validTo.getTime()));
         ps.setInt(5, usageLimit);
         ps.setInt(6, perUserLimit);
-        ps.setInt(7, id);
+        ps.setDate(7, new java.sql.Date(validTo.getTime())); // kiểm tra ngày kết thúc
+        ps.setInt(8, id);
         ps.executeUpdate();
     }
 }
+public List<Voucher> getActiveVouchers() {
+    List<Voucher> list = new ArrayList<>();
+    String sql = """
+        SELECT * FROM Voucher
+        WHERE isActive = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+        ORDER BY valid_to ASC
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            list.add(mapVoucher(rs));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
 }

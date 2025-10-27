@@ -23,6 +23,8 @@ public class PaymentDAO {
             ps.setTimestamp(6, new Timestamp(payment.getPaidAt().getTime()));
             ps.setString(7, payment.getQrCodeUrl());
             ps.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
         }
     }
 

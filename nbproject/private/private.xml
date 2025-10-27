@@ -5,6 +5,8 @@
         <group>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/HomeController.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/WEB-INF/web.xml</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/BookingServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAO/VoucherDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/DeleteUserServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/HomeServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/ListAuditoriumServlet.java</file>
@@ -13,6 +15,7 @@
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/DashboardDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/home.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/VNPayReturnServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/QRCodeServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAO/PaymentDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/DAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/DBContext.java</file>
@@ -29,7 +32,10 @@
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/js/Seat.js</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AddAuditoriumServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Util/ValidateOtp.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/payment_success.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/ReturnServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/listVoucher.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/BookingItemDAO.java</file>
         </group>
     </open-files>
 </project-private>

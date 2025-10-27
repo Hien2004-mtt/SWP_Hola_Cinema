@@ -52,16 +52,38 @@ tr:hover {
 }
 
 .btn {
-    padding: 6px 12px;
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
     border: none;
-    border-radius: 4px;
-    color: white;
     cursor: pointer;
+    transition: all 0.25s ease;
+    margin: 0 3px;
 }
 
-.btn-disable { background-color: #e53935; }
-.btn-activate { background-color: #43a047; }
-.btn-edit { background-color: #ffb300; color: black; }
+/* Nút "Sửa" */
+.btn-edit {
+    background-color: #ffa726; /* Cam nhạt */
+}
+.btn-edit:hover {
+    background-color: #fb8c00; /* Cam đậm */
+    transform: scale(1.05);
+    box-shadow: 0 0 6px rgba(251, 140, 0, 0.4);
+}
+
+/* Nút "Vô hiệu" */
+.btn-disable {
+    background-color: #e53935 !important;
+}
+.btn-disable:hover {
+    background-color: #c62828 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 6px rgba(229, 57, 53, 0.4);
+}
 .filter-bar {
     margin: 15px 0;
     padding: 10px;

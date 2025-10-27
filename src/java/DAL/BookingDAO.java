@@ -2,6 +2,8 @@ package DAL;
 
 import Models.Booking;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * BookingDAO - thực hiện các thao tác CRUD với bảng Booking
@@ -104,5 +106,58 @@ public class BookingDAO {
         }
 
         return null;
+    }
+    public Map<String, Object> getBookingInfo(int bookingId) {
+        String sql = """
+            SELECT 
+                b.booking_id,
+                b.total_price,
+                b.status,
+                u.name AS customer_name,
+                u.email AS customer_email,
+                m.title AS movie_title,
+                sh.start_time,
+                sh.end_time,
+                au.name AS auditorium_name,
+                s.[row] + CAST(s.[number] AS VARCHAR) AS seat_code,
+                s.seat_type,
+                sh.base_price
+            FROM Booking b
+            JOIN Users u ON b.user_id = u.user_id
+            JOIN BookingItem bi ON b.booking_id = bi.booking_id
+            JOIN Seat s ON bi.seat_id = s.seat_id
+            JOIN Showtime sh ON bi.showtime_id = sh.showtime_id
+            JOIN Movie m ON sh.movie_id = m.movie_id
+            JOIN Auditorium au ON sh.auditorium_id = au.auditorium_id
+            WHERE b.booking_id = ?
+        """;
+
+        Map<String, Object> info = new HashMap<>();
+
+        try (
+                Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                info.put("booking_id", rs.getInt("booking_id"));
+                info.put("total_price", rs.getDouble("total_price"));
+                info.put("status", rs.getString("status"));
+                info.put("customer_name", rs.getString("customer_name"));
+                info.put("customer_email", rs.getString("customer_email"));
+                info.put("movie_title", rs.getString("movie_title"));
+                info.put("start_time", rs.getTimestamp("start_time"));
+                info.put("end_time", rs.getTimestamp("end_time"));
+                info.put("auditorium_name", rs.getString("auditorium_name"));
+                info.put("seat_code", rs.getString("seat_code"));
+                info.put("seat_type", rs.getString("seat_type"));
+                info.put("base_price", rs.getDouble("base_price"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return info;
     }
 }

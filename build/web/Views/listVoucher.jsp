@@ -10,8 +10,10 @@
 <body>
 
 <div class="top-bar">
-    <h2>️ Danh sách Voucher</h2>
-    <a href="${pageContext.request.contextPath}/voucher?action=add" class="btn-add">+ Thêm Voucher</a>
+    
+   <c:if test="${sessionScope.user.role != 2}">
+        <a href="${pageContext.request.contextPath}/voucher?action=add" class="btn-add">+ Thêm Voucher</a>
+    </c:if>
 </div>
 
 <!-- Container lưu message để JS đọc -->
@@ -47,7 +49,9 @@
       <th data-index="6">Usage</th>
       <th data-index="7">Per User</th>
       <th data-index="8">Trạng thái</th>
-      <th data-index="9">Hành động</th>
+      <c:if test="${sessionScope.user.role != 2}">
+            <th>Hành động</th>
+        </c:if>
     </tr>
   </thead>
     <tbody>
@@ -69,6 +73,7 @@
             <td>${v.usageLimit}</td>
             <td>${v.perUserLimit}</td>
             <td>
+                
                 <c:choose>
                     <c:when test="${v.isActive}">
                         <span style="color:green; font-weight:bold;">Kích hoạt</span>
@@ -77,17 +82,19 @@
                         <span style="color:red; font-weight:bold;">Vô hiệu</span>
                     </c:otherwise>
                 </c:choose>
+                
             </td>
             <td>
+                <c:if test="${sessionScope.user.role != 2}">
                 <a href="${pageContext.request.contextPath}/voucher?action=edit&id=${v.voucherId}" class="btn btn-edit">️ Sửa</a>
                 <c:choose>
-                    <c:when test="${v.isActive}">
-                        <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" class="btn btn-disable"> Vô hiệu</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/voucher?action=activate&id=${v.voucherId}" class="btn btn-activate"> Kích hoạt</a>
-                    </c:otherwise>
-                </c:choose>
+            <c:when test="${v.isActive}">
+                <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" 
+                   class="btn btn-disable">Vô hiệu</a>
+            </c:when>
+            
+        </c:choose>
+                </c:if>
             </td>
         </tr>
     </c:forEach>

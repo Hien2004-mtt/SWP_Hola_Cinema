@@ -19,10 +19,13 @@ public class QRCodeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String text = req.getParameter("text");
+         String text = req.getParameter("text");
         if (text == null || text.isEmpty()) text = "No Data";
 
-        int size = 250;
+        int size = 300;
+        if (req.getParameter("size") != null) {
+            size = Integer.parseInt(req.getParameter("size"));
+        }
 
         try {
             Map<EncodeHintType, Object> hints = new HashMap<>();
@@ -37,4 +40,4 @@ public class QRCodeServlet extends HttpServlet {
             throw new ServletException("QR Error: " + e.getMessage(), e);
         }
     }
-}
+    }

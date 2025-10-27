@@ -1,5 +1,6 @@
 package Controllers;
 
+import DAL.BookingDAO;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -11,66 +12,80 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
 import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ReturnServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String resultCode = req.getParameter("resultCode"); // 0 = success
+        String resultCode = req.getParameter("resultCode"); // MoMo: 0 = success
         String orderId = req.getParameter("orderId");
         String amount = req.getParameter("amount");
         String transId = req.getParameter("transId");
 
-        System.out.println("===[MoMo RETURN]====");
-        System.out.println("resultCode=" + resultCode + ", orderId=" + orderId + ", amount=" + amount + ", transId=" + transId);
-
         try {
-            if ("0".equals(resultCode)) {
-                //  Tạo nội dung QR
-                String qrText = "BOOKING#" + orderId
-                        + "|AMOUNT=" + amount
-                        + "|TRANS=" + transId
-                        + "|TS=" + System.currentTimeMillis();
+            if ("0".equals(resultCode)) { // ✅ Thanh toán thành công
+                int bookingId = Integer.parseInt(orderId);
 
-                //  Tạo thư mục uploads/qrcode
+                //  Lấy thông tin booking từ DB
+                BookingDAO bookingDAO = new BookingDAO();
+                Map<String, Object> info = bookingDAO.getBookingInfo(bookingId);
+
+                //  Chuẩn bị nội dung QR
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                String qrText =
+                        "?️ Vé xem phim HolaCinema\n" +
+                        "-----------------------------\n" +
+                        "Mã đặt vé: " + bookingId + "\n" +
+                        "Khách hàng: " + info.get("customer_name") + "\n" +
+                        "Phim: " + info.get("movie_title") + "\n" +
+                        "Ghế: " + info.get("seat_code") + "\n" +
+                        "Phòng: " + info.get("auditorium_name") + "\n" +
+                        "Suất chiếu: " + sdf.format(info.get("start_time")) + "\n" +
+                        "Giá vé: " + String.format("%,.0f VND", info.get("base_price")) + "\n" +
+                        "Thời gian thanh toán: " + sdf.format(new Date()) + "\n" +
+                        "Mã giao dịch: " + transId;
+
+                // ✅ Tạo thư mục uploads/qrcode nếu chưa có
                 String qrFolder = getServletContext().getRealPath("/uploads/qrcode/");
                 File dir = new File(qrFolder);
                 if (!dir.exists()) {
-                    System.out.println("Creating directory: " + qrFolder);
                     dir.mkdirs();
                 }
 
-                //  Ghi file QR
-                String qrFileName = "qr_" + orderId + ".png";
+                // ✅ Tạo file PNG
+                String qrFileName = "qr_" + bookingId + "_" + System.currentTimeMillis() + ".png";
                 Path qrPath = Paths.get(qrFolder, qrFileName);
+
                 Map<EncodeHintType, Object> hints = new HashMap<>();
                 hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 
                 QRCodeWriter writer = new QRCodeWriter();
-                BitMatrix matrix = writer.encode(qrText, BarcodeFormat.QR_CODE, 300, 300, hints);
+                BitMatrix matrix = writer.encode(qrText, BarcodeFormat.QR_CODE, 400, 400, hints);
                 MatrixToImageWriter.writeToPath(matrix, "PNG", qrPath);
-                System.out.println("QR generated at: " + qrPath);
 
-                //  Lưu DB
+                System.out.println("✅ QR file saved at: " + qrPath);
+
+                // ✅ Lưu thông tin thanh toán vào DB
                 Payment payment = new Payment();
-                payment.setBookingId(Integer.parseInt(orderId));
-
+                payment.setBookingId(bookingId);
                 payment.setAmount(Double.parseDouble(amount));
-                payment.setMethod("MoMo"); // 1 = MoMo
+                payment.setMethod("MoMo");
                 payment.setTransactionRef(transId);
-                payment.setStatus("Success");
+                payment.setStatus("success");
                 payment.setPaidAt(new Date());
                 payment.setQrCodeUrl("uploads/qrcode/" + qrFileName);
 
                 new PaymentDAO().save(payment);
-                System.out.println("Payment saved to DB!");
 
-                //  Redirect sang trang hiển thị QR
-                resp.sendRedirect(req.getContextPath() + "/qrcode?text=" + URLEncoder.encode(qrText, "UTF-8") + "&size=300");
+                // ✅ Hiển thị QR cho người dùng (dùng QRCodeServlet)
+                resp.sendRedirect(req.getContextPath() + "/Views/payment_success.jsp?file=" + qrFileName);
 
             } else {
                 req.setAttribute("msg", "Thanh toán thất bại (resultCode=" + resultCode + ")");

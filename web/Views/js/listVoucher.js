@@ -7,9 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!confirm("️ Bạn có chắc muốn vô hiệu hóa voucher này?")) e.preventDefault();
         });
     });
-    document.querySelectorAll(".btn-activate").forEach(btn => {
+     document.querySelectorAll(".btn-activate").forEach(btn => {
         btn.addEventListener("click", e => {
-            if (!confirm(" Kích hoạt lại voucher này?")) e.preventDefault();
+            const validFrom = new Date(btn.dataset.validfrom);
+            const validTo = new Date(btn.dataset.validto);
+            const today = new Date();
+
+            if (today < validFrom) {
+                alert(" Voucher chưa đến ngày bắt đầu, không thể kích hoạt!");
+                e.preventDefault();
+                return;
+            }
+
+            
+
+           
         });
     });
 
