@@ -38,7 +38,7 @@ public class AuthorizationFilter implements Filter {
         }
 
         // 🔐 Kiểm tra phân quyền (chỉ ví dụ)
-        if (path.contains("addAuditorium") || path.contains("updateAuditorium") || path.contains("deleteAuditorium")) {
+        if (path.contains("addAuditorium") || path.contains("updateAuditorium") || path.contains("deleteAuditorium") || path.contains("listAuditorium")) {
             if (role != 1) { // 1 = admin
                 request.getRequestDispatcher("Views/Unauthorized.jsp").forward(request, response);
                 return;
