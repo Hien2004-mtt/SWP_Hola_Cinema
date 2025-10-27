@@ -14,7 +14,7 @@ function updateSelectedSeatsText() {
 function toggleSeat(seatCode, checkboxId, divId, seatType) {
     const checkbox = document.getElementById(checkboxId);
     const div = document.getElementById(divId);
-    const basePriceInput = document.getElementById("basePrice");
+    const basePriceInput = document.getElementById("JS");
     if (!checkbox || !div || !basePriceInput)
         return;
 
