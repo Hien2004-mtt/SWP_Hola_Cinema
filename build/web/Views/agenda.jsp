@@ -107,57 +107,73 @@
                 </span>
             </div>
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                <form method="get" action="agenda" style="margin:0;">
-                    <input type="hidden" name="startDate" value="${prevStartDate}" />
-                    <button type="submit" style="background:none;border:none;font-size:22px;cursor:pointer;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                </form>
-                <div style="font-weight:bold; font-size:18px; margin: 0 18px;">
-                    <c:out value="${dates[0]}"/> - <c:out value="${dates[6]}"/>
-                </div>
-                <form method="get" action="agenda" style="margin:0;">
-                    <input type="hidden" name="startDate" value="${nextStartDate}" />
-                    <button type="submit" style="background:none;border:none;font-size:22px;cursor:pointer;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </form>
+                    <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:8px;">
+                        <form method="get" action="agenda" style="margin:0; display:flex; align-items:center; gap:12px;">
+                            <button type="submit" name="startDate" value="${prevStartDate}" style="background:none;border:none;font-size:22px;cursor:pointer;">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div style="font-weight:bold; font-size:18px; margin: 0 18px;">
+                                <c:out value="${dates[0]}"/> - <c:out value="${dates[6]}"/>
+                            </div>
+                            <button type="submit" name="startDate" value="${nextStartDate}" style="background:none;border:none;font-size:22px;cursor:pointer;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </form>
+                        <form method="get" action="agenda" style="margin:0; display:flex; align-items:center; gap:12px;">
+                            <span style="font-size:15px;">Chọn ngày cụ thể:</span>
+                            <input type="date" name="specificDate" value="${param.specificDate}" style="padding:4px 10px; border-radius:8px; border:1px solid #ccc; font-size:15px;" />
+                            <button type="submit" style="border-radius:8px; padding:4px 14px; font-weight:600; background:#007bff; color:#fff; border:none;">Xem lịch</button>
+                            <c:if test="${not empty param.specificDate}">
+                                <button type="button" onclick="window.location.href='agenda'" style="border-radius:8px; padding:4px 14px; font-weight:600; background:#e74c3c; color:#fff; border:none;">Xóa tìm kiếm</button>
+                            </c:if>
+                        </form>
+                    </div>
             </div>
             <div style="overflow-x:auto;">
                 <table class="cinema-table">
                     <thead>
-                        <tr>
-                            <c:forEach var="date" items="${dates}">
-                                <th><c:out value="${date}"/></th>
-                            </c:forEach>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="time" items="${times}">
                             <tr>
                                 <c:forEach var="date" items="${dates}">
-                                    <td>
-                                        <c:forEach var="show" items="${scheduleMap[date][time]}">
-                                            <c:set var="endMillis" value="${show.endTime.time}" />
-                                            <c:choose>
-                                                <c:when test="${endMillis > now}">
-                                                    <div class="show-block upcoming">
-                                                        <b>${show.movieName}</b> <br> <span>(${show.auditoriumName})</span>
-                                                        <span>${show.startTime.toLocalDateTime().toLocalTime()} - ${show.endTime.toLocalDateTime().toLocalTime()}</span>
-                                                    </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="show-block past">
-                                                        <b>${show.movieName}</b> <br> <span>(${show.auditoriumName})</span>
-                                                        <span>${show.startTime.toLocalDateTime().toLocalTime()} - ${show.endTime.toLocalDateTime().toLocalTime()}</span>
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </td>
+                                    <th
+                                        <c:if test="${not empty param.specificDate && date == param.specificDate}">
+                                            style="background:#007bff; color:#fff; font-weight:bold; border:2px solid #007bff;"
+                                        </c:if>
+                                    >
+                                        <c:out value="${date}"/>
+                                    </th>
                                 </c:forEach>
                             </tr>
-                        </c:forEach>
+                    </thead>
+                    <tbody>
+                            <c:forEach var="time" items="${times}">
+                                <tr>
+                                    <c:forEach var="date" items="${dates}">
+                                        <td
+                                            <c:if test="${not empty param.specificDate && date == param.specificDate}">
+                                                style="background:#007bff; color:#fff; font-weight:bold; border:2px solid #007bff;"
+                                            </c:if>
+                                        >
+                                            <c:forEach var="show" items="${scheduleMap[date][time]}">
+                                                <c:set var="endMillis" value="${show.endTime.time}" />
+                                                <c:choose>
+                                                    <c:when test="${endMillis > now}">
+                                                        <div class="show-block upcoming">
+                                                            <b>${show.movieName}</b> <br> <span>(${show.auditoriumName})</span>
+                                                            <span>${show.startTime.toLocalDateTime().toLocalTime()} - ${show.endTime.toLocalDateTime().toLocalTime()}</span>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="show-block past">
+                                                            <b>${show.movieName}</b> <br> <span>(${show.auditoriumName})</span>
+                                                            <span>${show.startTime.toLocalDateTime().toLocalTime()} - ${show.endTime.toLocalDateTime().toLocalTime()}</span>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
                     </tbody>
                 </table>
             </div>

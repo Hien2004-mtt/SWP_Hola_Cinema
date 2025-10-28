@@ -126,7 +126,7 @@
             <!-- Schedule List -->
             <div class="table-container">
                 <div style="margin-bottom: 10px;">
-                    <h2 style="margin: 0 0 16px 0; text-align: center;"><i class="fas fa-list"></i> Danh Sách Lịch Chiếu</h2>
+                    <h2 style="margin: 0 0 16px 0; text-align: center;"><i class="fas fa-list"></i> Chỉnh Sửa Lịch Chiếu</h2>
                     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 28px; margin-bottom: 18px;">
                         <form method="get" action="manageSchedule" style="display: flex; gap: 8px; align-items: center; margin: 0;" onsubmit="saveScrollAndSubmitSearch(this); return false;">
                             <input type="text" name="search" placeholder="Tìm kiếm theo tên phim, phòng, trạng thái..." value="${param.search}" style="padding: 6px 14px; border-radius: 18px; border: 1px solid #ccc; min-width: 220px; outline: none; font-size: 15px;">
