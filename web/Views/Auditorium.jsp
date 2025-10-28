@@ -35,8 +35,8 @@
                 </a>
             </th>
             <th>
-                <a href="listAuditorium?sort=layout&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
-                    Mô tả phòng chiếu
+                <a href="listAuditorium?sort=total&dir=<%= ("layout".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
+                    tổng số ghế
                 </a>
             </th>
             <th>Hành động</th>
@@ -46,7 +46,7 @@
             <tr>
                 <td><%= a.getAuditoriumId() %></td>
                 <td><%= a.getName() %></td>
-                <td><%= a.getSeatLayoutMeta() %></td>
+                <td><%= a.getTotalSeat() %></td>
                 <td>
                     <!-- form sửa -->
                     <form method="get" action="updateAuditorium">
