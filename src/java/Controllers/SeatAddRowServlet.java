@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 public class SeatAddRowServlet extends HttpServlet {
 
     @Override
@@ -20,6 +19,18 @@ public class SeatAddRowServlet extends HttpServlet {
         try {
             int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
             String row = request.getParameter("row").trim().toUpperCase();
+
+            // Kiểm tra xem hàng có hợp lệ không (chỉ 1 ký tự A–Z)
+            if (!row.matches("^[A-Z]$")) {
+                request.setAttribute("error", " Hàng ghế không hợp lệ! Chỉ được nhập A–Z.");
+                SeatDAO dao = new SeatDAO();
+                List<Seat> updatedSeats = dao.getSeatByAuditoriumId(auditoriumId);
+                request.setAttribute("seats", updatedSeats);
+                request.setAttribute("auditoriumId", auditoriumId);
+                request.getRequestDispatcher("Views/SeatAddRow.jsp").forward(request, response);
+                return;
+            }
+
             int seatCount = Integer.parseInt(request.getParameter("seatCount"));
             String seatType = request.getParameter("seatType");
 

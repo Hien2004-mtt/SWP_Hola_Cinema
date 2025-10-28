@@ -18,26 +18,27 @@ public class SeatDeleteServlet extends HttpServlet {
             int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
             String row = request.getParameter("row").trim().toUpperCase();
             int number = Integer.parseInt(request.getParameter("number"));
-
+            String action = request.getParameter("action");
             SeatDAO dao = new SeatDAO();
-
+            //bam nut an ghe -> isShowing = 0. Bam nut khoi phuc --> isShowing = 1 
+            boolean isShowing = !"hide".equals(action);
             // ✅ Gọi hàm delete theo row + number + auditoriumId
-            boolean deleted = dao.updateSeatShowingStatus(auditoriumId, row, number);
+            boolean deleted = dao.updateSeatShowingStatus(auditoriumId, row, number,isShowing);
 
             if (deleted) {
-                // Xóa thành công -> reload lại danh sách ghế
-                response.sendRedirect("seatDetail?auditoriumId=" + auditoriumId);
+                request.getSession().setAttribute("message",
+                        (isShowing ? "✅ Đã khôi phục ghế " : "❌ Đã ẩn ghế ") + row + number);
             } else {
-                // Không tìm thấy ghế -> báo lỗi
-                request.setAttribute("error",
-                        " Không tìm thấy ghế " + row + number + " trong phòng:" + auditoriumId);
-                request.getRequestDispatcher("Views/SeatDetail.jsp").forward(request, response);
+                request.getSession().setAttribute("message",
+                        "⚠️ Không tìm thấy ghế " + row + number + " trong phòng " + auditoriumId);
             }
+
+            response.sendRedirect("seatDetail?auditoriumId=" + auditoriumId);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
             request.setAttribute("error", "⚠️ Dữ liệu nhập không hợp lệ! Vui lòng kiểm tra lại.");
             request.getRequestDispatcher("Views/SeatDetail.jsp").forward(request, response);
-        } 
+        }
     }
 }

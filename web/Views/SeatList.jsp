@@ -161,7 +161,7 @@
                         <tr>
                             <td>#${a.auditoriumId}</td>
                             <td>
-                                <a href="updateSeat?id=${a.auditoriumId}">
+                                <a href="seatEdit?auditoriumId=${a.auditoriumId}">
                                     <button class="btn btn-update">Update</button>
                                 </a>
                                 <a href="seatAdd?auditoriumId=${a.auditoriumId}">

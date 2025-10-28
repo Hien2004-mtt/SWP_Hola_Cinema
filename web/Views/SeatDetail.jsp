@@ -247,7 +247,7 @@
                 <div class="form-container">
                     <h3>⚙️ Cập nhật trạng thái ghế</h3>
 
-                    <form method="post" action="seatUpdateShowing">
+                    <form method="post" action="seatDelete">
                         <input type="hidden" name="auditoriumId" value="${auditoriumId}">
                         <label>Hàng (A–Z):</label>
                         <input type="text" name="row" maxlength="1" required>
