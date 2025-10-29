@@ -18,7 +18,7 @@ public class ListAuditoriumServlet extends HttpServlet {
             throws ServletException, IOException {
 
         AuditoriumDAO aud = new AuditoriumDAO();
-        List<Auditorium> list = aud.getAll();
+        List<Auditorium> list = aud.getAllForManager();
 
         // Tìm kiếm
         String q = request.getParameter("q");

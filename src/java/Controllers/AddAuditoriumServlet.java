@@ -19,14 +19,18 @@ public class AddAuditoriumServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-
+      try{
         String name = request.getParameter("name");
         int totalSeat = Integer.parseInt(request.getParameter("totalSeat"));
 
         AuditoriumDAO aud = new AuditoriumDAO();
         aud.insert(new Auditorium(0,name,totalSeat,false));
+        request.getSession().setAttribute("messageAuditorium", "Thêm phòng chiếu:"+name+",có tổng số ghế là:"+totalSeat);
        response.sendRedirect("listAuditorium");
-
+      }catch(Exception e){
+          e.printStackTrace();
+          request.getSession().setAttribute("messageAuditorium", "Đã xảy ra lỗi vui lòng thử lại");
+          response.sendRedirect("listAuditorium");
+      }
     }
 }

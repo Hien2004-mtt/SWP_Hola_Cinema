@@ -45,3 +45,17 @@ button:hover {
 .form-inline {
     margin-top: 20px;
 }
+ .status-active {
+                color: green;
+                font-weight: bold;
+                background: #e6ffee;
+                padding: 4px 10px;
+                border-radius: 6px;
+            }
+            .status-deleted {
+                color: red;
+                font-weight: bold;
+                background: #ffe6e6;
+                padding: 4px 10px;
+                border-radius: 6px;
+            }

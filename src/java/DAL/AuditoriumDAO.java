@@ -26,6 +26,26 @@ public class AuditoriumDAO {
         }
         return list;
     }
+    
+     public List<Auditorium> getAllForManager() {
+        List<Auditorium> list = new ArrayList<>();
+        String sql = "SELECT * FROM Auditorium";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new Auditorium(
+                        rs.getInt("auditorium_id"),
+                        rs.getString("name"),
+                        rs.getInt("total_seat"),
+                        rs.getBoolean("is_deleted")
+                ));
+            }
+            System.out.println("Load " + list.size() + " phòng chiếu.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public List<Auditorium> search(String keyword) {
         List<Auditorium> list = new ArrayList<>();
@@ -92,7 +112,17 @@ public class AuditoriumDAO {
             e.printStackTrace();
         }
     }
-
+    public boolean restoreAuditorium(int id){
+        String sql = "UPDATE Auditorium SET is_deleted = 0 WHERE auditorium_id=?";
+        try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);){
+           ps.setInt(1, id);
+            int t = ps.executeUpdate();
+            return t >0;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public Auditorium getById(int id) {
         String sql = "SELECT * FROM Auditorium WHERE auditorium_id = ?";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
@@ -126,5 +156,7 @@ public class AuditoriumDAO {
         }
         return "Không rõ phòng chiếu";
     }
+    
+        
 
 }

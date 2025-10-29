@@ -23,14 +23,20 @@ public class UpdateAuditoriumServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        try{
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         int totalSeat = Integer.parseInt(request.getParameter("totalSeat"));
 
         AuditoriumDAO aud = new AuditoriumDAO();
         aud.update(new Auditorium(id, name, totalSeat, false));
-System.out.println("Đã vào UpdateAuditoriumServlet");
+        request.getSession().setAttribute("messageAuditorium", "Đã sửa phòng:"+name+",có tổng số ghế là: "+totalSeat);
         response.sendRedirect("listAuditorium");
-    }
+        }catch(Exception e){
+            e.printStackTrace();
+            request.getSession().setAttribute("messageAuditorium", "Đã sảy ra lỗi vui lòng thử lại");
+            response.sendRedirect("listAuditorium");
+        }
+        
+        }
 }

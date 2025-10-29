@@ -19,7 +19,7 @@ public class SeatEditServlet extends HttpServlet {
         try {
             int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
             SeatDAO dao = new SeatDAO();
-            List<Seat> seats = dao.getSeatByAuditoriumId(auditoriumId);
+            List<Seat> seats = dao.getSeatByAuditoriumIdForManager(auditoriumId);
 
             request.setAttribute("auditoriumId", auditoriumId);
             request.setAttribute("seats", seats);

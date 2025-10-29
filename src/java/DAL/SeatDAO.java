@@ -16,27 +16,29 @@ import java.sql.*;
  */
 public class SeatDAO {
 
-    public List<Seat> getAllSeat() throws SQLException {
-        List<Seat> seat = new ArrayList<>();
-        String sql = "SELECT * FROM Seat";
-        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    public List<Seat> getSeatByAuditoriumIdForManager(int auditoriumId) {
+        List<Seat> list = new ArrayList<>();
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? ";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
+            ps.setInt(1, auditoriumId);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Seat s = new Seat();
                 s.setSeatId(rs.getInt("seat_id"));
-                s.setAuditoriumId(rs.getInt("auditorium_id"));
                 s.setRow(rs.getString("row"));
                 s.setNumber(rs.getInt("number"));
                 s.setSeatType(rs.getString("seat_type"));
                 s.setIsActivate(rs.getBoolean("is_active"));
-                seat.add(s);
-            }
+                s.setIsShowing(rs.getBoolean("is_showing"));
 
+                s.setAuditoriumId(auditoriumId);
+                list.add(s);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return seat;
+        return list;
     }
-
     public Seat getSeatByCode(String seatCode, int auditoriumId) {
         Seat seat = null;
         try {
@@ -145,7 +147,7 @@ public class SeatDAO {
 
     public List<Seat> getSeatByAuditoriumId(int auditoriumId) {
         List<Seat> list = new ArrayList<>();
-        String sql = "SELECT * FROM Seat WHERE auditorium_id = ?";
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? AND is_showing = 1";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
             ps.setInt(1, auditoriumId);
             ResultSet rs = ps.executeQuery();

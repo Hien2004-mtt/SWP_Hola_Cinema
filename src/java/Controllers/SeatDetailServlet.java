@@ -30,7 +30,7 @@ public class SeatDetailServlet extends HttpServlet {
             int auditoriumId = Integer.parseInt(auditoriumParam);
 
             SeatDAO seatDAO = new SeatDAO();
-            List<Seat> seats = seatDAO.getSeatByAuditoriumId(auditoriumId);
+            List<Seat> seats = seatDAO.getSeatByAuditoriumIdForManager(auditoriumId);
 
             if (seats == null || seats.isEmpty()) {
                 request.setAttribute("message", "⚠️ Phòng này hiện chưa có ghế nào.");
