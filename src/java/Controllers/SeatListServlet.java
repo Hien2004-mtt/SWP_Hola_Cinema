@@ -23,7 +23,7 @@ public class SeatListServlet extends HttpServlet {
             AuditoriumDAO audDAO = new AuditoriumDAO();
             List<Auditorium> allAuditoriums = audDAO.getAll();
 
-            // 🔍 Lấy query tìm kiếm
+            //  Lấy query tìm kiếm
             String q = request.getParameter("q");
             if (q != null && !q.trim().isEmpty()) {
                 String query = q.trim().toLowerCase();
@@ -37,7 +37,7 @@ public class SeatListServlet extends HttpServlet {
                 allAuditoriums = filtered;
             }
 
-            // 🔢 Phân trang (an toàn nếu người dùng nhập sai)
+            //  Phân trang (an toàn nếu người dùng nhập sai)
             int page = 1;
             try {
                 String pageParam = request.getParameter("page");
@@ -69,7 +69,7 @@ public class SeatListServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.getSession().setAttribute("messageSeat", "❌ Lỗi khi tải danh sách phòng chiếu!");
+            request.getSession().setAttribute("messageSeat", " Lỗi khi tải danh sách phòng chiếu!");
             response.sendRedirect("Views/Error.jsp");
         }
     }
