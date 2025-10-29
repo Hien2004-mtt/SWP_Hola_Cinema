@@ -1,44 +1,61 @@
 package Controllers;
 
 import DAL.SeatDAO;
-import java.io.IOException;
+import Models.Seat;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 public class SeatDeleteServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
+            SeatDAO dao = new SeatDAO();
+            List<Seat> seats = dao.getSeatByAuditoriumIdForManager(auditoriumId);
+
+            request.setAttribute("auditoriumId", auditoriumId);
+            request.setAttribute("seats", seats);
+            request.getRequestDispatcher("Views/SeatDelete.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Không thể tải dữ liệu phòng chiếu.");
+            request.getRequestDispatcher("Views/Error.jsp").forward(request, response);
+        }
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
             int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
             String row = request.getParameter("row").trim().toUpperCase();
             int number = Integer.parseInt(request.getParameter("number"));
-            String action = request.getParameter("action");
-            SeatDAO dao = new SeatDAO();
-            //bam nut an ghe -> isShowing = 0. Bam nut khoi phuc --> isShowing = 1 
-            boolean isShowing = !"hide".equals(action);
-            // ✅ Gọi hàm delete theo row + number + auditoriumId
-            boolean deleted = dao.updateSeatShowingStatus(auditoriumId, row, number,isShowing);
 
-            if (deleted) {
-                request.getSession().setAttribute("message",
-                        (isShowing ? "✅ Đã khôi phục ghế " : "❌ Đã ẩn ghế ") + row + number);
+            SeatDAO dao = new SeatDAO();
+            boolean hidden = dao.updateSeatShowingStatus(auditoriumId, row, number, false);
+
+            if (hidden) {
+                request.getSession().setAttribute("messageSeatDelete",
+                        "Ghế " + row + number + " đã được ẩn thành công.");
             } else {
-                request.getSession().setAttribute("message",
-                        "⚠️ Không tìm thấy ghế " + row + number + " trong phòng " + auditoriumId);
+                request.getSession().setAttribute("messageSeatDelete",
+                        " Không tìm thấy ghế " + row + number + " hoặc đã bị ẩn.");
             }
 
-            response.sendRedirect("seatDetail?auditoriumId=" + auditoriumId);
+            response.sendRedirect("seatDelete?auditoriumId=" + auditoriumId);
 
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "⚠️ Dữ liệu nhập không hợp lệ! Vui lòng kiểm tra lại.");
-            request.getRequestDispatcher("Views/SeatDetail.jsp").forward(request, response);
+            request.getSession().setAttribute("messageSeatDelete", "Đã xảy ra lỗi khi ẩn ghế.");
+            response.sendRedirect("seatDelete?auditoriumId=" + request.getParameter("auditoriumId"));
         }
     }
 }

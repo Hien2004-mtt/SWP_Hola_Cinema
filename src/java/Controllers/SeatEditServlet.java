@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+
 public class SeatEditServlet extends HttpServlet {
 
     @Override
@@ -43,45 +44,40 @@ public class SeatEditServlet extends HttpServlet {
 
             SeatDAO dao = new SeatDAO();
             boolean success = false;
-            StringBuilder msg = new StringBuilder();
+            String message = "";
 
-            // kiểm tra có hành động nào không
-            if ((seatType == null || seatType.isEmpty())) {
-                // nếu không có seatType thì chỉ khôi phục ghế
+            if (seatType == null || seatType.isEmpty()) {
+                //  Chỉ khôi phục ghế
                 boolean restored = dao.restoreSeat(auditoriumId, row, number);
                 if (restored) {
                     success = true;
-                    msg.append(" Đã khôi phục ghế ").append(row).append(number).append(".");
+                    message = " Đã khôi phục ghế " + row + number + ".";
                 } else {
-                    msg.append("Ghế ").append(row).append(number)
-                            .append(" không tồn tại hoặc đã hiển thị.");
+                    message = "️ Ghế " + row + number + " không tồn tại hoặc đã hiển thị.";
                 }
             } else {
-                // có seatType => đổi loại ghế + khôi phục nếu đang ẩn
-                boolean typeUpdated = dao.updateSeatType(auditoriumId, row, number, seatType);
+                //  Cập nhật loại ghế và khôi phục nếu đang ẩn
+                boolean updated = dao.updateSeatType(auditoriumId, row, number, seatType);
                 boolean restored = dao.restoreSeat(auditoriumId, row, number);
 
-                if (typeUpdated || restored) {
+                if (updated || restored) {
                     success = true;
-                    msg.append("Ghế ").append(row).append(number)
-                            .append(" đã được cập nhật loại ").append(seatType).append(" và hiển thị lại.");
+                    message = " Ghế " + row + number + " đã được cập nhật loại " + seatType ;
                 } else {
-                    msg.append("Không tìm thấy ghế để cập nhật.");
+                    message = "️ Không tồn tại ghế " + row + number;
                 }
             }
 
-            // gửi thông báo
-            if (success) {
-                request.getSession().setAttribute("message", msg.toString());
-            } else {
-                request.getSession().setAttribute("message", "Không có thay đổi nào được thực hiện.");
-            }
+            //  Lưu thông báo vào session
+            request.getSession().setAttribute("messageUpdate", message);
 
+            //  Quay lại trang cập nhật
             response.sendRedirect("seatEdit?auditoriumId=" + auditoriumId);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("Views/Error.jsp");
+            request.getSession().setAttribute("messageUpdate", " Đã xảy ra lỗi, vui lòng thử lại sau!");
+            response.sendRedirect("seatEdit?auditoriumId=" + request.getParameter("auditoriumId"));
         }
     }
 }

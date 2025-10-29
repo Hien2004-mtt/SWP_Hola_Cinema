@@ -11,22 +11,7 @@
         <meta charset="UTF-8">
         <title>Quản lý phòng chiếu</title>
         <link rel="stylesheet" href="css/Auditorium.css" />
-        <style>
-            .status-active {
-                color: green;
-                font-weight: bold;
-                background: #e6ffee;
-                padding: 4px 10px;
-                border-radius: 6px;
-            }
-            .status-deleted {
-                color: red;
-                font-weight: bold;
-                background: #ffe6e6;
-                padding: 4px 10px;
-                border-radius: 6px;
-            }
-        </style>
+        
     </head>
     <body>
         <h2>Danh sách phòng chiếu</h2>

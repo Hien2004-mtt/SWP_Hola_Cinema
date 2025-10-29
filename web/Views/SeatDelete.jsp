@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Cập nhật ghế phòng ${auditoriumId}</title>
+        <title>Ẩn ghế phòng ${auditoriumId}</title>
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
@@ -115,7 +115,7 @@
 
             .form-container {
                 width: 260px;
-                background: #f8f9fa;
+                background: #fff5f5;
                 padding: 25px;
                 border-radius: 8px;
                 box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -126,7 +126,7 @@
 
             .form-container h3 {
                 text-align: center;
-                color: #007bff;
+                color: #d00000;
                 margin-bottom: 15px;
             }
 
@@ -136,7 +136,7 @@
                 font-weight: bold;
             }
 
-            .form-container input, select {
+            .form-container input {
                 width: 100%;
                 padding: 8px;
                 margin-top: 5px;
@@ -153,15 +153,12 @@
                 cursor: pointer;
                 font-weight: bold;
                 transition: 0.2s;
-            }
-
-            .form-container button {
-                background: #007bff;
+                background: #dc3545;
                 color: white;
             }
 
             .form-container button:hover {
-                background: #0056b3;
+                background: #a71d2a;
             }
 
             .legend {
@@ -188,16 +185,15 @@
     <body>
         <div class="container">
             <a href="seatDetail?auditoriumId=${auditoriumId}" class="btn-back">⬅ Quay lại sơ đồ ghế</a>
-            <h2>🛠 Cập nhật ghế phòng ${auditoriumId}</h2>
+            <h2>🪑 Ẩn ghế trong phòng ${auditoriumId}</h2>
 
-            <c:if test="${not empty sessionScope.messageUpdate}">
-                <p class="message">${sessionScope.messageUpdate}</p>
-                <c:remove var="messageUpdate" scope="session"/>
+            <c:if test="${not empty sessionScope.messageSeatDelete}">
+                <p class="message">${sessionScope.messageSeatDelete}</p>
+                <c:remove var="messageSeatDelete" scope="session"/>
             </c:if>
 
-
             <div class="seat-layout">
-                <!-- Sơ đồ ghế -->
+                <!-- ✅ Sơ đồ ghế -->
                 <div class="seat-area">
                     <div class="screen">MÀN HÌNH</div>
                     <%
@@ -239,27 +235,18 @@
                     %>
                 </div>
 
-                <!-- Form cập nhật ghế -->
+                <!-- ✅ Form ẩn ghế -->
                 <div class="form-container">
-                    <h3>⚙️ Cập nhật ghế</h3>
-                    <form method="post" action="seatEdit">
+                    <h3> Ẩn ghế</h3>
+                    <form method="post" action="seatDelete">
                         <input type="hidden" name="auditoriumId" value="${auditoriumId}">
-
                         <label>Hàng (A–Z):</label>
                         <input type="text" name="row" maxlength="1" required>
 
                         <label>Số ghế:</label>
                         <input type="number" name="number" min="1" max="50" required>
 
-                        <label>Đổi loại ghế (tùy chọn):</label>
-                        <select name="seatType">
-                            <option value="">-- Giữ nguyên --</option>
-                            <option value="Regular">Regular</option>
-                            <option value="VIP">VIP</option>
-                            <option value="SweetBox">SweetBox</option>
-                        </select>
-
-                        <button type="submit">Cập nhật</button>
+                        <button type="submit" name="action" value="hide">Ẩn ghế</button>
                     </form>
                 </div>
             </div>

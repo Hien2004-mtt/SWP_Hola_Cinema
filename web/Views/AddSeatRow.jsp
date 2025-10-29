@@ -93,13 +93,14 @@
         <div class="container">
             <h2>➕ Thêm hàng ghế</h2>
 
-            <!-- ✅ Hiển thị thông báo -->
-            <c:if test="${not empty message}">
-                <div class="message success" id="alertBox">${message}</div>
-            </c:if>
 
-            <c:if test="${not empty error}">
-                <div class="message error" id="alertBox">${error}</div>
+            <!-- ✅ Hiển thị thông báo -->
+            <c:if test="${not empty sessionScope.messageSeat}">
+                <div style="background:#e6ffed; color:#0a602a; border:1px solid #37b34a;
+                     padding:10px; border-radius:6px; text-align:center; margin-bottom:15px;">
+                    ${sessionScope.messageSeat}
+                </div>
+                <c:remove var="messageSeat" scope="session"/>
             </c:if>
 
             <form action="seatAddRow" method="post">
