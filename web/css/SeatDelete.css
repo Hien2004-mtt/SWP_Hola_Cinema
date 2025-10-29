@@ -1,0 +1,185 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 29 thg 10, 2025, 21:58:29
+    Author     : Admin
+*/
+
+ 
+            body {
+                font-family: 'Poppins', sans-serif;
+                background-color: #f8f9fb;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                width: 95%;
+                margin: 40px auto;
+                background: #fff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+            }
+
+            .btn-back {
+                display: inline-block;
+                padding: 10px 16px;
+                background: #6c757d;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 6px;
+                margin-bottom: 20px;
+            }
+
+            .btn-back:hover {
+                background: #5a6268;
+            }
+
+            .screen {
+                text-align: center;
+                background: #ddd;
+                padding: 10px;
+                font-weight: bold;
+                margin-bottom: 30px;
+                border-radius: 6px;
+            }
+
+            .seat-layout {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 50px;
+            }
+
+            .seat-area {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .row-block {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 25px;
+            }
+
+            .row-label {
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 8px;
+            }
+
+            .row-seats {
+                display: grid;
+                grid-template-columns: repeat(12, 60px);
+                gap: 10px;
+                justify-content: center;
+            }
+
+            .seat {
+                width: 55px;
+                height: 55px;
+                line-height: 55px;
+                text-align: center;
+                border-radius: 6px;
+                color: #fff;
+                font-weight: bold;
+                font-size: 14px;
+                transition: all 0.2s ease;
+            }
+
+            .regular {
+                background-color: #28a745;
+            }
+            .vip {
+                background-color: gold;
+                color: black;
+            }
+            .sweetbox {
+                background-color: hotpink;
+            }
+            .hidden-seat {
+                background-color: #7a7a7a;
+                text-decoration: line-through;
+                opacity: 0.7;
+            }
+
+            .form-container {
+                width: 260px;
+                background: #fff5f5;
+                padding: 25px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                position: sticky;
+                top: 80px;
+                height: fit-content;
+            }
+
+            .form-container h3 {
+                text-align: center;
+                color: #d00000;
+                margin-bottom: 15px;
+            }
+
+            .form-container label {
+                display: block;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+
+            .form-container input {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .form-container button {
+                width: 100%;
+                margin-top: 15px;
+                padding: 10px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: 0.2s;
+                background: #dc3545;
+                color: white;
+            }
+
+            .form-container button:hover {
+                background: #a71d2a;
+            }
+
+            .legend {
+                text-align: center;
+                margin-top: 40px;
+            }
+
+            .legend span {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+                border-radius: 4px;
+            }
+
+            .message {
+                text-align: center;
+                color: green;
+                font-weight: bold;
+                margin: 10px 0;
+            }
+        

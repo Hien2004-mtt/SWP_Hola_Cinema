@@ -5,130 +5,14 @@
     <head>
         <meta charset="UTF-8">
         <title>Danh sách phòng chiếu</title>
-        <style>
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: #f8f9fb;
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                width: 80%;
-                margin: 50px auto;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 0 15px rgba(0,0,0,0.1);
-                padding: 30px;
-            }
-            h2 {
-                text-align: center;
-                color: #333;
-                margin-bottom: 30px;
-            }
-            .search-bar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-            .search-input {
-                display: flex;
-                align-items: center;
-                background: #f0f2f5;
-                border-radius: 25px;
-                padding: 5px 15px;
-                width: 250px;
-            }
-            .search-input input {
-                border: none;
-                background: none;
-                outline: none;
-                padding: 8px;
-                width: 100%;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 10px;
-            }
-            th, td {
-                text-align: center;
-                padding: 12px;
-                border-bottom: 1px solid #eee;
-            }
-            th {
-                background: #f1f3f6;
-                color: #333;
-            }
-            tr:hover {
-                background-color: #f8f9fb;
-            }
-            .btn {
-                border: none;
-                padding: 8px 14px;
-                border-radius: 6px;
-                font-size: 14px;
-                cursor: pointer;
-                margin: 0 3px;
-                transition: 0.2s;
-            }
-            .btn-update {
-                background: #007bff;
-                color: white;
-            }
-            .btn-update:hover {
-                background: #0056b3;
-            }
-            .btn-add {
-                background: #28a745;
-                color: white;
-            }
-            .btn-add:hover {
-                background: #1e7e34;
-            }
-            .btn-delete {
-                background: red;
-                color: white;
-            }
-            .btn-delete:hover {
-                background: #b80000;
-            }
-            .btn-detail {
-                background: #6c757d;
-                color: white;
-            }
-            .btn-detail:hover {
-                background: #495057;
-            }
-            .pagination {
-                display: flex;
-                justify-content: center;
-                margin-top: 25px;
-                gap: 8px;
-            }
-            .page-btn {
-                border: none;
-                background: #e9ecef;
-                padding: 6px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: 0.2s;
-            }
-            .page-btn.active {
-                background: #007bff;
-                color: white;
-            }
-            .page-btn:hover {
-                background: #d6d8db;
-            }
-        </style>
+         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/SeatList.css">
     </head>
     <body>
 
         <div class="container">
             <h2>Danh sách phòng chiếu</h2>
 
-            <!-- ✅ Form tìm kiếm -->
+            <!-- Form tìm kiếm -->
             <form method="get" action="seatList">
                 <div class="search-bar">
                     <div class="search-input">
@@ -171,7 +55,7 @@
                 </tbody>
             </table>
 
-            <!-- ✅ Phân trang (fix lỗi NumberFormatException) -->
+            <!-- Phân trang (fix lỗi NumberFormatException) -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">
                     <a href="seatList?page=${currentPage - 1}&q=${q}">

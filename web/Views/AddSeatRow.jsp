@@ -3,95 +3,13 @@
 <html>
     <head>
         <title>Thêm hàng ghế mới</title>
-        <style>
-            body {
-                font-family: 'Poppins', sans-serif;
-                background-color: #f9fafc;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddSeatRow.css">
 
-            .container {
-                background: #fff;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                width: 420px;
-            }
-
-            h2 {
-                text-align: center;
-                color: #333;
-                margin-bottom: 20px;
-            }
-
-            label {
-                display: block;
-                margin-top: 12px;
-                font-weight: 600;
-                color: #444;
-            }
-
-            input, select, button {
-                width: 100%;
-                padding: 8px;
-                margin-top: 6px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                font-size: 14px;
-            }
-
-            button {
-                background-color: #007bff;
-                color: #fff;
-                font-weight: bold;
-                margin-top: 15px;
-                cursor: pointer;
-                transition: 0.2s;
-            }
-
-            button:hover {
-                background-color: #0056b3;
-            }
-
-            .message {
-                padding: 10px;
-                border-radius: 6px;
-                margin-bottom: 15px;
-                text-align: center;
-                font-weight: bold;
-                animation: fadeIn 0.3s ease;
-            }
-
-            .success {
-                background: #e7f9ee;
-                color: #0b6b2f;
-                border: 1px solid #37b34a;
-            }
-
-            .error {
-                background: #ffe6e6;
-                color: #b50000;
-                border: 1px solid #ff4d4d;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-5px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        </style>
     </head>
     <body>
         <div class="container">
-            <h2>➕ Thêm hàng ghế</h2>
+            <h2> Thêm hàng ghế</h2>
+            <a href="seatList" class="btn-back">⬅ Quay lại danh sách phòng</a>
 
 
             <!-- ✅ Hiển thị thông báo -->
