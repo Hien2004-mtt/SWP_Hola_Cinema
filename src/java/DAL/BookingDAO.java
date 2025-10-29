@@ -2,7 +2,9 @@ package DAL;
 
 import Models.Booking;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -108,56 +110,209 @@ public class BookingDAO {
         return null;
     }
     public Map<String, Object> getBookingInfo(int bookingId) {
-        String sql = """
-            SELECT 
-                b.booking_id,
-                b.total_price,
-                b.status,
-                u.name AS customer_name,
-                u.email AS customer_email,
-                m.title AS movie_title,
-                sh.start_time,
-                sh.end_time,
-                au.name AS auditorium_name,
-                s.[row] + CAST(s.[number] AS VARCHAR) AS seat_code,
-                s.seat_type,
-                sh.base_price
-            FROM Booking b
-            JOIN Users u ON b.user_id = u.user_id
-            JOIN BookingItem bi ON b.booking_id = bi.booking_id
-            JOIN Seat s ON bi.seat_id = s.seat_id
-            JOIN Showtime sh ON bi.showtime_id = sh.showtime_id
-            JOIN Movie m ON sh.movie_id = m.movie_id
-            JOIN Auditorium au ON sh.auditorium_id = au.auditorium_id
-            WHERE b.booking_id = ?
-        """;
+    Map<String, Object> info = new HashMap<>();
 
-        Map<String, Object> info = new HashMap<>();
+    String sql = """
+        SELECT 
+            b.booking_id,
+            b.total_price,
+            b.status,
+            u.name AS customer_name,
+            u.email AS customer_email,
+            m.title AS movie_title,
+            a.name AS auditorium_name,
+            s.start_time,
+            s.end_time,
+            STRING_AGG(CONCAT(se.[row], se.[number]), ', ') AS seat_codes,
+            STRING_AGG(se.seat_type, ', ') AS seat_types
+        FROM Booking b
+        JOIN Users u ON b.user_id = u.user_id
+        JOIN Showtime s ON b.showtime_id = s.showtime_id
+        JOIN Movie m ON s.movie_id = m.movie_id
+        JOIN Auditorium a ON s.auditorium_id = a.auditorium_id
+        JOIN BookingItem bi ON b.booking_id = bi.booking_id
+        JOIN Seat se ON bi.seat_id = se.seat_id
+        WHERE b.booking_id = ?
+        GROUP BY 
+            b.booking_id, b.total_price, b.status, 
+            u.name, u.email, 
+            m.title, a.name, s.start_time, s.end_time
+    """;
 
-        try (
-                Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, bookingId);
-            ResultSet rs = ps.executeQuery();
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                info.put("booking_id", rs.getInt("booking_id"));
-                info.put("total_price", rs.getDouble("total_price"));
-                info.put("status", rs.getString("status"));
-                info.put("customer_name", rs.getString("customer_name"));
-                info.put("customer_email", rs.getString("customer_email"));
-                info.put("movie_title", rs.getString("movie_title"));
-                info.put("start_time", rs.getTimestamp("start_time"));
-                info.put("end_time", rs.getTimestamp("end_time"));
-                info.put("auditorium_name", rs.getString("auditorium_name"));
-                info.put("seat_code", rs.getString("seat_code"));
-                info.put("seat_type", rs.getString("seat_type"));
-                info.put("base_price", rs.getDouble("base_price"));
-            }
+        ps.setInt(1, bookingId);
+        ResultSet rs = ps.executeQuery();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (rs.next()) {
+            info.put("booking_id", rs.getInt("booking_id"));
+            info.put("total_price", rs.getDouble("total_price"));
+            info.put("status", rs.getString("status"));
+            info.put("customer_name", rs.getString("customer_name"));
+            info.put("customer_email", rs.getString("customer_email"));
+            info.put("movie_title", rs.getString("movie_title"));
+            info.put("auditorium_name", rs.getString("auditorium_name"));
+            info.put("start_time", rs.getTimestamp("start_time"));
+            info.put("end_time", rs.getTimestamp("end_time"));
+            info.put("seat_code", rs.getString("seat_codes"));
+            info.put("seat_type", rs.getString("seat_types"));
         }
 
-        return info;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return info;
+}
+    
+    public void updateBookingAfterVoucher(int bookingId, int voucherId, double discountedTotal) {
+        String sql = "UPDATE Booking SET voucher_id = ?, total_price = ? WHERE booking_id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, voucherId);
+            ps.setDouble(2, discountedTotal);
+            ps.setInt(3, bookingId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+       
+
+
+
+    // ================================================
+    // ✅ Các hàm bổ sung để BookingServlet hiển thị dữ liệu sang JSP
+    // ================================================
+
+    /** Lấy tên khách hàng */
+    public String getUserNameByBookingId(int bookingId) {
+        String sql = """
+            SELECT u.name
+            FROM Booking b
+            JOIN Users u ON b.user_id = u.user_id
+            WHERE b.booking_id = ?
+        """;
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("name");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /** Lấy tên phim */
+    public String getMovieTitleByBookingId(int bookingId) {
+        String sql = """
+            SELECT m.title
+            FROM Booking b
+            JOIN Showtime s ON b.showtime_id = s.showtime_id
+            JOIN Movie m ON s.movie_id = m.movie_id
+            WHERE b.booking_id = ?
+        """;
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("title");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /** Lấy tên phòng chiếu */
+    public String getAuditoriumNameByBookingId(int bookingId) {
+        String sql = """
+            SELECT a.name
+            FROM Booking b
+            JOIN Showtime s ON b.showtime_id = s.showtime_id
+            JOIN Auditorium a ON s.auditorium_id = a.auditorium_id
+            WHERE b.booking_id = ?
+        """;
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("name");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /** Lấy thời gian bắt đầu suất chiếu */
+    public Timestamp getShowtimeStartByBookingId(int bookingId) {
+        String sql = """
+            SELECT s.start_time
+            FROM Booking b
+            JOIN Showtime s ON b.showtime_id = s.showtime_id
+            WHERE b.booking_id = ?
+        """;
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getTimestamp("start_time");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /** Lấy danh sách ghế */
+    public List<String> getSeatCodesByBookingId(int bookingId) {
+        List<String> list = new ArrayList<>();
+        String sql = """
+            SELECT se.[row], se.[number]
+            FROM BookingItem bi
+            JOIN Seat se ON bi.seat_id = se.seat_id
+            WHERE bi.booking_id = ?
+        """;
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("row") + rs.getInt("number"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
+    // Lấy tổng tiền
+    public double getTotalPrice(int bookingId) {
+        String sql = "SELECT total_price FROM Booking WHERE booking_id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("total_price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public int getUserIdByBookingId(int bookingId) throws SQLException {
+    String sql = "SELECT user_id FROM Booking WHERE booking_id = ?";
+    try (Connection conn = DBContext.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, bookingId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("user_id");
+        }
+    }
+    return 0;
+}
 }

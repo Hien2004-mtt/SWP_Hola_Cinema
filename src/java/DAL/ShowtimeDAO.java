@@ -75,5 +75,34 @@ public class ShowtimeDAO {
         }
         return auditoriumId;
     }
+     public String getMovieTitleByShowtime(int showtimeId) {
+        String sql = "SELECT m.title FROM Showtime s JOIN Movie m ON s.movie_id = m.movie_id WHERE s.showtime_id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, showtimeId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("title");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    // 🟠 Lấy tên phòng chiếu (auditorium_name) theo showtime_id
+    public String getAuditoriumNameByShowtime(int showtimeId) {
+        String sql = "SELECT a.name FROM Showtime s JOIN Auditorium a ON s.auditorium_id = a.auditorium_id WHERE s.showtime_id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, showtimeId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

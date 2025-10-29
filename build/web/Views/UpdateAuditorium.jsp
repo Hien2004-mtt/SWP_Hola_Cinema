@@ -1,0 +1,30 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="Models.Auditorium" %>
+<%
+    Auditorium a = (Auditorium) request.getAttribute("auditorium");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa thông tin phòng chiếu</title>
+    <link rel="stylesheet" href="css/Auditorium.css">
+</head>
+<body>
+    <h2>Sửa thông tin phòng chiếu</h2>
+
+    <!-- Form gửi đến UpdateAuditoriumServlet -->
+    <form method="post" action="updateAuditorium">
+        <input type="hidden" name="id" value="<%= a.getAuditoriumId() %>">
+
+        <label for="name">Tên phòng:</label><br>
+        <input type="text" id="name" name="name" value="<%= a.getName() %>" required><br><br>
+
+        <label for="layout">Mô tả phòng chiếu:</label><br>
+        <input type="text" id="layout" name="layout" value="<%= a.getSeatLayoutMeta() %>" required><br><br>
+
+        <button type="submit">Lưu thay đổi</button>
+        <a href="listAuditorium">Hủy</a>
+    </form>
+</body>
+</html>

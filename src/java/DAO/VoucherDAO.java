@@ -15,8 +15,32 @@ public class VoucherDAO {
         this.conn = conn;
     }
 
-    //  Lấy voucher theo code, chỉ lấy khi đang active
+    /* ==========================================================
+    Hàm tự động cập nhật trạng thái voucher
+       ========================================================== */
+    private void autoUpdateVoucherStatus() throws SQLException {
+        String sql = """
+            UPDATE Voucher
+            SET isActive = CASE
+                WHEN GETDATE() < valid_from THEN 0                   -- ❌ Chưa đến ngày bắt đầu
+                WHEN GETDATE() > valid_to THEN 0                     -- ❌ Hết hạn
+                WHEN usage_limit <= 0 OR per_user_limit <= 0 THEN 0  -- ❌ Hết lượt sử dụng
+                WHEN GETDATE() BETWEEN valid_from AND valid_to 
+                     AND usage_limit > 0 AND per_user_limit > 0 THEN 1  -- ✅ Còn hiệu lực
+                ELSE isActive
+            END
+        """;
+        try (Statement st = conn.createStatement()) {
+            st.executeUpdate(sql);
+        }
+    }
+
+    /* ==========================================================
+       2️⃣ Lấy voucher theo code (chỉ active)
+       ========================================================== */
     public Voucher getVoucherByCode(String code) throws SQLException {
+        autoUpdateVoucherStatus();
+
         String sql = "SELECT * FROM Voucher WHERE code = ? AND isActive = 1";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, code);
@@ -28,39 +52,94 @@ public class VoucherDAO {
         return null;
     }
 
-    //  Lấy tất cả voucher (admin)
+    /* ==========================================================
+       3️⃣ Lấy tất cả voucher (admin)
+       ========================================================== */
     public List<Voucher> getAll() throws SQLException {
-    // 🧠 Tự động vô hiệu hóa nếu voucher đã hết hạn
-    String autoDeactivateSQL = """
-        UPDATE Voucher 
-        SET isActive = 0 
-        WHERE valid_to < GETDATE() AND isActive = 1
-    """;
-    try (Statement st = conn.createStatement()) {
-        st.executeUpdate(autoDeactivateSQL);
-    }
+        autoUpdateVoucherStatus();
 
-    List<Voucher> list = new ArrayList<>();
-    String sql = "SELECT * FROM Voucher ORDER BY voucher_id DESC";
-    try (Statement st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql)) {
-        while (rs.next()) {
-            list.add(mapVoucher(rs));
+        List<Voucher> list = new ArrayList<>();
+        String sql = "SELECT * FROM Voucher ORDER BY voucher_id DESC";
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                list.add(mapVoucher(rs));
+            }
         }
+        return list;
     }
-    return list;
-}
 
+    /* ==========================================================
+       4️⃣ Lấy danh sách voucher còn hiệu lực (khách hàng)
+       ========================================================== */
+    public List<Voucher> getActiveVouchers() throws SQLException {
+        autoUpdateVoucherStatus();
 
-    // Thêm voucher
+        List<Voucher> list = new ArrayList<>();
+        String sql = """
+            SELECT * FROM Voucher
+            WHERE isActive = 1
+              AND GETDATE() BETWEEN valid_from AND valid_to
+              AND usage_limit > 0
+              AND per_user_limit > 0
+            ORDER BY valid_to ASC
+        """;
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapVoucher(rs));
+            }
+        }
+        return list;
+    }
+
+    /* ==========================================================
+       5️⃣ Giảm usage_limit sau khi sử dụng
+       ========================================================== */
+    public void decreaseUsage(String code) throws SQLException {
+        String sql = """
+            UPDATE Voucher
+            SET usage_limit = usage_limit - 1 
+            WHERE code = ? AND usage_limit > 0
+        """;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, code);
+            ps.executeUpdate();
+        }
+
+        autoUpdateVoucherStatus();
+    }
+
+    /* ==========================================================
+       6️⃣ Lấy voucher theo ID (dùng cho edit / chi tiết)
+       ========================================================== */
+    public Voucher getById(int id) throws SQLException {
+        autoUpdateVoucherStatus();
+
+        String sql = "SELECT * FROM Voucher WHERE voucher_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapVoucher(rs);
+            }
+        }
+        return null;
+    }
+
+    /* ==========================================================
+       7️⃣ Thêm voucher mới
+       ========================================================== */
     public void insert(Voucher v) throws SQLException {
-        // Nếu code chưa có → tự sinh code ngẫu nhiên
+        autoUpdateVoucherStatus();
+
         if (v.getCode() == null || v.getCode().isEmpty()) {
             v.setCode(generateCode(10));
         }
 
-        String sql = "INSERT INTO Voucher (code, type, value, valid_from, valid_to, usage_limit, per_user_limit, isActive) "
-           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = """
+            INSERT INTO Voucher (code, type, value, valid_from, valid_to, usage_limit, per_user_limit, isActive)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, v.getCode());
@@ -73,9 +152,47 @@ public class VoucherDAO {
             ps.setBoolean(8, v.isIsActive());
             ps.executeUpdate();
         }
+
+        autoUpdateVoucherStatus();
     }
 
-    // Xóa mềm (vô hiệu hóa)
+    /* ==========================================================
+       8️⃣ Cập nhật voucher
+       ========================================================== */
+    public void update(int id, String type, double value, Date validFrom, Date validTo,
+                       int usageLimit, int perUserLimit) throws SQLException {
+
+        String sql = """
+            UPDATE Voucher 
+            SET type=?, value=?, valid_from=?, valid_to=?, usage_limit=?, per_user_limit=?,
+                isActive = CASE
+                    WHEN GETDATE() < ? OR GETDATE() > ? THEN 0
+                    WHEN ? <= 0 OR ? <= 0 THEN 0
+                    ELSE 1
+                END
+            WHERE voucher_id=?
+        """;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, type);
+            ps.setDouble(2, value);
+            ps.setDate(3, new java.sql.Date(validFrom.getTime()));
+            ps.setDate(4, new java.sql.Date(validTo.getTime()));
+            ps.setInt(5, usageLimit);
+            ps.setInt(6, perUserLimit);
+            ps.setDate(7, new java.sql.Date(validFrom.getTime()));
+            ps.setDate(8, new java.sql.Date(validTo.getTime()));
+            ps.setInt(9, usageLimit);
+            ps.setInt(10, perUserLimit);
+            ps.setInt(11, id);
+            ps.executeUpdate();
+        }
+
+        autoUpdateVoucherStatus();
+    }
+
+    /* ==========================================================
+      9️⃣ Xóa mềm (vô hiệu / kích hoạt thủ công)
+       ========================================================== */
     public void setActive(int id, boolean active) throws SQLException {
         String sql = "UPDATE Voucher SET isActive = ? WHERE voucher_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -85,31 +202,9 @@ public class VoucherDAO {
         }
     }
 
-    //  Giảm usageLimit khi voucher được dùng
-    public void decreaseUsage(String code) throws SQLException {
-    String sql = """
-        UPDATE Voucher 
-        SET usage_limit = usage_limit - 1 
-        WHERE code = ? AND usage_limit > 0
-    """;
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, code);
-        ps.executeUpdate();
-    }
-
-    //  Nếu usage_limit hoặc per_user_limit về 0 → vô hiệu
-    String check = """
-        UPDATE Voucher 
-        SET isActive = 0 
-        WHERE (usage_limit <= 0 OR per_user_limit <= 0)
-    """;
-    try (Statement st = conn.createStatement()) {
-        st.executeUpdate(check);
-    }
-}
-
-
-    //  Mapper helper
+    /* ==========================================================
+        Hàm tiện ích - Map result -> object
+       ========================================================== */
     private Voucher mapVoucher(ResultSet rs) throws SQLException {
         Voucher v = new Voucher();
         v.setVoucherId(rs.getInt("voucher_id"));
@@ -123,23 +218,24 @@ public class VoucherDAO {
         v.setIsActive(rs.getBoolean("isActive"));
         return v;
     }
-    
-    public  String generateCode(int length) throws SQLException {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    /* ==========================================================
+       1️⃣ Sinh code ngẫu nhiên không trùng
+       ========================================================== */
+    public String generateCode(int length) throws SQLException {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         String code;
-
         do {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < length; i++) {
                 sb.append(chars.charAt(random.nextInt(chars.length())));
             }
             code = sb.toString();
-        } while (isCodeExists(code)); //  sinh lại nếu trùng
-
+        } while (isCodeExists(code));
         return code;
     }
-    
+
     private boolean isCodeExists(String code) throws SQLException {
         String sql = "SELECT COUNT(*) FROM Voucher WHERE code = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -151,55 +247,40 @@ public class VoucherDAO {
         }
         return false;
     }
-    public Voucher getById(int id) throws SQLException {
-    String sql = "SELECT * FROM Voucher WHERE voucher_id = ?";
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, id);
+    public boolean canUserUseVoucher(String code, int userId) throws SQLException {
+    String sqlCheck = """
+        SELECT v.voucher_id, v.per_user_limit
+        FROM Voucher v
+        WHERE v.code = ? AND v.isActive = 1
+    """;
+    int voucherId = 0;
+    int perUserLimit = 1;
+
+    try (PreparedStatement ps = conn.prepareStatement(sqlCheck)) {
+        ps.setString(1, code);
         ResultSet rs = ps.executeQuery();
-        if (rs.next()) return mapVoucher(rs);
-    }
-    return null;
-}
-
-public void update(int id, String type, double value, Date validFrom, Date validTo, int usageLimit, int perUserLimit) throws SQLException {
-    String sql = """
-        UPDATE Voucher 
-        SET type=?, value=?, valid_from=?, valid_to=?, usage_limit=?, per_user_limit=?,
-            isActive = CASE 
-                WHEN ? < GETDATE() THEN 0      -- nếu vẫn quá hạn => tắt
-                ELSE 1                         -- nếu cập nhật lại ngày mới => bật
-            END
-        WHERE voucher_id=?
-    """;
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, type);
-        ps.setDouble(2, value);
-        ps.setDate(3, new java.sql.Date(validFrom.getTime()));
-        ps.setDate(4, new java.sql.Date(validTo.getTime()));
-        ps.setInt(5, usageLimit);
-        ps.setInt(6, perUserLimit);
-        ps.setDate(7, new java.sql.Date(validTo.getTime())); // kiểm tra ngày kết thúc
-        ps.setInt(8, id);
-        ps.executeUpdate();
-    }
-}
-public List<Voucher> getActiveVouchers() {
-    List<Voucher> list = new ArrayList<>();
-    String sql = """
-        SELECT * FROM Voucher
-        WHERE isActive = 1
-          AND GETDATE() BETWEEN valid_from AND valid_to
-        ORDER BY valid_to ASC
-    """;
-    try (PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            list.add(mapVoucher(rs));
+        if (!rs.next()) {
+            throw new SQLException("Voucher không tồn tại hoặc đã hết hạn.");
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        voucherId = rs.getInt("voucher_id");
+        perUserLimit = rs.getInt("per_user_limit");
     }
-    return list;
-}
 
+    //  Kiểm tra user đã dùng voucher này bao nhiêu lần
+    String sqlCount = """
+        SELECT COUNT(*) AS used_count
+        FROM Booking
+        WHERE user_id = ? AND voucher_id = ?
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sqlCount)) {
+        ps.setInt(1, userId);
+        ps.setInt(2, voucherId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int usedCount = rs.getInt("used_count");
+            return usedCount < perUserLimit;
+        }
+    }
+    return true;
+}
 }

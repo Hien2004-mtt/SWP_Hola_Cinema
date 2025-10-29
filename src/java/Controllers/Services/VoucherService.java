@@ -3,6 +3,7 @@ package Controllers.Services;
 import DAO.VoucherDAO;
 import Models.Voucher;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class VoucherService {
@@ -13,38 +14,23 @@ public class VoucherService {
         this.voucherDAO = new VoucherDAO(conn);
     }
 
-    /**
-     * Lấy voucher theo code
-     */
     public Voucher getVoucherByCode(String code) throws Exception {
-        return voucherDAO.getVoucherByCode(code);
+        if (code == null || code.trim().isEmpty()) {
+            throw new Exception("Vui lòng nhập mã voucher!");
+        }
+
+        Voucher voucher = voucherDAO.getVoucherByCode(code.trim());
+        if (voucher == null) {
+            throw new Exception("Voucher không tồn tại hoặc đã bị vô hiệu hóa!");
+        }
+        return voucher;
     }
 
-    /**
-     * Áp dụng voucher, có kiểm tra:
-     * - Trạng thái isActive
-     * - Thời hạn validFrom / validTo
-     * - usageLimit > 0
-     * Sau khi dùng, tự giảm usageLimit.
-     */
     public double applyVoucher(String code, double originalTotal) throws Exception {
-        Voucher voucher = voucherDAO.getVoucherByCode(code);
-
-        if (voucher == null)
-            throw new Exception(" Voucher không tồn tại hoặc đã bị xóa!");
-
-        if (!voucher.isIsActive())
-            throw new Exception("️ Voucher đã bị vô hiệu hóa!");
+        Voucher voucher = getVoucherByCode(code);
 
         Date now = new Date();
-        if (voucher.getValidFrom() != null && now.before(voucher.getValidFrom()))
-            throw new Exception("️ Voucher chưa đến thời gian sử dụng!");
-
-        if (voucher.getValidTo() != null && now.after(voucher.getValidTo()))
-            throw new Exception("️ Voucher đã hết hạn sử dụng!");
-
-        if (voucher.getUsageLimit() <= 0)
-            throw new Exception("️ Voucher đã hết lượt sử dụng!");
+        
 
         double discount = 0;
         switch (voucher.getType().toLowerCase()) {
@@ -55,14 +41,17 @@ public class VoucherService {
                 discount = voucher.getValue();
                 break;
             default:
-                throw new Exception(" Loại voucher không hợp lệ!");
+                throw new Exception("Loại voucher không hợp lệ!");
         }
 
-        double discountedTotal = originalTotal - discount;
-        if (discountedTotal < 0) discountedTotal = 0;
+        double discountedTotal = Math.max(0, originalTotal - discount);
 
-        // Giảm lượt sử dụng nếu thành công
-        voucherDAO.decreaseUsage(code);
+        try {
+            voucherDAO.decreaseUsage(code);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Lỗi khi cập nhật lượt sử dụng voucher!");
+        }
 
         return discountedTotal;
     }

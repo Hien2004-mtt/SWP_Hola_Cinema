@@ -15,17 +15,25 @@ public class HttpUtil {
      * @return response body
      */
     public static String execPostRequest(String url, String data) throws Exception {
-        HttpClient client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(5))
-                .build();
+    HttpClient client = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(5))
+            .build();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(data, StandardCharsets.UTF_8))
-                .build();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(data, StandardCharsets.UTF_8))
+            .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
-    }
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+    System.out.println("===== MoMo HTTP Request =====");
+    System.out.println(data);
+    System.out.println("===== MoMo HTTP Response =====");
+    System.out.println("Status: " + response.statusCode());
+    System.out.println("Body: " + response.body());
+
+    return response.body();
+}
+
 }

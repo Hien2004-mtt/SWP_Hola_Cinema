@@ -1,142 +1,3 @@
-//package Controllers;
-//
-//import DAL.BookingDAO;
-//import DAL.BookingItemDAO;
-//import DAL.SeatDAO;
-//import DAL.ShowtimeDAO;
-//import Models.Booking;
-//import Models.BookingItem;
-//import Models.Seat;
-//import Models.User;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import jakarta.servlet.http.HttpSession;
-//import java.util.Map;
-//
-///**
-// * BookingServlet: xử lý việc lưu đơn đặt vé và các ghế đã chọn
-// */
-//public class BookingServlet extends HttpServlet {
-//
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//
-//        //Lấy session hiện tại (để biết user đang đăng nhập)
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
-//
-//        // Nếu chưa login thì redirect về trang login
-//        if (user == null) {
-//            response.sendRedirect("login");
-//            return;
-//        }
-//
-//        // Lấy thông tin ghế và tổng tiền từ form confirmSeat.jsp
-//        String[] selectedSeats = request.getParameterValues("selectedSeats");
-////        System.out.println(">>> totalPrice param: " + request.getParameter("totalPrice"));
-////        System.out.println(">>> basePrice param: " + request.getParameter("basePrice"));
-//
-//        double basePrice = Double.parseDouble(request.getParameter("basePrice"));
-//        double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
-//        int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
-//
-//        if (selectedSeats == null || selectedSeats.length == 0) {
-//            request.setAttribute("message", "Bạn chưa chọn ghế nào!");
-//            request.getRequestDispatcher("Views/confirm.jsp").forward(request, response);
-//            return;
-//        }
-//
-//        //Tạo đối tượng BookingDAO để thêm booking mới
-//        BookingDAO bookingDAO = new BookingDAO();
-//        int bookingId = bookingDAO.addBooking(user.getUserId(), showtimeId, totalPrice);
-//
-//        // Nếu không tạo được booking
-//        if (bookingId == -1) {
-//            request.setAttribute("message", "Lỗi khi tạo đơn đặt vé. Vui lòng thử lại!");
-//            request.getRequestDispatcher("Views/confirm.jsp").forward(request, response);
-//            return;
-//        }
-//
-//        // Chuẩn bị danh sách BookingItem từ ghế đã chọn
-//        SeatDAO seatDAO = new SeatDAO();
-//        List<BookingItem> items = new ArrayList<>();
-//
-//        for (String seatCode : selectedSeats) {
-//            // Lấy auditoriumId từ Showtime
-//            ShowtimeDAO showtimeDAO = new ShowtimeDAO();
-//            int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
-//
-//            Seat s = seatDAO.getSeatByCode(seatCode, auditoriumId);
-//
-//            if (s == null) {
-//                continue;
-//            }
-//
-//            double seatPrice = basePrice;
-//            if (s.getSeatType().equalsIgnoreCase("VIP")) {
-//                seatPrice += 70000;
-//            } else if (s.getSeatType().equalsIgnoreCase("SweetBox")) {
-//                seatPrice += 100000;
-//            }
-//
-//            BookingItem item = new BookingItem();
-//            item.setBookingId(bookingId);
-//            item.setSeatId(s.getSeatId());
-//            item.setPrice(seatPrice);
-//            items.add(item);
-//        }
-//
-//        // Lưu tất cả các ghế vào bảng BookingItem
-//        BookingItemDAO itemDAO = new BookingItemDAO();
-//        itemDAO.addBookingItems(bookingId, showtimeId, items);// Tạo ra booking Item mới
-//        ShowtimeDAO showtimeDAO = new ShowtimeDAO();
-//        int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
-//
-//        for (String seatCode : selectedSeats) {
-//            // Khóa ghế sau khi chọn
-//            seatDAO.updateSeatStatusByCode(seatCode, false, auditoriumId);
-//        }
-//
-//        // Cập nhật session để hiển thị thông tin thành công
-//        session.setAttribute("bookingId", bookingId);
-//        session.setAttribute("bookedSeats", selectedSeats);
-//        session.setAttribute("totalPrice", totalPrice);
-////        response.getWriter().println("Total Price from form = " + request.getParameter("totalPrice"));
-//        //Nếu k thanh toán sau 10p thì booking tự động chuyển từ pending sang cancel
-//        session.setMaxInactiveInterval(10);
-//        new Thread(() -> {
-//            try {
-//                Thread.sleep(10000);//10phut
-//                BookingDAO bd = new BookingDAO();
-//                Booking b = bd.getBookingById(bookingId);
-//                if (b != null && b.getStatus().equalsIgnoreCase("pending")) {
-//                    bd.updateBookingStatus(bookingId, "cancelled");
-//                    BookingItemDAO it = new BookingItemDAO();
-//                    List<BookingItem> booked = it.getItemsByBookingId(bookingId);
-//                    SeatDAO sd = new SeatDAO();
-//                    for (BookingItem bi : booked) {
-//                        sd.updateSeatStatusById(bi.getSeatId(), true); // update trường is_active, chuyển từ 0 ---> 1, từ không thể chọn ---> có thể chọn
-//                    }
-//                    System.out.println("Vui lòng reload lại trang ");
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }).start();
-//        // Chuyển hướng sang trang thanh toán
-//        BookingDAO bdao = new BookingDAO();
-//Map<String, Object> info = bdao.getBookingInfo(bookingId);
-//request.setAttribute("bookingInfo", info);
-//request.getRequestDispatcher("Views/payment.jsp").forward(request, response);
-//}
-//}
-
 package Controllers;
 
 import DAL.BookingDAO;
@@ -148,6 +9,7 @@ import Models.BookingItem;
 import Models.Seat;
 import Models.User;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -161,13 +23,12 @@ public class BookingServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        // ✅ Nếu chưa login thì quay lại trang đăng nhập
         if (user == null) {
             response.sendRedirect("login");
             return;
         }
 
-        // ✅ Lấy dữ liệu từ form confirmSeat.jsp
+        // ====== LẤY DỮ LIỆU TỪ FORM ======
         String[] selectedSeats = request.getParameterValues("selectedSeats");
         double basePrice = Double.parseDouble(request.getParameter("basePrice"));
         double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
@@ -179,7 +40,7 @@ public class BookingServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Tạo booking mới
+        // ====== TẠO BOOKING ======
         BookingDAO bookingDAO = new BookingDAO();
         int bookingId = bookingDAO.addBooking(user.getUserId(), showtimeId, totalPrice);
 
@@ -189,7 +50,7 @@ public class BookingServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Tạo danh sách BookingItem từ ghế đã chọn
+        // ====== TẠO DANH SÁCH BOOKING ITEM ======
         SeatDAO seatDAO = new SeatDAO();
         ShowtimeDAO showtimeDAO = new ShowtimeDAO();
         int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
@@ -210,28 +71,25 @@ public class BookingServlet extends HttpServlet {
             items.add(item);
         }
 
-        // ✅ Lưu BookingItem
-        BookingItemDAO itemDAO = new BookingItemDAO();
-        itemDAO.addBookingItems(bookingId, showtimeId, items);
+        // ====== LƯU VÀO BOOKING ITEM ======
+        if (!items.isEmpty()) {
+            BookingItemDAO itemDAO = new BookingItemDAO();
+            itemDAO.addBookingItems(bookingId, showtimeId, items);
+        }
 
-        // ✅ Cập nhật trạng thái ghế -> không thể chọn
+        // ====== KHÓA GHẾ ======
         for (String seatCode : selectedSeats) {
             seatDAO.updateSeatStatusByCode(seatCode, false, auditoriumId);
         }
 
-        // ✅ Lưu session phục vụ cho trang kế tiếp
-        session.setAttribute("bookingId", bookingId);
-        session.setAttribute("bookedSeats", selectedSeats);
-        session.setAttribute("totalPrice", totalPrice);
-
-        // ✅ Nếu không thanh toán trong 10 phút => hủy booking
-        session.setMaxInactiveInterval(10);
+        // ====== TỰ HỦY SAU 10 PHÚT ======
+        session.setMaxInactiveInterval(10 * 60);
         new Thread(() -> {
             try {
-                Thread.sleep(10 * 60 * 1000); // 10 phút
+                Thread.sleep(10 * 60 * 1000);
                 BookingDAO bd = new BookingDAO();
                 Booking b = bd.getBookingById(bookingId);
-                if (b != null && "pending".equalsIgnoreCase(b.getStatus())) {
+                if (b != null && b.getStatus().equalsIgnoreCase("pending")) {
                     bd.updateBookingStatus(bookingId, "cancelled");
                     BookingItemDAO it = new BookingItemDAO();
                     List<BookingItem> booked = it.getItemsByBookingId(bookingId);
@@ -239,19 +97,36 @@ public class BookingServlet extends HttpServlet {
                     for (BookingItem bi : booked) {
                         sd.updateSeatStatusById(bi.getSeatId(), true);
                     }
-                    System.out.println("️ Booking #" + bookingId + " đã bị hủy do quá hạn thanh toán!");
+                    System.out.println("⚠️ Booking #" + bookingId + " bị hủy do quá hạn thanh toán!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
 
-        // ✅ Lấy thông tin booking thật từ DB để hiển thị sang payment.jsp
-        Map<String, Object> bookingInfo = bookingDAO.getBookingInfo(bookingId);
-        request.setAttribute("bookingInfo", bookingInfo);
+        // ====== CHUẨN BỊ THÔNG TIN HIỂN THỊ ======
+        String customerName = user.getName();
+        String movieTitle = new ShowtimeDAO().getMovieTitleByShowtime(showtimeId);
+        String auditoriumName = new ShowtimeDAO().getAuditoriumNameByShowtime(showtimeId);
+        Timestamp startTime = bookingDAO.getShowtimeStartByBookingId(bookingId);
 
-        // ✅ Chuyển hướng sang trang thanh toán (forward giữ nguyên dữ liệu)
+        // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
+        session.setAttribute("bookingId", bookingId);
+        session.setAttribute("bookedSeats", selectedSeats);
+        session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("customer_name", customerName);
+        session.setAttribute("movie_title", movieTitle);
+        session.setAttribute("auditorium_name", auditoriumName);
+        session.setAttribute("start_time", startTime);
+        
+        // ====== HIỂN THỊ PAYMENT ======
+        request.setAttribute("booking_id", bookingId);
+        request.setAttribute("customer_name", customerName);
+        request.setAttribute("movie_title", movieTitle);
+        request.setAttribute("auditorium_name", auditoriumName);
+        request.setAttribute("seat_code", selectedSeats);
+        request.setAttribute("start_time", startTime);
+        request.setAttribute("total_price", totalPrice);
         request.getRequestDispatcher("Views/payment.jsp").forward(request, response);
     }
 }
-

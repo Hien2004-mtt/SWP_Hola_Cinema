@@ -38,34 +38,34 @@ public class SeatDAO {
     }
 
     public Seat getSeatByCode(String seatCode, int auditoriumId) {
-        Seat seat = null;
-        try {
-            String row = seatCode.substring(0, 1); // Ví dụ: "A" từ "A10"
-            int number = Integer.parseInt(seatCode.substring(1)); // Ví dụ: 10
+    Seat seat = null;
+    try {
+        String row = seatCode.substring(0, 1).trim();
+        int number = Integer.parseInt(seatCode.substring(1));
 
-            String sql = "SELECT * FROM Seat WHERE row = ? AND number = ? AND auditorium_id = ?";
-            try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
-                ps.setString(1, row);
-                ps.setInt(2, number);
-                ps.setInt(3, auditoriumId);
+        String sql = "SELECT * FROM Seat WHERE [row] = ? AND [number] = ? AND auditorium_id = ?";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setString(1, row);
+            ps.setInt(2, number);
+            ps.setInt(3, auditoriumId);
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        seat = new Seat();
-                        seat.setSeatId(rs.getInt("seat_id"));
-                        seat.setAuditoriumId(rs.getInt("auditorium_id"));
-                        seat.setRow(rs.getString("row"));
-                        seat.setNumber(rs.getInt("number"));
-                        seat.setSeatType(rs.getString("seat_type"));
-                        seat.setIsActivate(rs.getBoolean("is_active"));
-                    }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    seat = new Seat();
+                    seat.setSeatId(rs.getInt("seat_id"));
+                    seat.setAuditoriumId(rs.getInt("auditorium_id"));
+                    seat.setRow(rs.getString("row"));
+                    seat.setNumber(rs.getInt("number"));
+                    seat.setSeatType(rs.getString("seat_type"));
+                    seat.setIsActivate(rs.getBoolean("is_active"));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return seat;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return seat;
+}
 
     public boolean updateSeatStatusById(int seatId, boolean isActive) { // set trường is_active theo id ghế
         String sql = "UPDATE Seat SET is_active = ? WHERE seat_id = ?";

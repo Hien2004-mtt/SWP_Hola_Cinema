@@ -40,6 +40,7 @@ public class VoucherServlet extends HttpServlet {
                     List<Voucher> activeVouchers = dao.getActiveVouchers();
                     req.setAttribute("list", activeVouchers);
                     req.getRequestDispatcher("/Views/listVoucher.jsp").forward(req, resp);
+                    return;
                 } else {
                     //  chặn các hành động khác
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
