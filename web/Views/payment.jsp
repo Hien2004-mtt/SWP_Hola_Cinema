@@ -60,11 +60,7 @@
     <!-- ✅ Form chọn phương thức thanh toán -->
     <form action="${pageContext.request.contextPath}/checkout" method="post" class="pay-form">
         <input type="hidden" name="bookingId" value="${bookingInfo.booking_id}" />
-        <%
-    // Tạo mã đặt vé ngắn gọn, 9 chữ số ngẫu nhiên
-    String orderId = String.valueOf((int)(Math.random() * 900000000) + 100000000);
-%>
-<input type="hidden" name="orderId" value="<%=orderId%>" />
+        <input type ="hidden" name ="extraData" value="${booking_id}" />
         <input type="hidden" name="orderInfo" value="Thanh toán vé HolaCinema - Booking #${bookingInfo.booking_id}" />
         <input type="hidden" name="amount"
        value="${discountedTotal != null ? discountedTotal : total_price}" />

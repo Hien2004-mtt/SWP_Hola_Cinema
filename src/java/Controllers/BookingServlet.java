@@ -97,7 +97,7 @@ public class BookingServlet extends HttpServlet {
                     for (BookingItem bi : booked) {
                         sd.updateSeatStatusById(bi.getSeatId(), true);
                     }
-                    System.out.println("⚠️ Booking #" + bookingId + " bị hủy do quá hạn thanh toán!");
+                    System.out.println("️ Booking #" + bookingId + " bị hủy do quá hạn thanh toán!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
