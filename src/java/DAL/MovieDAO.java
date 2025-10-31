@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAL;
 
 import Models.Movie;
@@ -9,57 +5,77 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author USER
- */
 public class MovieDAO {
 
+    /**
+     * Lấy thông tin chi tiết 1 phim (bao gồm đạo diễn)
+     */
     public Movie getMovieById(int id) {
-        String sql = "SELECT * FROM Movie WHERE movie_id = ?";
+        String sql = """
+            SELECT m.*, 
+                   d.name AS director_name, 
+                   d.bio AS director_bio, 
+                   d.photo_url AS director_photo
+            FROM Movie m
+            LEFT JOIN Director d ON m.director_id = d.director_id
+            WHERE m.movie_id = ?
+        """;
+
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                Movie m = new Movie();
-                m.setMovieId(rs.getInt("movie_id"));
-                m.setTitle(rs.getString("title"));
-                m.setDescription(rs.getString("description"));
-                m.setDurationMinutes(rs.getInt("duration_minutes"));
-                m.setLanguage(rs.getString("language"));
-                m.setReleaseDate(rs.getTimestamp("release_date"));
-                m.setRating(rs.getString("rating"));
-                m.setPosterUrl(rs.getString("poster_url"));
-                m.setDirectorId(rs.getInt("director_id"));
-
+                Movie m = extractMovie(rs);
+                // Gán thêm thông tin đạo diễn
+                m.setDirectorName(rs.getString("director_name"));
+                m.setDirectorBio(rs.getString("director_bio"));
+                m.setDirectorPhoto(rs.getString("director_photo"));
                 return m;
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    // ✅ Lấy danh sách phim đang chiếu
+    /**
+     * Lấy danh sách phim đang chiếu
+     */
     public List<Movie> getNowShowingMovies() {
         return getMoviesByStatus("now showing");
     }
 
+    /**
+     * Lấy danh sách phim sắp chiếu
+     */
     public List<Movie> getComingSoonMovies() {
         return getMoviesByStatus("coming soon");
     }
-    // ✅ Lấy phim theo trạng thái (tái sử dụng code)
 
+    /**
+     * Hàm chung lấy danh sách phim theo trạng thái
+     */
     private List<Movie> getMoviesByStatus(String status) {
         List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie WHERE status = ?";
+        String sql = """
+            SELECT m.*, 
+                   d.name AS director_name
+            FROM Movie m
+            LEFT JOIN Director d ON m.director_id = d.director_id
+            WHERE m.status = ?
+            ORDER BY m.release_date DESC
+        """;
+
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, status);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractMovie(rs));
-                }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
             }
 
         } catch (SQLException e) {
@@ -67,8 +83,10 @@ public class MovieDAO {
         }
         return list;
     }
-    // ✅ Hàm phụ để chuyển ResultSet → Movie Object
 
+    /**
+     * Hàm hỗ trợ: tạo đối tượng Movie từ ResultSet
+     */
     private Movie extractMovie(ResultSet rs) throws SQLException {
         Movie m = new Movie();
         m.setMovieId(rs.getInt("movie_id"));
@@ -84,33 +102,55 @@ public class MovieDAO {
         return m;
     }
 
-    public static void main(String[] args) {
-        MovieDAO dao = new MovieDAO();
-
-        System.out.println("=== TEST: NOW SHOWING MOVIES ===");
-        for (Movie m : dao.getNowShowingMovies()) {
-            System.out.println(m.getMovieId() + " | " + m.getTitle() + " | " + m.getStatus());
-        }
-
-        System.out.println("\n=== TEST: COMING SOON MOVIES ===");
-        for (Movie m : dao.getComingSoonMovies()) {
-            System.out.println(m.getMovieId() + " | " + m.getTitle() + " | " + m.getStatus());
-        }
-
-        System.out.println("\n=== TEST: ALL MOVIES ===");
-        for (Movie m : dao.getAllMovies()) {
-            System.out.println(m.getMovieId() + " | " + m.getTitle() + " | " + m.getStatus());
-        }
-    }
-    // ✅ Lấy danh sách tất cả phim
-
+    /**
+     * Lấy toàn bộ danh sách phim (dành cho admin hoặc quản lý)
+     */
     public List<Movie> getAllMovies() {
         List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie";
+        String sql = """
+            SELECT m.*, 
+                   d.name AS director_name
+            FROM Movie m
+            LEFT JOIN Director d ON m.director_id = d.director_id
+            ORDER BY m.movie_id DESC
+        """;
+
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                list.add(extractMovie(rs));
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Tìm kiếm phim theo từ khóa (tên phim)
+     */
+    public List<Movie> searchMoviesByTitle(String keyword) {
+        List<Movie> list = new ArrayList<>();
+        String sql = """
+        SELECT m.*, d.name AS director_name
+        FROM Movie m
+        LEFT JOIN Director d ON m.director_id = d.director_id
+        WHERE m.title LIKE ?
+        ORDER BY m.release_date DESC
+    """;
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + keyword + "%"); // tìm gần đúng
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
             }
 
         } catch (SQLException e) {

@@ -2,6 +2,7 @@
  * Controller: Hiển thị trang chủ (Home Page)
  * - Nếu chưa login: vẫn xem được danh sách phim
  * - Nếu đã login: hiển thị thêm tên người dùng
+ * - Hỗ trợ tìm kiếm phim theo tên (param ?q=)
  */
 package Controllers;
 
@@ -25,21 +26,27 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 🔹 Lấy danh sách phim
-        List<Movie> nowShowing = movieDAO.getNowShowingMovies();
-        List<Movie> comingSoon = movieDAO.getComingSoonMovies();
+        String keyword = request.getParameter("q");
+        List<Movie> nowShowing;
+        List<Movie> comingSoon;
 
-        // 🔹 Gửi dữ liệu sang JSP
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            nowShowing = movieDAO.searchMoviesByTitle(keyword.trim());
+            comingSoon = null; 
+            request.setAttribute("searchKeyword", keyword);
+        } else {
+            nowShowing = movieDAO.getNowShowingMovies();
+            comingSoon = movieDAO.getComingSoonMovies();
+        }
+
         request.setAttribute("moviesNow", nowShowing);
         request.setAttribute("moviesComing", comingSoon);
 
-        // 🔹 Kiểm tra session (để hiển thị phần user nếu đã login)
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             request.setAttribute("loggedUser", session.getAttribute("user"));
         }
 
-        // 🔹 Chuyển hướng sang trang JSP view
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 }
