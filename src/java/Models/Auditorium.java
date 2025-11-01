@@ -11,19 +11,20 @@ package Models;
 public class Auditorium {
     private int auditoriumId;
     private String name;
-    private String seatLayoutMeta;
+    private int totalSeat;
     private boolean isDeleted; //1 da bi xoa ---- 0 chua bi xoa
 
     public Auditorium() {
     }
 
-    public Auditorium(int auditoriumId, String name, String seatLayoutMeta, boolean isDeleted) {
+    public Auditorium(int auditoriumId, String name, int totalSeat, boolean isDeleted) {
         this.auditoriumId = auditoriumId;
         this.name = name;
-        this.seatLayoutMeta = seatLayoutMeta;
+        this.totalSeat = totalSeat;
         this.isDeleted = isDeleted;
     }
 
+   
     public boolean isIsDeleted() {
         return isDeleted;
     }
@@ -48,13 +49,15 @@ public class Auditorium {
         this.name = name;
     }
 
-    public String getSeatLayoutMeta() {
-        return seatLayoutMeta;
+    public int getTotalSeat() {
+        return totalSeat;
     }
 
-    public void setSeatLayoutMeta(String seatLayoutMeta) {
-        this.seatLayoutMeta = seatLayoutMeta;
+    public void setTotalSeat(int totalSeat) {
+        this.totalSeat = totalSeat;
     }
+
+   
     
            
 }

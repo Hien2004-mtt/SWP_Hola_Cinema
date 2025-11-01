@@ -55,8 +55,20 @@ public class AuthorizationFilter implements Filter {
             System.out.println(role);
 
         }
+        if (path.contains("seatList")
+                || path.contains("seatAddRowForm")
+                || path.contains("seatEdit")
+                || path.contains("seatDelete")) {
 
+            if (role != 1) {
+                request.getRequestDispatcher("Views/Unauthorized.jsp").forward(request, response);
+                return;
+            }
+            System.out.println(role);
+
+        }
         // ✅ Cho phép đi tiếp nếu hợp lệ
         chain.doFilter(req, res);
     }
 }
+

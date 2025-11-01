@@ -2,7 +2,7 @@ let selectedCount = 0;
 let selectedType = null;
 let totalPrice = 0;
 
-// Cập nhật danh sách ghế đã chọn
+// 🟢 Cập nhật danh sách ghế đã chọn
 function updateSelectedSeatsText() {
     const selected = document.querySelectorAll('input[name="selectedSeats"]:checked');
     const seatCodes = Array.from(selected).map(cb => cb.value);
@@ -10,11 +10,12 @@ function updateSelectedSeatsText() {
             seatCodes.length > 0 ? seatCodes.join(", ") : "Chưa chọn";
 }
 
-// Xử lý click ghế
+// 🟢 Xử lý khi click vào ghế
 function toggleSeat(seatCode, checkboxId, divId, seatType) {
     const checkbox = document.getElementById(checkboxId);
     const div = document.getElementById(divId);
-    const basePriceInput = document.getElementById("basePrice");
+    const basePriceInput = document.getElementById("basePriceJS");
+
     if (!checkbox || !div || !basePriceInput)
         return;
 
@@ -22,27 +23,25 @@ function toggleSeat(seatCode, checkboxId, divId, seatType) {
     if (isNaN(basePrice))
         return;
 
-    // Nếu ghế bị vô hiệu → bỏ qua
     if (checkbox.disabled)
-        return;
+        return; // Không chọn được ghế bị khóa
 
     const isSelecting = !checkbox.checked;
     let seatPrice = basePrice;
 
-    // Cộng thêm theo loại ghế
+    // Cộng thêm giá theo loại ghế
     if (seatType.toLowerCase() === "vip")
         seatPrice += 70000;
     else if (seatType.toLowerCase() === "sweetbox")
         seatPrice += 100000;
 
-    // 🟢 Khi người dùng chọn thêm ghế
+    // 🟢 Khi người dùng CHỌN ghế
     if (isSelecting) {
         if (selectedCount >= 8) {
             alert("Bạn chỉ được chọn tối đa 8 ghế.");
             return;
         }
 
-        // 🟢 Kiểm tra xem loại ghế có trùng không
         if (selectedType && selectedType !== seatType) {
             alert("Bạn chỉ được chọn ghế cùng loại: " + selectedType);
             return;
@@ -51,17 +50,16 @@ function toggleSeat(seatCode, checkboxId, divId, seatType) {
         checkbox.checked = true;
         div.classList.add("selected");
         selectedCount++;
-        selectedType = seatType; // gán loại ghế khi chọn
+        selectedType = seatType;
         totalPrice += seatPrice;
     }
-    // 🔴 Khi người dùng bỏ chọn ghế
+    // 🔴 Khi người dùng BỎ CHỌN ghế
     else {
         checkbox.checked = false;
         div.classList.remove("selected");
         selectedCount--;
         totalPrice -= seatPrice;
 
-        // Nếu không còn ghế nào được chọn → reset loại ghế
         if (selectedCount === 0) {
             selectedType = null;
         }
@@ -70,7 +68,7 @@ function toggleSeat(seatCode, checkboxId, divId, seatType) {
     updateUI();
 }
 
-// 🟢 Hàm cập nhật hiển thị tổng tiền + loại ghế + danh sách ghế
+// 🟢 Cập nhật giao diện hiển thị tổng tiền + loại ghế + danh sách
 function updateUI() {
     const totalDisplay = document.getElementById("totalPrice");
     const totalInput = document.getElementById("totalPriceInput");
@@ -78,18 +76,35 @@ function updateUI() {
 
     totalDisplay.innerText = totalPrice.toLocaleString() + " VND";
     totalInput.value = totalPrice;
-
-    // Cập nhật loại ghế hiển thị
     seatTypeDisplay.innerText = selectedType ? selectedType : "Chưa chọn";
 
     updateSelectedSeatsText();
 }
 
-// 🟢 Kiểm tra trước khi submit
+// 🟢 Kiểm tra trước khi submit form
 function validateSelection() {
-    if (selectedCount === 0) {
+    const selected = Array.from(document.querySelectorAll('input[name="selectedSeats"]:checked'));
+    if (selected.length === 0) {
         alert("Bạn chưa chọn ghế nào.");
         return false;
+    }
+
+    // 👉 Gom theo hàng
+    const row = selected[0].value.charAt(0);
+    const numbers = selected.map(s => parseInt(s.value.substring(1))).sort((a, b) => a - b);
+
+    // Kiểm tra cùng hàng
+    if (!selected.every(s => s.value.charAt(0) === row)) {
+        alert("Vui lòng chọn các ghế trong cùng một hàng!");
+        return false;
+    }
+
+    // Kiểm tra liền kề nhau
+    for (let i = 1; i < numbers.length; i++) {
+        if (numbers[i] - numbers[i - 1] !== 1) {
+            alert("Vui lòng chọn các ghế LIỀN KỀ nhau (ví dụ: " + row + numbers[0] + ", " + row + (numbers[0] + 1) + ")!");
+            return false;
+        }
     }
 
     const totalInput = document.getElementById("totalPriceInput");

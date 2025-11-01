@@ -1,32 +1,76 @@
 package Controllers;
 
 import DAL.AuditoriumDAO;
-import DAL.SeatDAO;
 import Models.Auditorium;
-import Models.Seat;
-import java.io.IOException;
-import java.util.List;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SeatListServlet extends HttpServlet {
+
+    private static final int PAGE_SIZE = 5; // Hiển thị 5 phòng mỗi trang
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String auditoriumParam = request.getParameter("auditoriumId");
-
-        // 🏠 Nếu KHÔNG có auditoriumId → hiển thị danh sách phòng chiếu
-        if (auditoriumParam == null || auditoriumParam.isEmpty()) {
+        try {
             AuditoriumDAO audDAO = new AuditoriumDAO();
-            List<Auditorium> auditoriums = audDAO.getAll();
+            List<Auditorium> allAuditoriums = audDAO.getAll();
 
-            request.setAttribute("auditoriums", auditoriums);
+            //  Lấy query tìm kiếm
+            String q = request.getParameter("q");
+            if (q != null && !q.trim().isEmpty()) {
+                String query = q.trim().toLowerCase();
+                List<Auditorium> filtered = new ArrayList<>();
+                for (Auditorium a : allAuditoriums) {
+                    if (String.valueOf(a.getAuditoriumId()).contains(query)
+                            || (a.getName() != null && a.getName().toLowerCase().contains(query))) {
+                        filtered.add(a);
+                    }
+                }
+                allAuditoriums = filtered;
+            }
+
+            //  Phân trang (an toàn nếu người dùng nhập sai)
+            int page = 1;
+            try {
+                String pageParam = request.getParameter("page");
+                if (pageParam != null && !pageParam.isEmpty()) {
+                    page = Integer.parseInt(pageParam);
+                }
+            } catch (NumberFormatException e) {
+                page = 1; // reset về trang 1 nếu có lỗi
+            }
+
+            int totalAuditoriums = allAuditoriums.size();
+            int totalPages = (int) Math.ceil((double) totalAuditoriums / PAGE_SIZE);
+
+            int start = (page - 1) * PAGE_SIZE;
+            int end = Math.min(start + PAGE_SIZE, totalAuditoriums);
+            List<Auditorium> pageAuditoriums = new ArrayList<>();
+
+            if (totalAuditoriums > 0 && start < totalAuditoriums) {
+                pageAuditoriums = allAuditoriums.subList(start, end);
+            }
+
+            //  Gửi dữ liệu sang JSP
+            request.setAttribute("auditoriums", pageAuditoriums);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("q", q == null ? "" : q);
+
             request.getRequestDispatcher("Views/SeatList.jsp").forward(request, response);
-            return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("messageSeat", " Lỗi khi tải danh sách phòng chiếu!");
+            response.sendRedirect("Views/Error.jsp");
         }
     }
 }

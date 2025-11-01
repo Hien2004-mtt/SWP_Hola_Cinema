@@ -16,27 +16,29 @@ import java.sql.*;
  */
 public class SeatDAO {
 
-    public List<Seat> getAllSeat() throws SQLException {
-        List<Seat> seat = new ArrayList<>();
-        String sql = "SELECT * FROM Seat";
-        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    public List<Seat> getSeatByAuditoriumIdForManager(int auditoriumId) {
+        List<Seat> list = new ArrayList<>();
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? ";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
+            ps.setInt(1, auditoriumId);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Seat s = new Seat();
                 s.setSeatId(rs.getInt("seat_id"));
-                s.setAuditoriumId(rs.getInt("auditorium_id"));
                 s.setRow(rs.getString("row"));
                 s.setNumber(rs.getInt("number"));
                 s.setSeatType(rs.getString("seat_type"));
                 s.setIsActivate(rs.getBoolean("is_active"));
-                seat.add(s);
-            }
+                s.setIsShowing(rs.getBoolean("is_showing"));
 
+                s.setAuditoriumId(auditoriumId);
+                list.add(s);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return seat;
+        return list;
     }
-
     public Seat getSeatByCode(String seatCode, int auditoriumId) {
         Seat seat = null;
         try {
@@ -143,21 +145,9 @@ public class SeatDAO {
         return false;
     }
 
-    public boolean deleteSeat(int seatId) {
-        String sql = "UPDATE Seat SET is_active = 0 WHERE seat_id =?";
-        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
-            ps.setInt(1, seatId);
-            return ps.executeUpdate() > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public List<Seat> getSeatByAuditoriumId(int auditoriumId) {
         List<Seat> list = new ArrayList<>();
-        String sql = "SELECT * FROM Seat WHERE auditorium_id = ?";
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? AND is_showing = 1";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);) {
             ps.setInt(1, auditoriumId);
             ResultSet rs = ps.executeQuery();
@@ -168,6 +158,8 @@ public class SeatDAO {
                 s.setNumber(rs.getInt("number"));
                 s.setSeatType(rs.getString("seat_type"));
                 s.setIsActivate(rs.getBoolean("is_active"));
+                s.setIsShowing(rs.getBoolean("is_showing"));
+
                 s.setAuditoriumId(auditoriumId);
                 list.add(s);
             }
@@ -200,4 +192,93 @@ public class SeatDAO {
         }
         return null;
     }
+
+    public List<Seat> getSeatByRow(int auditoriumId, String row) {
+        List<Seat> list = new ArrayList<>();
+        String sql = "SELECT * FROM Seat WHERE auditorium_id = ? AND row = ? ORDER BY number";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Seat s = new Seat();
+                s.setSeatId(rs.getInt("seat_id"));
+                s.setAuditoriumId(rs.getInt("auditorium_id"));
+                s.setRow(rs.getString("row"));
+                s.setNumber(rs.getInt("number"));
+                s.setSeatType(rs.getString("seat_type"));
+                s.setIsActivate(rs.getBoolean("is_active"));
+                s.setIsShowing(rs.getBoolean("is_showing"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean isSeatExists(int auditoriumId, String row, int number) {
+        String sql = "SELECT 1 FROM Seat WHERE auditorium_id = ? AND row = ? AND number = ?";
+        try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ps.setInt(3, number);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateSeatShowingStatus(int auditoriumId, String row, int number, boolean isShowing) {
+        String sql = "UPDATE Seat SET is_showing = ? WHERE auditorium_id = ? AND [row] = ? AND [number] = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, isShowing);
+            ps.setInt(2, auditoriumId);
+            ps.setString(3, row);
+            ps.setInt(4, number);
+
+            int affected = ps.executeUpdate();
+            return affected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean restoreSeat(int auditoriumId, String row, int number) {
+        String sql = "UPDATE Seat SET is_showing = 1 WHERE auditorium_id = ? AND [row] = ? AND [number] = ? AND is_showing = 0";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, auditoriumId);
+            ps.setString(2, row);
+            ps.setInt(3, number);
+
+            return ps.executeUpdate() > 0; // trả về true nếu có ghế được cập nhật
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    // Cập nhật loại ghế
+
+    public boolean updateSeatType(int auditoriumId, String row, int number, String newType) {
+        String sql = "UPDATE Seat SET seat_type = ? WHERE auditorium_id = ? AND [row] = ? AND [number] = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, newType);
+            ps.setInt(2, auditoriumId);
+            ps.setString(3, row);
+            ps.setInt(4, number);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
