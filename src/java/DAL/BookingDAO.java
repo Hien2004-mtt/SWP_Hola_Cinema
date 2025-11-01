@@ -130,8 +130,8 @@ public class BookingDAO {
         JOIN Showtime s ON b.showtime_id = s.showtime_id
         JOIN Movie m ON s.movie_id = m.movie_id
         JOIN Auditorium a ON s.auditorium_id = a.auditorium_id
-        JOIN BookingItem bi ON b.booking_id = bi.booking_id
-        JOIN Seat se ON bi.seat_id = se.seat_id
+        LEFT JOIN BookingItem bi ON b.booking_id = bi.booking_id
+        LEFT JOIN Seat se ON bi.seat_id = se.seat_id
         WHERE b.booking_id = ?
         GROUP BY 
             b.booking_id, b.total_price, b.status, 

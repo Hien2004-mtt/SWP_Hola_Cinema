@@ -61,7 +61,7 @@ public class VNPayReturnServlet extends HttpServlet {
             // ✅ Sinh nội dung QR code
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
             String qrText =
-                    "🎫 Vé xem phim HolaCinema\n" +
+                    " Vé xem phim HolaCinema\n" +
                     "-----------------------------\n" +
                     "Mã đặt vé: " + bookingId + "\n" +
                     "Khách hàng: " + customerName + "\n" +
@@ -88,7 +88,7 @@ public class VNPayReturnServlet extends HttpServlet {
 
             System.out.println("✅ QR code saved: " + qrPath);
 
-            // ✅ Lưu vào bảng Payment
+            //  Lưu vào bảng Payment
             Payment payment = new Payment();
             payment.setBookingId(bookingId);
             payment.setAmount(total);
@@ -101,7 +101,7 @@ public class VNPayReturnServlet extends HttpServlet {
 
             // ✅ Gửi email có QR code (nếu có email)
             if (customerEmail != null && !customerEmail.isEmpty()) {
-                String subject = "🎬 Vé xem phim HolaCinema #" + bookingId;
+                String subject = " Vé xem phim HolaCinema #" + bookingId;
                 String body =
                         "Xin chào " + customerName + ",\n\n" +
                         "Cảm ơn bạn đã thanh toán thành công vé xem phim tại HolaCinema!\n\n" +
@@ -115,7 +115,7 @@ public class VNPayReturnServlet extends HttpServlet {
                         "Trân trọng,\nHolaCinema Center";
 
                 EmailUtil.sendEmailWithQRCode(customerEmail, subject, body, qrPath.toString());
-                System.out.println("📧 Email sent to " + customerEmail);
+                System.out.println(" Email sent to " + customerEmail);
             }
 
             // ✅ Điều hướng sang trang success

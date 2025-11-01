@@ -13,7 +13,7 @@ public class BookingItemDAO {
     public void addBookingItems(int bookingId, int showtimeId, List<BookingItem> items) {
         String sql = "INSERT INTO BookingItem (booking_id, showtime_id, seat_id, price) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn =  DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (BookingItem item : items) {
                 ps.setInt(1, bookingId);
@@ -36,7 +36,7 @@ public class BookingItemDAO {
         List<BookingItem> list = new ArrayList<>();
         String sql = "SELECT * FROM BookingItem WHERE booking_id = ?";
 
-        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, bookingId);
             ResultSet rs = ps.executeQuery();
