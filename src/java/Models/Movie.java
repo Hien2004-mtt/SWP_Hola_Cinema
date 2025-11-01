@@ -1,16 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
 
-/**
- *
- * @author USER
- */
 public class Movie {
+
+    // ======== CÁC THUỘC TÍNH CHÍNH (từ bảng Movie) ========
     private int movieId;
     private String title;
     private String description;
@@ -22,21 +17,21 @@ public class Movie {
     private String status;
     private int directorId;
 
+    // ======== THÔNG TIN ĐẠO DIỄN (join từ bảng Director) ========
+    private String directorName;
+    private String directorBio;
+    private String directorPhoto;
+
+    // ======== CÁC DANH SÁCH LIÊN QUAN (được set trong DAO) ========
+    private List<String> genres;    // Từ bảng Genre
+    private List<Actor> actors;     // Danh sách diễn viên
+    private List<Review> reviews;   // Danh sách đánh giá
+
+    // ======== CONSTRUCTOR ========
     public Movie() {
     }
 
-    public Movie(int movieId, String title, String description, int durationMinutes, String language, Date releaseDate, String rating, String posterUrl, String status, int directorId) {
-        this.movieId = movieId;
-        this.title = title;
-        this.description = description;
-        this.durationMinutes = durationMinutes;
-        this.language = language;
-        this.releaseDate = releaseDate;
-        this.rating = rating;
-        this.posterUrl = posterUrl;
-        this.status = status;
-        this.directorId = directorId;
-    }
+    // ======== GETTER & SETTER ========
 
     public int getMovieId() {
         return movieId;
@@ -118,5 +113,64 @@ public class Movie {
         this.directorId = directorId;
     }
 
-      
+    public String getDirectorName() {
+        return directorName;
+    }
+
+    public void setDirectorName(String directorName) {
+        this.directorName = directorName;
+    }
+
+    public String getDirectorBio() {
+        return directorBio;
+    }
+
+    public void setDirectorBio(String directorBio) {
+        this.directorBio = directorBio;
+    }
+
+    public String getDirectorPhoto() {
+        return directorPhoto;
+    }
+
+    public void setDirectorPhoto(String directorPhoto) {
+        this.directorPhoto = directorPhoto;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    // ======== PHƯƠNG THỨC HỖ TRỢ (tùy chọn) ========
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", title='" + title + '\'' +
+                ", rating='" + rating + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
