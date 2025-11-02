@@ -93,10 +93,15 @@ public class SeatServlet extends HttpServlet {
             int auditoriumId = st.getAuditoriumId(); // cần có trường này trong model Showtime
             AuditoriumDAO audDAO = new AuditoriumDAO();
             String auditoriumName = audDAO.getAuditoriumNameById(auditoriumId);
-
             // 🔹 Lấy danh sách ghế thuộc phòng chiếu đó
             SeatDAO seatDAO = new SeatDAO();
             List<Seat> seats = seatDAO.getSeatByAuditoriumId(auditoriumId);
+            String seatMessage = (String) request.getSession().getAttribute("seatMessage");
+            if (seatMessage != null) {
+                request.setAttribute("message", seatMessage);
+                // Xóa sau khi hiển thị 1 lần
+                request.getSession().removeAttribute("seatMessage");
+            }
 
             // 🔹 Gửi dữ liệu sang JSP
             request.setAttribute("movieTitle", m != null ? m.getTitle() : "Không tìm thấy phim");
@@ -111,7 +116,7 @@ public class SeatServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "⚠️ Lỗi khi tải danh sách ghế!");
+            request.setAttribute("error", " Lỗi khi tải danh sách ghế!");
             request.getRequestDispatcher("/Views/Error.jsp").forward(request, response);
         }
     }

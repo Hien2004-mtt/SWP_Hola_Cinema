@@ -7,17 +7,15 @@ import java.util.ArrayList;
 
 public class BookingItemDAO {
 
-    /**
-     * Thêm danh sách ghế vào bảng BookingItem
-     */
-    public void addBookingItems(int bookingId, int showtimeId, List<BookingItem> items) {
+   
+    public void addBookingItems(Connection conn,int bookingId, int showtimeId, List<BookingItem> items) {
         String sql = "INSERT INTO BookingItem (booking_id, showtime_id, seat_id, price) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (BookingItem item : items) {
                 ps.setInt(1, bookingId);
-                ps.setInt(2, showtimeId); // ✅ BẮT BUỘC CÓ
+                ps.setInt(2, showtimeId); 
                 ps.setInt(3, item.getSeatId());
                 ps.setDouble(4, item.getPrice());
                 ps.addBatch();
@@ -29,9 +27,7 @@ public class BookingItemDAO {
         }
     }
 
-    /**
-     * Lấy danh sách ghế trong 1 booking (để hiển thị chi tiết đơn hàng)
-     */
+   
     public List<BookingItem> getItemsByBookingId(int bookingId) {
         List<BookingItem> list = new ArrayList<>();
         String sql = "SELECT * FROM BookingItem WHERE booking_id = ?";

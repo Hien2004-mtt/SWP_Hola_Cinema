@@ -280,5 +280,24 @@ public class SeatDAO {
         }
         return false;
     }
+    
+    public boolean lockSeat(Connection conn, int seatId)throws SQLException{
+        String sql = "UPDATE Seat SET is_active = 0 WHERE seat_id = ? AND is_active = 1 ";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, seatId);
+            int updated = ps.executeUpdate();
+            return updated > 0;
+        }
 
+}
+    public boolean unlockSeat(int seatId){
+        String sql = "UPDATE Seat SET is_active = 1 WHERE seat_id = ?";
+        try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);){
+                ps.setInt(1, seatId);
+                return ps.executeUpdate() > 0 ;
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        return false;
+    }
 }
