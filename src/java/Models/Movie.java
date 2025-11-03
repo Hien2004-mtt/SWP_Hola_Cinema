@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models;
+
 
 import java.time.LocalDate;
 import java.util.List;
-
+import java.sql.Date;
 /**
  *
  * @author dinhh
@@ -28,8 +25,9 @@ public class Movie {
     private List<Integer> actorIds;
     private List<String> genres;
     private List<String> actors;
-    
 
+
+    // ======== CONSTRUCTOR ========
     public Movie() {
     }
 
@@ -50,6 +48,7 @@ public class Movie {
         this.genreIds = genreIds;
         this.actorIds = actorIds;
     }
+    // ======== GETTER & SETTER ========
 
     public int getMovieId() {
         return movieId;
@@ -171,6 +170,21 @@ public class Movie {
 
     public void setActors(List<String> actors) {
         this.actors = actors;
+    }
+
+
+
+    // ======== PHƯƠNG THỨC HỖ TRỢ (tùy chọn) ========
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", title='" + title + '\'' +
+                ", rating='" + rating + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", status='" + status + '\'' +
+                '}';
     }
 
 }

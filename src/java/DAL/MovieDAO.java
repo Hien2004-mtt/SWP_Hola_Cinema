@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAL;
 
 import static DAL.DBContext.getConnection;
@@ -131,7 +127,8 @@ public class MovieDAO extends DBContext {
                 m.setStatus(rs.getString("status"));
                 return m;
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -398,24 +395,40 @@ public class MovieDAO extends DBContext {
         return 0;
     }
 
+
     public List<Movie> getNowShowingMovies() {
         return getMoviesByStatus("nơw showing");
     }
 
+    /**
+     * Lấy danh sách phim sắp chiếu
+     */
     public List<Movie> getComingSoonMovies() {
         return getMoviesByStatus("coming soon");
     }
 
+    /**
+     * Hàm chung lấy danh sách phim theo trạng thái
+     */
     private List<Movie> getMoviesByStatus(String status) {
         List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie WHERE status = ?";
+        String sql = """
+            SELECT m.*, 
+                   d.name AS director_name
+            FROM Movie m
+            LEFT JOIN Director d ON m.director_id = d.director_id
+            WHERE m.status = ?
+            ORDER BY m.release_date DESC
+        """;
+
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, status);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractMovie(rs));
-                }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
             }
 
         } catch (SQLException e) {
@@ -424,6 +437,9 @@ public class MovieDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Hàm hỗ trợ: tạo đối tượng Movie từ ResultSet
+     */
     private Movie extractMovie(ResultSet rs) throws SQLException {
         Movie m = new Movie();
         m.setMovieId(rs.getInt("movie_id"));
@@ -439,4 +455,62 @@ public class MovieDAO extends DBContext {
         m.setStatus(rs.getString("status"));
         return m;
     }
+
+    /**
+     * Lấy toàn bộ danh sách phim (dành cho admin hoặc quản lý)
+     */
+    public List<Movie> userGetAllMovies() {
+        List<Movie> list = new ArrayList<>();
+        String sql = """
+            SELECT m.*, 
+                   d.name AS director_name
+            FROM Movie m
+            LEFT JOIN Director d ON m.director_id = d.director_id
+            ORDER BY m.movie_id DESC
+        """;
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Tìm kiếm phim theo từ khóa (tên phim)
+     */
+    public List<Movie> userSearchMoviesByTitle(String keyword) {
+        List<Movie> list = new ArrayList<>();
+        String sql = """
+        SELECT m.*, d.name AS director_name
+        FROM Movie m
+        LEFT JOIN Director d ON m.director_id = d.director_id
+        WHERE m.title LIKE ?
+        ORDER BY m.release_date DESC
+    """;
+
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + keyword + "%"); // tìm gần đúng
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Movie m = extractMovie(rs);
+                m.setDirectorName(rs.getString("director_name"));
+                list.add(m);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

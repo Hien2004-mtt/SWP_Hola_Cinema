@@ -30,7 +30,7 @@ public class NewPassword extends HttpServlet {
 			try {
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 				Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false", "sa",
-						"123");
+						"1");
 				PreparedStatement pst = con.prepareStatement("UPDATE [dbo].[Users] SET password_hash = ?, updated_at = GETDATE() WHERE email = ? ");
 				pst.setString(1, newPassword);
 				pst.setString(2, (String) session.getAttribute("email"));

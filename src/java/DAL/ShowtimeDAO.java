@@ -18,7 +18,12 @@ public class ShowtimeDAO {
 
     public List<Showtime> getAllShowtimeByMovieId(int movieId) {
         List<Showtime> list = new ArrayList<>();
-        String sql = "SELECT * FROM Showtime WHERE movie_id = ?";
+        String sql = """
+        SELECT * FROM Showtime
+        WHERE movie_id = ?
+        AND DATEADD(MINUTE, -20, start_time) > GETDATE()
+        ORDER BY start_time ASC
+    """;
         try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, movieId);
             ResultSet rs = ps.executeQuery();

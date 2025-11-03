@@ -67,10 +67,19 @@ public class DeleteAuditoriumServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         int id  = Integer.parseInt(request.getParameter("id"));
+     try{
+        
+        int id  = Integer.parseInt(request.getParameter("id"));
         AuditoriumDAO aud = new AuditoriumDAO();
         aud.delete(id);
-        response.sendRedirect("listAuditorium");
+        request.getSession().setAttribute("messageAuditorium","Đã xoá phòng có ID:"+id);
+        response.sendRedirect("listAuditorium"); 
+     }catch(Exception e){
+         e.printStackTrace();
+         request.getSession().setAttribute("messageAuditorium", "Đã xảy ra lỗi vui lòng thử lại");
+         response.sendRedirect("listAuditorium");
+     }
+        
     }
 
     /** 

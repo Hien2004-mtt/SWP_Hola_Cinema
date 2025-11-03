@@ -46,43 +46,43 @@ public class RegisterServlet extends HttpServlet {
 
         // Validate all fields
         if (email == null || email.trim().isEmpty()) {
-            errors.put("email", "Email không được để trống!");
+            errors.put("email", "Email cannot be empty!");
         } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            errors.put("email", "Email không hợp lệ!");
+            errors.put("email", "Invalid email address!");
         }
 
         if (password == null || password.trim().isEmpty()) {
-            errors.put("password", "Mật khẩu không được để trống!");
+            errors.put("password", "Password cannot be empty!");
         } else if (password.length() < 6) {
-            errors.put("password", "Mật khẩu phải có ít nhất 6 ký tự!");
+            errors.put("password", "Password must be at least 6 characters long!");
         }
 
         if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
-            errors.put("confirmPassword", "Vui lòng xác nhận mật khẩu!");
+            errors.put("confirmPassword", "Please confirm your password!");
         } else if (!confirmPassword.equals(password)) {
-            errors.put("confirmPassword", "Mật khẩu không khớp!");
+            errors.put("confirmPassword", "Passwords do not match!");
         }
 
         if (name == null || name.trim().isEmpty()) {
-            errors.put("name", "Họ và tên không được để trống!");
+            errors.put("name", "Full name cannot be empty!");
         } else if (!name.matches("^[\\p{L} ]+$")) {
-            errors.put("name", "Họ và tên chỉ được chứa chữ cái và khoảng trắng!");
+            errors.put("name", "Full name can only contain letters and spaces!");
         }
 
         if (phone != null && !phone.trim().isEmpty() && !phone.matches("^0[0-9]{9,10}$")) {
-            errors.put("phone", "Số điện thoại phải bắt đầu bằng 0 và có 10-11 số!");
+            errors.put("phone", "Phone number must start with 0 and contain 10–11 digits!");
         }
 
         if (dobStr != null && !dobStr.trim().isEmpty()) {
             try {
                 Date.valueOf(dobStr);
             } catch (IllegalArgumentException e) {
-                errors.put("dob", "Ngày sinh không hợp lệ!");
+                errors.put("dob", "Invalid date of birth!");
             }
         }
 
         if (genderStr == null) {
-            errors.put("gender", "Vui lòng chọn giới tính!");
+            errors.put("gender", "Please select a gender!");
         }
 
         if (!errors.isEmpty()) {
