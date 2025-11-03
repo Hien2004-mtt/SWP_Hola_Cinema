@@ -2,6 +2,7 @@
  * Controller: Hiển thị trang chủ (Home Page)
  * - Nếu chưa login: vẫn xem được danh sách phim
  * - Nếu đã login: hiển thị thêm tên người dùng
+ * - Hỗ trợ tìm kiếm phim theo tên (param ?q=)
  */
 package Controllers;
 
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/home1")
+@WebServlet("/home")
 public class HomeController extends HttpServlet {
 
     private final MovieDAO movieDAO = new MovieDAO();
@@ -25,23 +26,27 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 🔹 Lấy danh sách phim
-//        List<Movie> nowShowing = movieDAO.getNowShowingMovies();
-//        List<Movie> comingSoon = movieDAO.getComingSoonMovies();
-//
-//        // 🔹 Gửi dữ liệu sang JSP
-//        request.setAttribute("moviesNow", nowShowing);
-//        request.setAttribute("moviesComing", comingSoon);
+        String keyword = request.getParameter("q");
+        List<Movie> nowShowing;
+        List<Movie> comingSoon;
 
-        // 🔹 Kiểm tra session (để hiển thị phần user nếu đã login)
-        HttpSession session = request.getSession(false);
-       
-        if (session != null && session.getAttribute("user") != null) {
-            request.setAttribute("user", session.getAttribute("user"));
-            request.setAttribute("role", session.getAttribute("role"));
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            nowShowing = movieDAO.searchMoviesByTitle(keyword.trim());
+            comingSoon = null; 
+            request.setAttribute("searchKeyword", keyword);
+        } else {
+            nowShowing = movieDAO.getNowShowingMovies();
+            comingSoon = movieDAO.getComingSoonMovies();
         }
 
-        // 🔹 Chuyển hướng sang trang JSP view
-        request.getRequestDispatcher("Views/home.jsp").forward(request, response);
+        request.setAttribute("moviesNow", nowShowing);
+        request.setAttribute("moviesComing", comingSoon);
+
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            request.setAttribute("loggedUser", session.getAttribute("user"));
+        }
+
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 }

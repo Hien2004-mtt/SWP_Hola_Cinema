@@ -14,27 +14,31 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Chọn ghế - <%= movieTitle %></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Seat.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
-    <script src="${pageContext.request.contextPath}/js/Seat.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Chọn ghế - <%= movieTitle %></title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Seat.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
 
-<body>
-    <jsp:include page="/Inculude/Header.jsp" />
+    </head>
+
+    <body>
+        <jsp:include page="/Inculude/Header.jsp" />
+    <c:if test="${not empty message}">
+        <div class="alert alert-danger">${message}</div>
+    </c:if>
+
 
     <div class="container">
         <h2 style="text-align:center;">🎬 Chọn ghế cho phim: "<%= movieTitle %>"</h2>
         <p style="text-align:center;">⏰ Suất chiếu: <%= startTime %></p>
 
         <form action="booking" method="post" onsubmit="return validateSelection();">
-            <input type="hidden" id="JS" value="<%= basePrice %>">
+            <input type="hidden" id="basePriceJS" value="<%= basePrice %>">
             <input type="hidden" name="showtimeId" value="<%= showtimeId %>">
             <input type="hidden" name="basePrice" value="<%= basePrice %>">
             <input type="hidden" id="totalPriceInput" name="totalPrice" value="0">
-
+            <input type="hidden" name="movieId" value="<%= movieId %>">
             <div class="layout">
                 <!-- Sơ đồ ghế -->
                 <div class="seat-layout">
@@ -59,17 +63,17 @@
                                         cssClass = "regular";
                                     }
                         %>
-                            <div id="seat_<%= code %>" 
-                                 class="seat <%= cssClass %>"
-                                 onclick="toggleSeat('<%= code %>', 'cb_<%= code %>', 'seat_<%= code %>', '<%= s.getSeatType() %>')">
-                                <%= code %>
-                                <input type="checkbox"
-                                       name="selectedSeats"
-                                       value="<%= code %>"
-                                       id="cb_<%= code %>"
-                                       style="display:none;"
-                                       <%= !s.isIsActivate() ? "disabled" : "" %> />
-                            </div>
+                        <div id="seat_<%= code %>" 
+                             class="seat <%= cssClass %>"
+                             onclick="toggleSeat('<%= code %>', 'cb_<%= code %>', 'seat_<%= code %>', '<%= s.getSeatType() %>')">
+                            <%= code %>
+                            <input type="checkbox"
+                                   name="selectedSeats"
+                                   value="<%= code %>"
+                                   id="cb_<%= code %>"
+                                   style="display:none;"
+                                   <%= !s.isIsActivate() ? "disabled" : "" %> />
+                        </div>
                         <%
                                 } // end for
                             } // end if
@@ -122,6 +126,8 @@
         </form>
     </div>
 
+    <script src="${pageContext.request.contextPath}/js/Seat.js"></script>
     <jsp:include page="/Inculude/Footer.jsp" />
+
 </body>
 </html>

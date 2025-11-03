@@ -1,21 +1,26 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Hola Cinema Center</title>
     <style>
+        :root {
+            --primary-color: #5a2fc2;
+            --accent-color: #ff6f61;
+            --bg-light: #fafafa;
+            --text-dark: #222;
+            --card-bg: #fff;
+        }
         body {
             margin: 0;
             font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #fafafa;
-            color: #333;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
         }
-
-        /* HEADER */
         header {
-            background: #fff;
+            background: var(--card-bg);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             padding: 10px 60px;
             display: flex;
@@ -25,13 +30,11 @@
             top: 0;
             z-index: 1000;
         }
-
         .logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            color: #111;
+            color: var(--primary-color);
         }
-
         nav ul {
             list-style: none;
             display: flex;
@@ -39,126 +42,137 @@
             margin: 0;
             padding: 0;
         }
-
         nav ul li a {
             text-decoration: none;
             color: #444;
             font-weight: 500;
         }
-
         nav ul li a:hover, nav ul li a.active {
-            color: #007bff;
+            color: var(--accent-color);
         }
-
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
-
         .search-box input {
-            padding: 5px 10px;
+            padding: 6px 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         .btn {
-            background: #007bff;
+            background: var(--accent-color);
             color: #fff;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
         }
-
         .btn:hover {
-            background: #0056b3;
+            background: #e55b50;
         }
-
-        /* BANNER */
         .banner {
             width: 100%;
-            height: 300px;
-            background: #ddd url('https://via.placeholder.com/1200x300?text=Cinema+Banner') center/cover no-repeat;
+            height: 350px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 32px;
+            color: #fff;
+            font-size: 36px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
-
-        /* MOVIE SECTION */
         .movies-section {
-            padding: 40px 60px;
-            background: #fff;
+            padding: 50px 60px;
         }
-
         .section-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            border-left: 5px solid #007bff;
+            border-left: 5px solid var(--primary-color);
             padding-left: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
-
         .section-header h2 {
-            font-size: 22px;
+            font-size: 24px;
             margin: 0;
-            color: #111;
+            color: var(--text-dark);
         }
-
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
             margin-top: 20px;
         }
-
         .movie-card {
-            background: #f9f9f9;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border-radius: 12px;
             overflow: hidden;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-
         .movie-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.12);
         }
-
         .movie-card img {
             width: 100%;
-            height: 280px;
+            height: 300px;
             object-fit: cover;
+            transition: filter 0.3s;
         }
-
-        .movie-card h3 {
-            font-size: 16px;
-            margin: 10px 0 5px;
+        .movie-card:hover img {
+            filter: brightness(1.1);
         }
-
-        .movie-card p {
-            font-size: 13px;
-            color: #777;
+        .movie-info {
+            padding: 12px 16px;
         }
-
+        .movie-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .movie-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .movie-card .btn-details {
+            margin-bottom: 16px;
+            display: inline-block;
+        }
         footer {
             text-align: center;
-            background: #222;
+            background: var(--text-dark);
             color: #aaa;
-            padding: 15px;
-            font-size: 13px;
-            margin-top: 40px;
+            padding: 20px;
+            font-size: 14px;
+            margin-top: 60px;
+        }
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 30px;
+                flex-wrap: wrap;
+            }
+            .movies-section {
+                padding: 30px 20px;
+            }
+            .banner {
+                height: 250px;
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
     <div class="logo">🎬 Hola Cinema Center</div>
 
@@ -173,12 +187,17 @@
     </nav>
 
     <div class="nav-right">
-        <div class="search-box">
-            <input type="text" placeholder="Search...">
-        </div>
-        <c:choose>
+<form action="home" method="get" class="search-box">
+    <input type="text" name="q" placeholder="Search..." 
+           value="${param.q}" style="padding:6px 12px;border:1px solid #ccc;border-radius:5px;">
+</form>
+
+
+              <c:choose>
             <c:when test="${not empty loggedUser}">
                 <span>Xin chào, <strong>${loggedUser.name}</strong></span>
+                <!-- 🔹 Nút đi đến trang hồ sơ người dùng -->
+                <a href="updateProfile" class="btn">Profile</a>
                 <a href="logout" class="btn">Đăng xuất</a>
             </c:when>
             <c:otherwise>
@@ -189,50 +208,47 @@
     </div>
 </header>
 
-<!-- BANNER -->
 <div class="banner">
-    Welcome to Hola Cinema 🎥
+    Welcome to Hola Cinema — Experience Now
 </div>
 
-<!-- PHIM ĐANG CHIẾU -->
 <div class="movies-section">
     <div class="section-header">
-        <h2>🎞 Phim đang chiếu</h2>
+        <h2>Phim đang chiếu</h2>
     </div>
-
     <c:if test="${empty moviesNow}">
         <p>Hiện chưa có phim đang chiếu.</p>
     </c:if>
-
     <div class="movie-grid">
         <c:forEach var="m" items="${moviesNow}">
             <div class="movie-card">
-                <img src="${m.posterUrl}" alt="${m.title}">
-                <h3>${m.title}</h3>
-                <p>⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</p>
-                <a href="movieDetail?id=${m.movieId}" class="btn">Chi tiết</a>
+                <img src="${m.posterUrl}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/220x300?text=No+Image'">
+                <div class="movie-info">
+                    <div class="movie-title">${m.title}</div>
+                    <div class="movie-meta">⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</div>
+                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Chi tiết</a>
+                </div>
             </div>
         </c:forEach>
     </div>
 </div>
 
-<!-- PHIM SẮP CHIẾU -->
-<div class="movies-section">
+<div class="movies-section" style="background-color: #fff; margin-top: 40px;">
     <div class="section-header">
-        <h2>🎬 Phim sắp chiếu</h2>
+        <h2>Phim sắp chiếu</h2>
     </div>
-
     <c:if test="${empty moviesComing}">
         <p>Hiện chưa có phim sắp chiếu.</p>
     </c:if>
-
     <div class="movie-grid">
         <c:forEach var="m" items="${moviesComing}">
             <div class="movie-card">
-                <img src="${m.posterUrl}" alt="${m.title}">
-                <h3>${m.title}</h3>
-                <p>⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</p>
-                <a href="movieDetail?id=${m.movieId}" class="btn">Chi tiết</a>
+                <img src="${m.posterUrl}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/220x300?text=No+Image'">
+                <div class="movie-info">
+                    <div class="movie-title">${m.title}</div>
+                    <div class="movie-meta">⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</div>
+                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Chi tiết</a>
+                </div>
             </div>
         </c:forEach>
     </div>

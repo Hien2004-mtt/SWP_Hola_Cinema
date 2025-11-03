@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
-                             https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
-         version="5.0">
+<web-app version="5.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd">
     <display-name>SWP Hola Cinema</display-name>
     <!-- ================== Payment ================== -->
     <servlet>
         <servlet-name>CheckoutController</servlet-name>
         <servlet-class>Controllers.CheckoutController</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>MomoIpnServlet</servlet-name>
-        <servlet-class>Controllers.Config.MomoIpnServlet</servlet-class>
+        <servlet-class>Controllers.MomoIpnServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>Controllers.BookingServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>SeatListServlet</servlet-name>
         <servlet-class>Controllers.SeatListServlet</servlet-class>
@@ -36,12 +34,22 @@
         <servlet-name>SeatDetailServlet</servlet-name>
         <servlet-class>Controllers.SeatDetailServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>SeatAddRowServlet</servlet-name>
+        <servlet-class>Controllers.SeatAddRowServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatAddRowFormServlet</servlet-name>
+        <servlet-class>Controllers.SeatAddRowFormServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RestoreAuditoriumServlet</servlet-name>
+        <servlet-class>Controllers.RestoreAuditoriumServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>QRCodeServlet</servlet-name>
         <servlet-class>Controllers.QRCodeServlet</servlet-class>
@@ -50,9 +58,6 @@
         <servlet-name>QRCodeServlet</servlet-name>
         <url-pattern>/qrcode</url-pattern>
     </servlet-mapping>
-
-
-
     <!-- Return từ MoMo -->
     <servlet>
         <servlet-name>ReturnServlet</servlet-name>
@@ -62,9 +67,6 @@
         <servlet-name>ReturnServlet</servlet-name>
         <url-pattern>/return</url-pattern>
     </servlet-mapping>
-
-
-
     <!-- Return từ VNPay -->
     <servlet>
         <servlet-name>VNPayReturnServlet</servlet-name>
@@ -74,26 +76,6 @@
         <servlet-name>VNPayReturnServlet</servlet-name>
         <url-pattern>/vnpay_return</url-pattern>
     </servlet-mapping>
-
-
-
-    <!-- ================== IPN ================== -->
-    
-    <servlet-mapping>
-        <servlet-name>MomoIpnServlet</servlet-name>
-        <url-pattern>/ipn</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>VNPayIpnServlet</servlet-name>
-        <servlet-class>Controllers.Ipn.VNPayIpnServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>VNPayIpnServlet</servlet-name>
-        <url-pattern>/vnpay_ipn</url-pattern>
-    </servlet-mapping>
-
-
     <!-- ================== Voucher ================== -->
     <servlet>
         <servlet-name>VoucherServlet</servlet-name>
@@ -103,7 +85,6 @@
         <servlet-name>VoucherServlet</servlet-name>
         <url-pattern>/voucher</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <servlet-class>Controllers.ApplyVoucherServlet</servlet-class>
@@ -112,13 +93,6 @@
         <servlet-name>ApplyVoucherServlet</servlet-name>
         <url-pattern>/applyVoucher</url-pattern>
     </servlet-mapping>
-
-    <!-- ================== Welcome ================== -->
-    
-    <welcome-file-list>
-        <welcome-file>Views/payment.jsp</welcome-file>
-    </welcome-file-list>
-
     <servlet>
         <servlet-name>AccountListController</servlet-name>
         <servlet-class>Controllers.AccountListController</servlet-class>
@@ -127,10 +101,11 @@
         <servlet-name>AccountListController</servlet-name>
         <url-pattern>/accountList</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>BookingServlet</servlet-name>
-        <servlet-class>Controllers.BookingServlet</servlet-class>
-    </servlet>
+    <!-- ================== Welcome ================== -->
+    <servlet-mapping>
+        <servlet-name>MomoIpnServlet</servlet-name>
+        <url-pattern>/momo_ipn</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/booking</url-pattern>
@@ -155,7 +130,22 @@
         <servlet-name>SeatDetailServlet</servlet-name>
         <url-pattern>/seatDetail</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>SeatAddRowServlet</servlet-name>
+        <url-pattern>/seatAddRow</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatAddRowFormServlet</servlet-name>
+        <url-pattern>/seatAddRowForm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RestoreAuditoriumServlet</servlet-name>
+        <url-pattern>/restoreAuditorium</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>Views/Payment.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- ======== List Auditorium ====== -->
     <servlet>
         <servlet-name>ListAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.ListAuditoriumServlet</servlet-class>
@@ -229,18 +219,9 @@
     <servlet>
         <servlet-name>SeatServlet</servlet-name>
         <servlet-class>Controllers.SeatServlet</servlet-class>
-    </servlet> 
-   
+    </servlet>
     <servlet-mapping>
         <servlet-name>SeatServlet</servlet-name>
         <url-pattern>/seat</url-pattern>
     </servlet-mapping>
-    
-<session-config>
-    <session-timeout>30</session-timeout>
-    <cookie-config>
-        <path>/SWP_Hola_Cinema_1</path>
-    </cookie-config>
-</session-config>
-
 </web-app>

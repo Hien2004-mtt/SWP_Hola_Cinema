@@ -4,21 +4,22 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ẩn ghế phòng ${auditoriumId}</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/SeatDelete.css">
+        <title>Cập nhật ghế phòng ${auditoriumId}</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/SeatEdit.css">
     </head>
     <body>
         <div class="container">
-            <a href="seatList" class="btn-back"> Quay lại danh sách phòng</a>
-            <h2> Ẩn ghế trong phòng ${auditoriumId}</h2>
+            <a href="seatList" class="btn-back">⬅ Quay lại danh sách phòng</a>
+            <h2>🛠 Cập nhật ghế phòng ${auditoriumId}</h2>
 
-            <c:if test="${not empty sessionScope.messageSeatDelete}">
-                <p class="message">${sessionScope.messageSeatDelete}</p>
-                <c:remove var="messageSeatDelete" scope="session"/>
+            <c:if test="${not empty sessionScope.messageUpdate}">
+                <p class="message">${sessionScope.messageUpdate}</p>
+                <c:remove var="messageUpdate" scope="session"/>
             </c:if>
 
+
             <div class="seat-layout">
-                <!-- ✅ Sơ đồ ghế -->
+                <!-- Sơ đồ ghế -->
                 <div class="seat-area">
                     <div class="screen">MÀN HÌNH</div>
                     <%
@@ -60,18 +61,27 @@
                     %>
                 </div>
 
-                <!-- ✅ Form ẩn ghế -->
+                <!-- Form cập nhật ghế -->
                 <div class="form-container">
-                    <h3> Ẩn ghế</h3>
-                    <form method="post" action="seatDelete">
+                    <h3>⚙️ Cập nhật ghế</h3>
+                    <form method="post" action="seatEdit">
                         <input type="hidden" name="auditoriumId" value="${auditoriumId}">
+
                         <label>Hàng (A–Z):</label>
                         <input type="text" name="row" maxlength="1" required>
 
                         <label>Số ghế:</label>
                         <input type="number" name="number" min="1" max="50" required>
 
-                        <button type="submit" name="action" value="hide">Ẩn ghế</button>
+                        <label>Đổi loại ghế (tùy chọn):</label>
+                        <select name="seatType">
+                            <option value="">-- Giữ nguyên --</option>
+                            <option value="Regular">Regular</option>
+                            <option value="VIP">VIP</option>
+                            <option value="SweetBox">SweetBox</option>
+                        </select>
+
+                        <button type="submit">Cập nhật</button>
                     </form>
                 </div>
             </div>

@@ -15,18 +15,30 @@ public class Seat {
     private int number;
     private String seatType;
     private boolean isActivate;
+    private boolean isShowing;
 
     public Seat() {
     }
 
-    public Seat(int seatId, int auditoriumId, String row, int number, String seatType, boolean isActivate) {
+    public Seat(int seatId, int auditoriumId, String row, int number, String seatType, boolean isActivate, boolean isShowing) {
         this.seatId = seatId;
         this.auditoriumId = auditoriumId;
         this.row = row;
         this.number = number;
         this.seatType = seatType;
         this.isActivate = isActivate;
+        this.isShowing = isShowing;
     }
+
+    public boolean isIsShowing() {
+        return isShowing;
+    }
+
+    public void setIsShowing(boolean isShowing) {
+        this.isShowing = isShowing;
+    }
+
+    
 
     public int getSeatId() {
         return seatId;

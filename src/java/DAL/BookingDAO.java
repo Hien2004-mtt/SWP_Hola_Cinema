@@ -13,14 +13,12 @@ import java.util.Map;
 public class BookingDAO {
 
    
-    public int addBooking(int userId, int showtimeId, double totalPrice) {
+    public int addBooking(Connection conn,int userId, int showtimeId, double totalPrice) {
         // Câu SQL thêm booking mới. GETDATE() tự động ghi thời điểm tạo.
         String sql = "INSERT INTO Booking (user_id, showtime_id, total_price, status, created_at) "
                 + "VALUES (?, ?, ?, 'pending', GETDATE())";
 
-        try (
-                // Lấy connection từ DBContext
-                Connection conn = DBContext.getConnection(); // Tạo PreparedStatement và yêu cầu trả về khóa tự sinh (booking_id)
+        try ( // Tạo PreparedStatement và yêu cầu trả về khóa tự sinh (booking_id)
                  PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             // Gán giá trị cho 3 dấu ? trong câu SQL
             ps.setInt(1, userId);
