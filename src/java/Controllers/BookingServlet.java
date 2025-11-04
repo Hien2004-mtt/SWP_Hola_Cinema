@@ -72,7 +72,7 @@ public class BookingServlet extends HttpServlet {
                     conn.rollback();
 
                     // 🔹 Lưu thông báo vào session
-                    session.setAttribute("seatMessage", "⚠️ Ghế " + seatCode + " đã được người khác đặt trước!");
+                    session.setAttribute("seatMessage", " Ghế " + seatCode + " đã được người khác đặt trước!");
 
                     // 🔹 Quay lại trang seat (SeatServlet) với showtimeId hiện tại
                     response.sendRedirect("seat?showtimeId=" + showtimeId);
@@ -120,7 +120,7 @@ public class BookingServlet extends HttpServlet {
             //  Thread tự động hủy sau 10 phút
             new Thread(() -> {
                 try {
-                    Thread.sleep(10 * 60 * 1000);
+                    Thread.sleep(1 * 60 * 1000);
                     Booking b = bookingDAO.getBookingById(bookingId);
                     if (b != null && b.getStatus().equalsIgnoreCase("pending")) {
                         bookingDAO.updateBookingStatus(bookingId, "cancelled");

@@ -291,7 +291,7 @@ public class SeatDAO {
 
 }
     public boolean unlockSeat(int seatId){
-        String sql = "UPDATE Seat SET is_active = 1 WHERE seat_id = ?";
+        String sql = "UPDATE Seat SET is_active = 1 WHERE seat_id = ? AND is_active = 0";
         try(PreparedStatement ps = DBContext.getConnection().prepareStatement(sql);){
                 ps.setInt(1, seatId);
                 return ps.executeUpdate() > 0 ;
