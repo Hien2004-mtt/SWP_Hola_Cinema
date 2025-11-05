@@ -75,11 +75,12 @@ public class AuditoriumDAO {
     }
 
     public void insert(Auditorium au) {
-        String sql = "INSERT INTO Auditorium (name,total_seat,is_deleted) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Auditorium (name,total_seat,is_deleted,description) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
             ps.setString(1, au.getName());
             ps.setInt(2,au.getTotalSeat());
             ps.setBoolean(3, au.isIsDeleted());
+            ps.setString(4, au.getDescription());
             ps.executeUpdate();
             System.out.println("Thêm phòng chiếu thành công!");
         } catch (Exception e) {
@@ -91,13 +92,15 @@ public class AuditoriumDAO {
         String sql = "UPDATE Auditorium SET "
                 + "name = ?, "
                 + "total_seat = ?, "
-                + "is_deleted = ? "
+                + "is_deleted = ?,"
+                + "description = ? "
                 + "WHERE auditorium_id = ?";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
             ps.setString(1, au.getName());
             ps.setInt(2, au.getTotalSeat());
             ps.setBoolean(3, au.isIsDeleted());
-            ps.setInt(4, au.getAuditoriumId());
+            ps.setString(4, au.getDescription());
+            ps.setInt(5, au.getAuditoriumId());
             ps.executeUpdate();
             System.out.println("Cập nhật phòng chiếu thành công!");
         } catch (Exception e) {

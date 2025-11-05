@@ -55,8 +55,14 @@
                         Tổng số ghế
                     </a>
                 </th>
+                 <th>
+                    <a href="listAuditorium?sort=description&dir=<%= ("description".equals(request.getAttribute("sort")) && "asc".equals(request.getAttribute("dir"))) ? "desc" : "asc" %><%= (request.getAttribute("q") != null && !"".equals(request.getAttribute("q"))) ? "&q=" + request.getAttribute("q") : "" %>">
+                       Mô tả
+                    </a>
+                </th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
+               
             </tr>
 
             <% if (list != null && !list.isEmpty()) {
@@ -65,7 +71,7 @@
                 <td><%= a.getAuditoriumId() %></td>
                 <td><%= a.getName() %></td>
                 <td><%= a.getTotalSeat() %></td>
-
+                <td><%= a.getDescription() %></td>
                 <!-- ✅ Hiển thị trạng thái -->
                 <td>
                     <% if (a.isIsDeleted()) { %>
@@ -100,6 +106,7 @@
                         </form>
                     <% } %>
                 </td>
+                
             </tr>
             <% } } else { %>
             <tr><td colspan="5">Chưa có phòng chiếu nào.</td></tr>
