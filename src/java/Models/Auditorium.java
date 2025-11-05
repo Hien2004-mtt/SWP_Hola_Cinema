@@ -13,16 +13,20 @@ public class Auditorium {
     private String name;
     private int totalSeat;
     private boolean isDeleted; //1 da bi xoa ---- 0 chua bi xoa
+    private String description;
 
     public Auditorium() {
     }
 
-    public Auditorium(int auditoriumId, String name, int totalSeat, boolean isDeleted) {
+  
+    public Auditorium(int auditoriumId, String name, int totalSeat, boolean isDeleted, String description) {
         this.auditoriumId = auditoriumId;
         this.name = name;
         this.totalSeat = totalSeat;
         this.isDeleted = isDeleted;
+        this.description = description;
     }
+   
 
    
     public boolean isIsDeleted() {
@@ -55,6 +59,14 @@ public class Auditorium {
 
     public void setTotalSeat(int totalSeat) {
         this.totalSeat = totalSeat;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
    

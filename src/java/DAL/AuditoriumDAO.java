@@ -17,7 +17,8 @@ public class AuditoriumDAO {
                         rs.getInt("auditorium_id"),
                         rs.getString("name"),
                         rs.getInt("total_seat"),
-                        rs.getBoolean("is_deleted")
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("description ")
                 ));
             }
             System.out.println("Load " + list.size() + " phòng chiếu.");
@@ -37,7 +38,8 @@ public class AuditoriumDAO {
                         rs.getInt("auditorium_id"),
                         rs.getString("name"),
                         rs.getInt("total_seat"),
-                        rs.getBoolean("is_deleted")
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("description")
                 ));
             }
             System.out.println("Load " + list.size() + " phòng chiếu.");
@@ -60,7 +62,8 @@ public class AuditoriumDAO {
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
                             rs.getInt("total_seat"),
-                            rs.getBoolean("is_deleted")
+                            rs.getBoolean("is_deleted"),
+                            rs.getString("description")
                     ));
                 }
             }
@@ -133,7 +136,8 @@ public class AuditoriumDAO {
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
                             rs.getInt("total_seat"),
-                            rs.getBoolean("is_deleted")
+                            rs.getBoolean("is_deleted"),
+                            rs.getString("description")
                     );
                 }
             }
