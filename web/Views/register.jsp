@@ -234,7 +234,7 @@
         </form>
         
         <p class="text-center mt-4 login-link">
-            Already have an account? <a href="${pageContext.request.contextPath}/Views/login.jsp">Login now</a>
+            Already have an account? <a href="${pageContext.request.contextPath}/login">Login now</a>
         </p>
     </div>
 
