@@ -18,6 +18,7 @@ public class ListAuditoriumServlet extends HttpServlet {
             throws ServletException, IOException {
 
         AuditoriumDAO aud = new AuditoriumDAO();
+
         List<Auditorium> list = aud.getAllForManager();
 
         // Tìm kiếm
@@ -50,17 +51,38 @@ public class ListAuditoriumServlet extends HttpServlet {
                 case "total":
                     comp = Comparator.comparingInt(Auditorium::getTotalSeat);
                     break;
+                case "description":
+                    comp = Comparator.comparing(
+                            a -> a.getDescription() == null ? "" : a.getDescription(),
+                            String.CASE_INSENSITIVE_ORDER);
                 default:
                     comp = Comparator.comparingInt(Auditorium::getAuditoriumId);
                     break;
             }
-            if ("desc".equalsIgnoreCase(dir)) comp = comp.reversed();
+            if ("desc".equalsIgnoreCase(dir)) {
+                comp = comp.reversed();
+            }
             list.sort(comp);
         }
-
+        int pageSize = 5;
+        int page = 1;
+        String pageParam = request.getParameter("page");
+        if(pageParam != null && pageParam.matches("\\d+")){
+            page = Integer.parseInt(pageParam);
+        }
+        int totalItem = list.size();
+        int totalPage = (int) Math.ceil((double) totalItem/pageSize);
+        int fromIndex = (page - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalItem);
+        List<Auditorium> paginatedList = new ArrayList<>();
+        if(fromIndex < toIndex){
+            paginatedList = list.subList(fromIndex, toIndex);
+        }
+        request.setAttribute("list", paginatedList);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPage);
         request.setAttribute("sort", sort == null ? "" : sort);
         request.setAttribute("dir", dir == null ? "" : dir);
-        request.setAttribute("list", list);
         request.setAttribute("q", q == null ? "" : q);
         request.getRequestDispatcher("Views/Auditorium.jsp").forward(request, response);
     }

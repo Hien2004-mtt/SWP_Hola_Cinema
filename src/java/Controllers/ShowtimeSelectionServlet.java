@@ -35,7 +35,7 @@ public class ShowtimeSelectionServlet extends HttpServlet {
             }
 
             if (movieId == null) {
-                session.setAttribute("error", " Vui lòng chọn lại phim.");
+                request.setAttribute("error", " Vui lòng chọn lại phim.");
                 response.sendRedirect("home");
                 return;
             }
@@ -45,8 +45,8 @@ public class ShowtimeSelectionServlet extends HttpServlet {
             request.setAttribute("showtimes", showtimes);
 
             //  Lấy tên phim
-            String movieTitle = movieDAO.getMovieTitleById(movieId);
-            request.setAttribute("movieTitle", movieTitle != null ? movieTitle : "Không xác định");
+            Movie movie = movieDAO.getMovieById(movieId);
+            request.setAttribute("movieTitle", movie != null ? movie.getTitle() : "Không xác định");
             request.setAttribute("movieId", movieId);
 
             //  Nếu phim không có suất chiếu nào

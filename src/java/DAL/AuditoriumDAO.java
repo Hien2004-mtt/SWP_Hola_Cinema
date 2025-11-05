@@ -163,7 +163,45 @@ public class AuditoriumDAO {
         }
         return "Không rõ phòng chiếu";
     }
-    
+    public int countAuditoriums() {
+    String sql = "SELECT COUNT(*) FROM Auditorium";
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) return rs.getInt(1);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+public List<Auditorium> getAuditoriumsByPage(int page, int pageSize) {
+    List<Auditorium> list = new ArrayList<>();
+    String sql = """
+        SELECT * FROM Auditorium
+        ORDER BY auditorium_id
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, (page - 1) * pageSize);
+        ps.setInt(2, pageSize);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Auditorium a = new Auditorium();
+            a.setAuditoriumId(rs.getInt("auditorium_id"));
+            a.setName(rs.getString("name"));
+            a.setTotalSeat(rs.getInt("total_seat"));
+            a.setDescription(rs.getString("description"));
+            a.setIsDeleted(rs.getBoolean("is_deleted"));
+            list.add(a);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
         
 
 }

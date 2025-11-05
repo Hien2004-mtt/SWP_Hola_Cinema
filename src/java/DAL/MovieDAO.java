@@ -181,24 +181,4 @@ public class MovieDAO {
             System.out.println(m.getTitle());
         }
     }
-    //cua Showtime dung xoa cua t di khi merge code 
-    public String getMovieTitleById(int id) {
-    String sql = "SELECT title FROM Movie WHERE movie_id = ?";
-    
-    try (Connection conn = DBContext.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        
-        if (rs.next()) {
-            return rs.getString("title");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.err.println("❌ Lỗi khi lấy tiêu đề phim theo ID: " + e.getMessage());
-    }
-    return null;
-}
-
 }

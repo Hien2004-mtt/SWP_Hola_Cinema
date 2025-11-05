@@ -9,8 +9,8 @@
     </head>
     <body>
         <div class="container">
-            <a href="seatList" class="btn-back">⬅ Quay lại danh sách phòng</a>
-            <h2>🛠 Cập nhật ghế phòng ${auditoriumId}</h2>
+            <a href="listAuditorium" class="btn-back"> Quay lại danh sách phòng</a>
+            <h2>Cập nhật ghế phòng ${auditoriumId}</h2>
 
             <c:if test="${not empty sessionScope.messageUpdate}">
                 <p class="message">${sessionScope.messageUpdate}</p>
@@ -56,14 +56,14 @@
                                 out.println("</div></div>");
                             }
                         } else {
-                            out.println("<p style='text-align:center;color:gray;'>⚠️ Phòng này chưa có ghế nào.</p>");
+                            out.println("<p style='text-align:center;color:gray;'> Phòng này chưa có ghế nào.</p>");
                         }
                     %>
                 </div>
 
                 <!-- Form cập nhật ghế -->
                 <div class="form-container">
-                    <h3>⚙️ Cập nhật ghế</h3>
+                    <h3>️ Cập nhật ghế</h3>
                     <form method="post" action="seatEdit">
                         <input type="hidden" name="auditoriumId" value="${auditoriumId}">
 
