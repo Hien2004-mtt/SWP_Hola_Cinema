@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,17 +88,33 @@
                 
             </td>
             <td>
-                <c:if test="${sessionScope.user.role != 2}">
-                <a href="${pageContext.request.contextPath}/voucher?action=edit&id=${v.voucherId}" class="btn btn-edit">️ Sửa</a>
-                <c:choose>
-            <c:when test="${v.isActive}">
-                <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" 
-                   class="btn btn-disable">Vô hiệu</a>
-            </c:when>
-            
-        </c:choose>
-                </c:if>
-            </td>
+    <c:if test="${sessionScope.user.role != 2}">
+        
+        <a href="${pageContext.request.contextPath}/voucher?action=edit&id=${v.voucherId}" class="btn btn-edit">✏️ Sửa</a>
+
+       
+        <c:if test="${v.isActive}">
+            <a href="${pageContext.request.contextPath}/voucher?action=delete&id=${v.voucherId}" 
+               class="btn btn-disable"> Vô hiệu</a>
+        </c:if>
+
+        
+        <c:if test="${!v.isActive}">
+            <c:choose>
+               
+                <c:when test="${v.validTo.time > now.time 
+                              and v.usageLimit > 0 
+                              and v.perUserLimit > 0}">
+                    <a href="${pageContext.request.contextPath}/voucher?action=activate&id=${v.voucherId}" 
+                       class="btn btn-activate"> Kích hoạt</a>
+                </c:when>
+
+                
+                
+            </c:choose>
+        </c:if>
+    </c:if>
+</td>
         </tr>
     </c:forEach>
     </tbody>

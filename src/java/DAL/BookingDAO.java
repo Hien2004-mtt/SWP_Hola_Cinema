@@ -6,12 +6,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * BookingDAO - thực hiện các thao tác CRUD với bảng Booking
  */
 public class BookingDAO {
-
+    public String hashBookingId(int bookingId) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(String.valueOf(bookingId).getBytes());
+        byte[] digest = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b));
+        }
+        // Lấy 8 ký tự đầu cho gọn
+        return sb.substring(0, 8).toUpperCase();
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+}
    
     public int addBooking(Connection conn,int userId, int showtimeId, double totalPrice) {
         // Câu SQL thêm booking mới. GETDATE() tự động ghi thời điểm tạo.

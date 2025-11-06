@@ -18,7 +18,7 @@
     <div class="ticket-box">
         <h3>️ Thông tin vé</h3>
         <table class="ticket-table">
-            <tr><th>Mã đặt vé:</th><td>${booking_id}</td></tr>
+            <tr><th>Mã đặt vé:</th><td>${booking_code}</td></tr>
 <tr><th>Khách hàng:</th><td>${customer_name}</td></tr>
 <tr><th>Phim:</th><td>${movie_title}</td></tr>
 <tr><th>Phòng chiếu:</th><td>${auditorium_name}</td></tr>
@@ -39,7 +39,7 @@
     <!-- ✅ Form áp dụng voucher -->
     <form id="voucherForm" action="${pageContext.request.contextPath}/applyVoucher" method="post" style="margin-top:20px;">
         <input type="hidden" name="bookingId" value="${bookingInfo.booking_id}" />
-        <label for="voucherCode"><b>🎁 Mã giảm giá:</b></label>
+        <label for="voucherCode"><b> Mã giảm giá:</b></label>
         <input type="text" id="voucherCode" name="voucherCode" placeholder="Nhập mã voucher..." />
         <button type="submit" class="btn-apply">Áp dụng</button>
     </form>
@@ -67,7 +67,7 @@
         <input type="hidden" name="redirectUrl" value="http://localhost:9999/SWP_Hola_Cinema_1/return" />
         <input type="hidden" name="extraData" value="" />
 
-        <h3>🔰 Chọn phương thức thanh toán:</h3>
+        <h3> Chọn phương thức thanh toán:</h3>
         <button type="submit" name="method" value="momo" class="btn">
             <img src="${pageContext.request.contextPath}/folder/momo.png" alt="MoMo"
                  style="height:20px; vertical-align:middle; margin-right:6px;">

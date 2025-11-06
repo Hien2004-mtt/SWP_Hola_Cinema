@@ -19,7 +19,7 @@ public class VoucherServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-
+        
         // 🧩 Nếu chưa đăng nhập → quay lại login
         if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
@@ -31,7 +31,7 @@ public class VoucherServlet extends HttpServlet {
 
         try (Connection conn = new DBContext().getConnection()) {
             VoucherDAO dao = new VoucherDAO(conn);
-
+             dao.autoUpdateVoucherStatus();
             // 🧠 Nếu role = 2 (customer)
             if (user.getRole() == 2) {
 
@@ -52,13 +52,16 @@ public class VoucherServlet extends HttpServlet {
             // ✅ Admin & Staff
             switch (action) {
                 case "list":
+                    dao.autoUpdateVoucherStatus();
                     req.setAttribute("list", dao.getAll());
+                     
                     req.getRequestDispatcher("/Views/listVoucher.jsp").forward(req, resp);
                     break;
 
                 case "delete":
                     int idDel = Integer.parseInt(req.getParameter("id"));
                     dao.setActive(idDel, false);
+                     
                     resp.sendRedirect("voucher?action=list");
                     break;
 

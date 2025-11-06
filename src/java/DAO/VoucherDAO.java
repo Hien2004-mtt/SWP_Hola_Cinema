@@ -13,27 +13,36 @@ public class VoucherDAO {
 
     public VoucherDAO(Connection conn) {
         this.conn = conn;
+        try {
+            autoUpdateVoucherStatus(); // ✅ Tự động update mỗi khi tạo DAO
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /* ==========================================================
     Hàm tự động cập nhật trạng thái voucher
        ========================================================== */
-    private void autoUpdateVoucherStatus() throws SQLException {
-        String sql = """
-            UPDATE Voucher
-            SET isActive = CASE
-                WHEN GETDATE() < valid_from THEN 0                   -- ❌ Chưa đến ngày bắt đầu
-                WHEN GETDATE() > valid_to THEN 0                     -- ❌ Hết hạn
-                WHEN usage_limit <= 0 OR per_user_limit <= 0 THEN 0  -- ❌ Hết lượt sử dụng
-                WHEN GETDATE() BETWEEN valid_from AND valid_to 
-                     AND usage_limit > 0 AND per_user_limit > 0 THEN 1  -- ✅ Còn hiệu lực
-                ELSE isActive
-            END
-        """;
-        try (Statement st = conn.createStatement()) {
-            st.executeUpdate(sql);
+    public void autoUpdateVoucherStatus() throws SQLException {
+    String sql = """
+        UPDATE Voucher
+        SET isActive = CASE
+                 WHEN isActive = 0 THEN 0
+            WHEN GETDATE() < valid_from THEN 0             -- Chưa tới ngày bắt đầu
+            WHEN GETDATE() > valid_to THEN 0               -- Hết hạn
+            WHEN usage_limit <= 0 OR per_user_limit <= 0 THEN 0 -- Hết lượt
+            WHEN GETDATE() BETWEEN valid_from AND valid_to
+                 AND usage_limit > 0 AND per_user_limit > 0 THEN 1
+            ELSE isActive
+        END
+    """;
+    try (Statement st = conn.createStatement()) {
+        int affected = st.executeUpdate(sql);
+        if (affected > 0) {
+           // System.out.println(" Voucher status auto-updated (" + affected + " rows)");
         }
     }
+}
 
     /* ==========================================================
        2️⃣ Lấy voucher theo code (chỉ active)
@@ -200,6 +209,7 @@ public class VoucherDAO {
             ps.setInt(2, id);
             ps.executeUpdate();
         }
+        autoUpdateVoucherStatus();
     }
 
     /* ==========================================================
