@@ -180,7 +180,6 @@
         <ul>
             <li><a href="home" class="active">Home</a></li>
             <li><a href="#">Movies</a></li>
-            <li><a href="#">Booking</a></li>
             <li><a href="#">News & Promotion</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
@@ -202,7 +201,7 @@
             </c:when>
             <c:otherwise>
                 <a href="login.jsp" class="btn">Sign in</a>
-                <a href="register.jsp" class="btn">Register</a>
+                <a href="register" class="btn">Register</a>
             </c:otherwise>
         </c:choose>
     </div>

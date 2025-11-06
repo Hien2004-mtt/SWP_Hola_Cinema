@@ -27,6 +27,12 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/unauthorized")
                 || path.contains("/css/")
                 || path.contains("/js/")
+                        // 👇 THÊM NHỮNG DÒNG NÀY 👇
+        || path.contains("/forgotPassword")
+        || path.contains("/Views/forgotPassword.jsp")
+        || path.contains("/EnterOtp.jsp")
+        || path.contains("/resetPassword")
+        || path.contains("/Views/resetPassword.jsp")
                 || path.contains("/images/")
                 || path.contains("/movieDetail")
                 || path.contains("/fonts/")
