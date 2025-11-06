@@ -7,13 +7,21 @@
     background-color: #ffffff;
     border-bottom: 2px solid #eaeaea;
     transition: all 0.3s ease;
+     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
-
+body {
+    padding-top: 80px; /* tăng nhẹ nếu vẫn bị che */
+}
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
     color: #e50914 !important; /* màu đỏ Netflix-style */
     letter-spacing: 0.5px;
+    
 }
 
 .navbar-brand:hover {
