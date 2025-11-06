@@ -8,11 +8,13 @@
     <title>Thanh toán - HolaCinema</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Views/css/payment.css" />
     <script src="${pageContext.request.contextPath}/Views/js/payment.js" defer></script>
+   
 </head>
 
 <body>
 <div class="container">
-    <h2>💳 Thanh toán đơn hàng</h2>
+     <jsp:include page="/Inculude/Header.jsp" />
+    <h2> Thanh toán đơn hàng</h2>
 
     <!--  Thông tin vé -->
     <div class="ticket-box">
@@ -85,7 +87,7 @@
         <h3 id="statusMsg"></h3>
         <img id="qrImg" src="" alt="QR Code" style="display:none; width:250px; margin-top:10px;">
     </div>
+    <jsp:include page="/Inculude/Footer.jsp" />
 </div>
-
 </body>
 </html>

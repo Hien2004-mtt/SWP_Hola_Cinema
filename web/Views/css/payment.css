@@ -1,98 +1,163 @@
+/* ========== RESET CƠ BẢN ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f6fa;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
 }
+
+/* ========== HEADER / FOOTER GIỮ NGUYÊN ========== */
+header, footer {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ========== KHỐI CHÍNH ========== */
 .container {
-    background: #fff;
-    margin-top: 60px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    width: 450px;
-    text-align: center;
-    animation: fadeIn 0.3s ease-in-out;
+  background: #fff;
+  width: 100%;
+  max-width: 520px; /* ✅ Giới hạn chiều rộng cho form giữa */
+  margin: 80px auto;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
 }
+
+/* ========== TIÊU ĐỀ ========== */
 h2 {
-    color: #a50064;
-    margin-bottom: 20px;
+  color: #a50064;
+  margin-bottom: 20px;
 }
+h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+/* ========== FORM & INPUT ========== */
 form {
-    margin: 15px 0;
+  margin: 15px 0;
 }
+
 input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 65%;
-    font-size: 14px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 70%;
+  font-size: 14px;
+  text-align: center;
 }
+
+/* ========== NÚT ========== */
 button {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 6px 4px;
-    transition: all 0.2s ease-in-out;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 8px 5px;
+  transition: all 0.2s ease-in-out;
 }
 
-
+/* Áp dụng */
 .btn-apply {
-    background: #3498db;
-    color: #fff;
+  background: #3498db;
+  color: #fff;
+  border: 1px solid #2980b9;
 }
 .btn-apply:hover {
-    background: #217dbb;
-}
-.btn-momo {
-    background: #a50064;
-    color: black;
-}
-.btn-momo:hover {
-    background: #80004d;
-}
-.btn-vnpay {
-    background: #27ae60;
-    color: black;
-}
-.btn-vnpay:hover {
-    background: #1f8a4a;
-}
-.total-box {
-    margin: 20px 0;
-    font-size: 16px;
-    text-align: left;
-    padding: 15px;
-    background: #f9f9f9;
-    border: 1px dashed #ccc;
-    border-radius: 8px;
-}
-.total-box p {
-    margin: 8px 0;
-}
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(15px);}
-    to {opacity: 1; transform: translateY(0);}
+  background: #217dbb;
 }
 
-
+/* Nút thanh toán */
 .btn {
-    background: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 5px;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease-in-out;
 }
 .btn:hover {
-    background: #eee;
+  background: #f7f7f7;
 }
 
+/* Logo trong nút */
+.btn img {
+  height: 22px;
+  width: auto;
+  vertical-align: middle;
+}
+
+/* ========== HỘP TỔNG TIỀN ========== */
+.total-box {
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+}
+.total-box p {
+  margin: 8px 0;
+}
+
+/* ========== THÔNG BÁO ALERT ========== */
+.alert {
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin: 15px 0;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.alert-success {
+  background: linear-gradient(90deg, #6A11CB, #F53844);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(245, 56, 68, 0.3);
+}
+.alert-error {
+  background: linear-gradient(90deg, #b31217, #e52d27);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(179, 18, 23, 0.3);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: #fff;
+  border-top: 1px solid #eaeaea;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #666;
+}
+footer a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+}
+footer a:hover {
+  color: #a50064;
+}
+
+/* ========== ANIMATION ========== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
