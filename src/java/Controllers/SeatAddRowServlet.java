@@ -21,9 +21,9 @@ public class SeatAddRowServlet extends HttpServlet {
             int auditoriumId = Integer.parseInt(request.getParameter("auditoriumId"));
             String row = request.getParameter("row").trim().toUpperCase();
 
-            // ✅ Kiểm tra ký tự hàng (A-Z)
+         
             if (!row.matches("^[A-Z]$")) {
-                request.getSession().setAttribute("messageSeat", "⚠️ Hàng ghế không hợp lệ! Chỉ được nhập từ A–Z.");
+                request.getSession().setAttribute("messageSeat", " Hàng ghế không hợp lệ! Chỉ được nhập từ A–Z.");
                 response.sendRedirect("seatAddRowForm?auditoriumId=" + auditoriumId);
                 return;
             }
@@ -31,22 +31,22 @@ public class SeatAddRowServlet extends HttpServlet {
             int seatCount = Integer.parseInt(request.getParameter("seatCount"));
             String seatType = request.getParameter("seatType");
 
-            // ✅ Lấy tổng ghế tối đa của phòng
+            //  Lấy tổng ghế tối đa của phòng
             AuditoriumDAO audDAO = new AuditoriumDAO();
             Auditorium auditorium = audDAO.getById(auditoriumId);
             int totalSeat = auditorium != null ? auditorium.getTotalSeat() : 0;
 
-            // ✅ Lấy danh sách ghế hiện tại của phòng
+            //  Lấy danh sách ghế hiện tại của phòng
             SeatDAO seatDAO = new SeatDAO();
             List<Seat> currentSeats = seatDAO.getSeatByAuditoriumId(auditoriumId);
             int currentSeatCount = currentSeats.size();
 
-            // ✅ Kiểm tra điều kiện thêm ghế
+            //  Kiểm tra điều kiện thêm ghế
             if (currentSeatCount == 0) {
                 // phòng chưa có ghế
-                if (seatCount < 10 || seatCount > totalSeat) {
+                if (seatCount < 0 || seatCount > totalSeat) {
                     request.getSession().setAttribute("messageSeat",
-                            "⚠️ Phòng chưa có ghế, số ghế thêm phải nằm trong khoảng 10 đến " + totalSeat + ".");
+                            "Phòng chưa có ghế, số ghế thêm phải nằm trong khoảng 10 đến " + totalSeat + ".");
                     response.sendRedirect("seatAddRowForm?auditoriumId=" + auditoriumId);
                     return;
                 }
@@ -54,14 +54,14 @@ public class SeatAddRowServlet extends HttpServlet {
                 // phòng đã có ghế
                 if (currentSeatCount + seatCount > totalSeat) {
                     request.getSession().setAttribute("messageSeat",
-                            "⚠️ Không thể thêm quá tổng " + totalSeat + " ghế cho phòng này! "
+                            "️ Không thể thêm quá tổng " + totalSeat + " ghế cho phòng này! "
                             + "(Hiện có: " + currentSeatCount + ", đang thêm: " + seatCount + ")");
                     response.sendRedirect("seatAddRowForm?auditoriumId=" + auditoriumId);
                     return;
                 }
             }
 
-            // ✅ Kiểm tra trùng hàng ghế
+            // Kiểm tra trùng hàng ghế
             List<Seat> existingSeats = seatDAO.getSeatByRow(auditoriumId, row);
             int existingCount = existingSeats.size();
 
@@ -71,7 +71,7 @@ public class SeatAddRowServlet extends HttpServlet {
 
                 if (seatDAO.isSeatExists(auditoriumId, row, seatNumber)) {
                     request.getSession().setAttribute("messageSeat",
-                            "⚠️ Ghế " + row + seatNumber + " đã tồn tại trong phòng " + auditoriumId + "!");
+                            "️ Ghế " + row + seatNumber + " đã tồn tại trong phòng " + auditoriumId + "!");
                     response.sendRedirect("seatAddRowForm?auditoriumId=" + auditoriumId);
                     return;
                 }
@@ -86,16 +86,16 @@ public class SeatAddRowServlet extends HttpServlet {
                 newSeats.add(s);
             }
 
-            // ✅ Thêm vào database
+            // Thêm vào database
             boolean success = seatDAO.addMultipleSeats(newSeats);
 
             if (success) {
                 request.getSession().setAttribute("messageSeat",
-                        "✅ Đã thêm " + seatCount + " ghế hàng " + row + " cho phòng #" + auditoriumId + ".");
+                        " Đã thêm " + seatCount + " ghế hàng " + row + " cho phòng #" + auditoriumId + ".");
                 response.sendRedirect("seatDetail?auditoriumId=" + auditoriumId);
             } else {
                 request.getSession().setAttribute("messageSeat",
-                        "❌ Lỗi khi thêm ghế vào cơ sở dữ liệu!");
+                        "Lỗi khi thêm ghế vào cơ sở dữ liệu!");
                 response.sendRedirect("seatAddRowForm?auditoriumId=" + auditoriumId);
             }
 

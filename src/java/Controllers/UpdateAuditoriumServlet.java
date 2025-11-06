@@ -27,9 +27,9 @@ public class UpdateAuditoriumServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         int totalSeat = Integer.parseInt(request.getParameter("totalSeat"));
-
+        String description = request.getParameter("description");
         AuditoriumDAO aud = new AuditoriumDAO();
-        aud.update(new Auditorium(id, name, totalSeat, false));
+        aud.update(new Auditorium(id, name, totalSeat,false,description));
         request.getSession().setAttribute("messageAuditorium", "Đã sửa phòng:"+name+",có tổng số ghế là: "+totalSeat);
         response.sendRedirect("listAuditorium");
         }catch(Exception e){

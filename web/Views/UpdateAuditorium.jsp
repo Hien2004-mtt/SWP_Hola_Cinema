@@ -23,6 +23,9 @@
             <label for="totalSeat">Tổng số ghế:</label><br>
             <input type="number" id="totalSeat" name="totalSeat" 
                    value="<%= a.getTotalSeat() %>" min="10" max="80" required><br><br>
+            <label for="description">Mô tả:</label><br>
+            <input type="text" id="description" name="description" value="<%= a.getDescription() %>"
+                   maxlength="250" required> <br><br>
             <button type="submit">Lưu thay đổi</button>
             <a href="listAuditorium">Hủy</a>
         </form>

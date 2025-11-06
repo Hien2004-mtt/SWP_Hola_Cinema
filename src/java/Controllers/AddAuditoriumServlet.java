@@ -22,9 +22,9 @@ public class AddAuditoriumServlet extends HttpServlet {
       try{
         String name = request.getParameter("name");
         int totalSeat = Integer.parseInt(request.getParameter("totalSeat"));
-
+        String description = request.getParameter("description");
         AuditoriumDAO aud = new AuditoriumDAO();
-        aud.insert(new Auditorium(0,name,totalSeat,false));
+        aud.insert(new Auditorium(0,name,totalSeat,false,description));
         request.getSession().setAttribute("messageAuditorium", "Thêm phòng chiếu:"+name+",có tổng số ghế là:"+totalSeat);
        response.sendRedirect("listAuditorium");
       }catch(Exception e){

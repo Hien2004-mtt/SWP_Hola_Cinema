@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="container">
-            <a href="seatList" class="btn-back"> Quay lại danh sách phòng</a>
+            <a href="listAuditorium" class="btn-back"> Quay lại danh sách phòng</a>
             <h2> Ẩn ghế trong phòng ${auditoriumId}</h2>
 
             <c:if test="${not empty sessionScope.messageSeatDelete}">
@@ -60,7 +60,7 @@
                     %>
                 </div>
 
-                <!-- ✅ Form ẩn ghế -->
+                <!-- Form ẩn ghế -->
                 <div class="form-container">
                     <h3> Ẩn ghế</h3>
                     <form method="post" action="seatDelete">

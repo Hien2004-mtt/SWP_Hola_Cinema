@@ -33,7 +33,7 @@ public class SeatDetailServlet extends HttpServlet {
             List<Seat> seats = seatDAO.getSeatByAuditoriumIdForManager(auditoriumId);
 
             if (seats == null || seats.isEmpty()) {
-                request.setAttribute("message", "⚠️ Phòng này hiện chưa có ghế nào.");
+                request.setAttribute("message", "Phòng này hiện chưa có ghế nào.");
             }
 
             request.setAttribute("auditoriumId", auditoriumId);
@@ -43,12 +43,12 @@ public class SeatDetailServlet extends HttpServlet {
             request.getRequestDispatcher("Views/SeatDetail.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "⚠️ Giá trị auditoriumId không hợp lệ!");
+            request.setAttribute("error", "️ Giá trị auditoriumId không hợp lệ!");
             request.getRequestDispatcher("Views/Error.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "❌ Đã xảy ra lỗi khi tải danh sách ghế!");
+            request.setAttribute("error", " Đã xảy ra lỗi khi tải danh sách ghế!");
             request.getRequestDispatcher("Views/Error.jsp").forward(request, response);
         }
     }

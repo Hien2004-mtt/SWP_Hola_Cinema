@@ -16,7 +16,8 @@
 
         <label for="totalSeat">Tổng số ghế:</label><br>
         <input type="number" id="totalSeat" name="totalSeat" min="10" max="80" placeholder="10-80" required><br><br>
-
+        <label for="description"> Mô tả</label><br>
+        <input type="text" id="description" name="description" maxlength="250" placeholder="Nhập mô tả ghế" required><br><br>
         <button type="submit">Thêm</button>
         <a href="${pageContext.request.contextPath}/listAuditorium">Hủy</a>
     </form>
