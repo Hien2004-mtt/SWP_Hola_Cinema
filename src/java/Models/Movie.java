@@ -1,6 +1,7 @@
 package Models;
 
 
+
 import java.time.LocalDate;
 import java.util.List;
 import java.sql.Date;
@@ -27,9 +28,11 @@ public class Movie {
     private List<String> actors;
 
 
+
     // ======== CONSTRUCTOR ========
     public Movie() {
     }
+
 
     public Movie(int movieId, String title, String rating, int durationMinutes, String language, LocalDate releaseDate,
             String status, String posterUrl, String trailerUrl, String directorName, String description,
@@ -50,6 +53,7 @@ public class Movie {
     }
     // ======== GETTER & SETTER ========
 
+    // --- Getters & Setters ---
     public int getMovieId() {
         return movieId;
     }
@@ -108,6 +112,14 @@ public class Movie {
 
     }
 
+    public String getDirectorName() {
+        return directorName;
+    }
+
+    public void setDirectorName(String directorName) {
+        this.directorName = directorName;
+    }
+
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -124,13 +136,6 @@ public class Movie {
         this.trailerUrl = trailerUrl;
     }
 
-    public String getDirectorName() {
-        return directorName;
-    }
-
-    public void setDirectorName(String directorName) {
-        this.directorName = directorName;
-    }
 
     public String getDescription() {
         return description;
@@ -186,5 +191,4 @@ public class Movie {
                 ", status='" + status + '\'' +
                 '}';
     }
-
 }

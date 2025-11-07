@@ -202,7 +202,7 @@
             </c:when>
             <c:otherwise>
                 <a href="login.jsp" class="btn">Sign in</a>
-                <a href="register.jsp" class="btn">Register</a>
+                <a href="register" class="btn">Register</a>
             </c:otherwise>
         </c:choose>
     </div>

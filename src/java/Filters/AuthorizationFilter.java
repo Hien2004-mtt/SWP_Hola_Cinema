@@ -30,6 +30,15 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/images/")
                 || path.contains("/movieDetail")
                 || path.contains("/fonts/")
+                || path.contains("/forgotPassword")
+                || path.contains("/Views/forgotPassword.jsp")
+                || path.contains("/EnterOtp.jsp")
+                || path.contains("/resetPassword")
+                || path.contains("/Views/resetPassword.jsp")
+                || path.contains("/changePassword.jsp")
+                || path.contains("/ValidateOtp")
+                || path.contains("/newPassword")
+                
                 || path.contains("selectionShowtime")
                 || path.contains("confirmShowtime")) {
             chain.doFilter(req, res);

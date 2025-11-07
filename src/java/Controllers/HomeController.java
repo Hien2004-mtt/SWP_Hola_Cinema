@@ -31,7 +31,7 @@ public class HomeController extends HttpServlet {
         List<Movie> comingSoon;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            nowShowing = movieDAO.userSearchMoviesByTitle(keyword.trim());
+            nowShowing = movieDAO.searchMoviesByTitle(keyword.trim());
             comingSoon = null; 
             request.setAttribute("searchKeyword", keyword);
         } else {

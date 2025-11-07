@@ -1,6 +1,5 @@
 package Controllers;
 
-import DAL.MovieDAO;
 import DAL.MovieDetailDAO;
 import Models.*;
 import java.io.IOException;
@@ -15,15 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class MovieDetailController extends HttpServlet {
 
     private final MovieDetailDAO dao = new MovieDetailDAO();
-    private final MovieDAO movieDAO = new MovieDAO();
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        Movie movie = movieDAO.getMovieById(id);
+
+        Movie movie = dao.getMovieDetail(id);
         List<Actor> actors = dao.getActorsByMovie(id);
         List<String> genres = dao.getGenresByMovie(id);
         List<Review> reviews = dao.getReviewsByMovie(id);
