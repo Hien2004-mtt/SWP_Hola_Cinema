@@ -24,8 +24,19 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/forgotPassword")
 public class ForgotPassword extends HttpServlet {
 
+<<<<<<< HEAD
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+=======
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("forgotPassword.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+>>>>>>> origin/Nguyễn-Quang-Huy
 
         String email = request.getParameter("email");
         RequestDispatcher dispatcher = null;

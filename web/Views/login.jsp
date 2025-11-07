@@ -141,11 +141,11 @@
             </form>
 
             <p class="text-center mt-4 register-link">
-                Don't have an account? <a href="register">Register now</a>
+                Don't have an account? <a href="${pageContext.request.contextPath}/register">Register now</a>
             </p>
             
              <p class="text-center mt-4 register-link">
-                Forgot your password? <a href="forgotPassword.jsp">Recover it here</a>
+                Forgot your password? <a href="${pageContext.request.contextPath}/forgotPassword">Recover it here</a>
             </p>
         </div>
 

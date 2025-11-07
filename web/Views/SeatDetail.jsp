@@ -9,13 +9,14 @@
 </head>
 <body>
     <div class="container">
-        <a href="seatList" class="btn-back">⬅ Quay lại danh sách phòng</a>
+        <a href="listAuditorium" class="btn-back">⬅ Quay lại danh sách phòng</a>
         <h2> Sơ đồ ghế của phòng ${auditoriumId}</h2>
 
         <c:if test="${not empty sessionScope.messageSeat}">
             <div class="message">${sessionScope.messageSeat}</div>
             <c:remove var="messageSeat" scope="session"/>
         </c:if>
+      
 
         <div class="screen">MÀN HÌNH</div>
 
@@ -60,7 +61,24 @@
             %>
         </div>
 
-       
+             <div class="seat-actions">
+        <form method="get" action="seatAddRowForm" style="display:inline;">
+            <input type="hidden" name="auditoriumId" value="${auditoriumId}">
+            <button type="submit" class="btn btn-add"> Thêm ghế</button>
+        </form>
+
+        <form method="get" action="seatEdit" style="display:inline;">
+            <input type="hidden" name="auditoriumId" value="${auditoriumId}">
+            <button type="submit" class="btn btn-edit"> Sửa ghế</button>
+        </form>
+
+        <form method="post" action="seatDelete" style="display:inline;">
+            <input type="hidden" name="auditoriumId" value="${auditoriumId}">
+            <button type="submit" class="btn btn-delete"">
+                ️ Xóa ghế
+            </button>
+        </form>
+    </div>
 
         <div class="legend">
             <p><b>Chú thích:</b></p>

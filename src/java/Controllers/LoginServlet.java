@@ -67,16 +67,16 @@ public class LoginServlet extends HttpServlet {
                 // Redirect based on role
                 switch (user.getRole()) {
                     case 0: // Admin
-                        response.sendRedirect("admin-home");
+                        response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                         break;
                     case 1: // Staff
-                        response.sendRedirect("staff-home");
+                        response.sendRedirect(request.getContextPath() + "/staff-home");
                         break;
                     case 2: // Customer
-                        response.sendRedirect("home");
+                        response.sendRedirect(request.getContextPath() + "/home");
                         break;
                     default:
-                        response.sendRedirect("home");
+                        response.sendRedirect(request.getContextPath() + "/home");
                 }
             } else {
                 // Login failed

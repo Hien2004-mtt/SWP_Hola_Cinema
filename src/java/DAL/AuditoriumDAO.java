@@ -17,7 +17,8 @@ public class AuditoriumDAO {
                         rs.getInt("auditorium_id"),
                         rs.getString("name"),
                         rs.getInt("total_seat"),
-                        rs.getBoolean("is_deleted")
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("description ")
                 ));
             }
             System.out.println("Load " + list.size() + " phòng chiếu.");
@@ -37,7 +38,8 @@ public class AuditoriumDAO {
                         rs.getInt("auditorium_id"),
                         rs.getString("name"),
                         rs.getInt("total_seat"),
-                        rs.getBoolean("is_deleted")
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("description")
                 ));
             }
             System.out.println("Load " + list.size() + " phòng chiếu.");
@@ -60,7 +62,8 @@ public class AuditoriumDAO {
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
                             rs.getInt("total_seat"),
-                            rs.getBoolean("is_deleted")
+                            rs.getBoolean("is_deleted"),
+                            rs.getString("description")
                     ));
                 }
             }
@@ -72,11 +75,12 @@ public class AuditoriumDAO {
     }
 
     public void insert(Auditorium au) {
-        String sql = "INSERT INTO Auditorium (name,total_seat,is_deleted) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Auditorium (name,total_seat,is_deleted,description) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
             ps.setString(1, au.getName());
             ps.setInt(2,au.getTotalSeat());
             ps.setBoolean(3, au.isIsDeleted());
+            ps.setString(4, au.getDescription());
             ps.executeUpdate();
             System.out.println("Thêm phòng chiếu thành công!");
         } catch (Exception e) {
@@ -88,13 +92,15 @@ public class AuditoriumDAO {
         String sql = "UPDATE Auditorium SET "
                 + "name = ?, "
                 + "total_seat = ?, "
-                + "is_deleted = ? "
+                + "is_deleted = ?,"
+                + "description = ? "
                 + "WHERE auditorium_id = ?";
         try (PreparedStatement ps = DBContext.getConnection().prepareStatement(sql)) {
             ps.setString(1, au.getName());
             ps.setInt(2, au.getTotalSeat());
             ps.setBoolean(3, au.isIsDeleted());
-            ps.setInt(4, au.getAuditoriumId());
+            ps.setString(4, au.getDescription());
+            ps.setInt(5, au.getAuditoriumId());
             ps.executeUpdate();
             System.out.println("Cập nhật phòng chiếu thành công!");
         } catch (Exception e) {
@@ -133,7 +139,8 @@ public class AuditoriumDAO {
                             rs.getInt("auditorium_id"),
                             rs.getString("name"),
                             rs.getInt("total_seat"),
-                            rs.getBoolean("is_deleted")
+                            rs.getBoolean("is_deleted"),
+                            rs.getString("description")
                     );
                 }
             }
@@ -156,7 +163,45 @@ public class AuditoriumDAO {
         }
         return "Không rõ phòng chiếu";
     }
-    
+    public int countAuditoriums() {
+    String sql = "SELECT COUNT(*) FROM Auditorium";
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) return rs.getInt(1);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+public List<Auditorium> getAuditoriumsByPage(int page, int pageSize) {
+    List<Auditorium> list = new ArrayList<>();
+    String sql = """
+        SELECT * FROM Auditorium
+        ORDER BY auditorium_id
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, (page - 1) * pageSize);
+        ps.setInt(2, pageSize);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Auditorium a = new Auditorium();
+            a.setAuditoriumId(rs.getInt("auditorium_id"));
+            a.setName(rs.getString("name"));
+            a.setTotalSeat(rs.getInt("total_seat"));
+            a.setDescription(rs.getString("description"));
+            a.setIsDeleted(rs.getBoolean("is_deleted"));
+            list.add(a);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
         
 
 }
