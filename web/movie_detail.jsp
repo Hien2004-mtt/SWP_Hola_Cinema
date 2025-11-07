@@ -130,7 +130,7 @@
 
             <!-- ====== NÚT HÀNH ĐỘNG ====== -->
             <div class="action-buttons">
-                <a href="booking?movieId=${movie.movieId}" class="btn btn-book">🎟️ Đặt vé ngay</a>
+                <a href="selectionShowtime?movieId=${movie.movieId}" class="btn btn-book">🎟️ Đặt vé ngay</a>
                 <a href="home" class="btn btn-back">⬅️ Quay lại trang chủ</a>
             </div>
         </div>
