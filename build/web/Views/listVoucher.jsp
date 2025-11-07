@@ -7,7 +7,7 @@
 <html>
 <head>
     <title>Danh sách Voucher</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/listVoucher.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listVoucher.css">
     <script src="${pageContext.request.contextPath}/Views/js/listVoucher.js" defer></script>
 </head>
 <body>

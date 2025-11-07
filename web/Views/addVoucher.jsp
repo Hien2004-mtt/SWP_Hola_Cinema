@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Thêm Voucher</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/voucherForm.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/voucherForm.css">
     <script src="${pageContext.request.contextPath}/Views/js/addVoucher.js" defer></script>
 </head>
 <body>

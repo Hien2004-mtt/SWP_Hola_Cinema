@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Thanh toán - HolaCinema</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/payment.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/payment.css" />
     <script src="${pageContext.request.contextPath}/Views/js/payment.js" defer></script>
    
 </head>

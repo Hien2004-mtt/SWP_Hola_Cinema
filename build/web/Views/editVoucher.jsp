@@ -4,7 +4,7 @@
 <head>
 <h2>Cập nhật Voucher</h2>
 <script src="${pageContext.request.contextPath}/Views/js/addVoucher.js" defer></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/voucherForm.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/voucherForm.css">
 </head>
 <body>
 <div class="container">

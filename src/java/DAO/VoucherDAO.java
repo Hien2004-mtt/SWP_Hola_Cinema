@@ -26,14 +26,14 @@ public class VoucherDAO {
     public void autoUpdateVoucherStatus() throws SQLException {
     String sql = """
         UPDATE Voucher
-        SET isActive = CASE
-                 WHEN isActive = 0 THEN 0
+        SET is_active = CASE
+                 WHEN is_active = 0 THEN 0
             WHEN GETDATE() < valid_from THEN 0             -- Chưa tới ngày bắt đầu
             WHEN GETDATE() > valid_to THEN 0               -- Hết hạn
             WHEN usage_limit <= 0 OR per_user_limit <= 0 THEN 0 -- Hết lượt
             WHEN GETDATE() BETWEEN valid_from AND valid_to
                  AND usage_limit > 0 AND per_user_limit > 0 THEN 1
-            ELSE isActive
+            ELSE is_active
         END
     """;
     try (Statement st = conn.createStatement()) {
@@ -50,7 +50,7 @@ public class VoucherDAO {
     public Voucher getVoucherByCode(String code) throws SQLException {
         autoUpdateVoucherStatus();
 
-        String sql = "SELECT * FROM Voucher WHERE code = ? AND isActive = 1";
+        String sql = "SELECT * FROM Voucher WHERE code = ? AND is_active = 1";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
@@ -87,7 +87,7 @@ public class VoucherDAO {
         List<Voucher> list = new ArrayList<>();
         String sql = """
             SELECT * FROM Voucher
-            WHERE isActive = 1
+            WHERE is_active = 1
               AND GETDATE() BETWEEN valid_from AND valid_to
               AND usage_limit > 0
               AND per_user_limit > 0
@@ -146,7 +146,7 @@ public class VoucherDAO {
         }
 
         String sql = """
-            INSERT INTO Voucher (code, type, value, valid_from, valid_to, usage_limit, per_user_limit, isActive)
+            INSERT INTO Voucher (code, type, value, valid_from, valid_to, usage_limit, per_user_limit, is_active)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
@@ -174,7 +174,7 @@ public class VoucherDAO {
         String sql = """
             UPDATE Voucher 
             SET type=?, value=?, valid_from=?, valid_to=?, usage_limit=?, per_user_limit=?,
-                isActive = CASE
+                is_active = CASE
                     WHEN GETDATE() < ? OR GETDATE() > ? THEN 0
                     WHEN ? <= 0 OR ? <= 0 THEN 0
                     ELSE 1
@@ -203,7 +203,7 @@ public class VoucherDAO {
       9️⃣ Xóa mềm (vô hiệu / kích hoạt thủ công)
        ========================================================== */
     public void setActive(int id, boolean active) throws SQLException {
-        String sql = "UPDATE Voucher SET isActive = ? WHERE voucher_id = ?";
+        String sql = "UPDATE Voucher SET is_active = ? WHERE voucher_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBoolean(1, active);
             ps.setInt(2, id);
@@ -225,7 +225,7 @@ public class VoucherDAO {
         v.setValidTo(rs.getDate("valid_to"));
         v.setUsageLimit(rs.getInt("usage_limit"));
         v.setPerUserLimit(rs.getInt("per_user_limit"));
-        v.setIsActive(rs.getBoolean("isActive"));
+        v.setIsActive(rs.getBoolean("is_active"));
         return v;
     }
 
@@ -261,7 +261,7 @@ public class VoucherDAO {
     String sqlCheck = """
         SELECT v.voucher_id, v.per_user_limit
         FROM Voucher v
-        WHERE v.code = ? AND v.isActive = 1
+        WHERE v.code = ? AND v.is_active = 1
     """;
     int voucherId = 0;
     int perUserLimit = 1;
