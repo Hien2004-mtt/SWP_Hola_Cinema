@@ -5,26 +5,26 @@
 %>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Sửa thông tin phòng chiếu</title>
-    <link rel="stylesheet" href="css/Auditorium.css">
-</head>
-<body>
-    <h2>Sửa thông tin phòng chiếu</h2>
+    <head>
+        <meta charset="UTF-8">
+        <title>Sửa thông tin phòng chiếu</title>
+        <link rel="stylesheet" href="css/Auditorium.css">
+    </head>
+    <body>
+        <h2>Sửa thông tin phòng chiếu</h2>
 
-    <!-- Form gửi đến UpdateAuditoriumServlet -->
-    <form method="post" action="updateAuditorium">
-        <input type="hidden" name="id" value="<%= a.getAuditoriumId() %>">
+        <!-- Form gửi đến UpdateAuditoriumServlet -->
+        <form method="post" action="updateAuditorium">
+            <input type="hidden" name="id" value="<%= a.getAuditoriumId() %>">
 
-        <label for="name">Tên phòng:</label><br>
-        <input type="text" id="name" name="name" value="<%= a.getName() %>" required><br><br>
+            <label for="name">Tên phòng:</label><br>
+            <input type="text" id="name" name="name" value="<%= a.getName() %>" required><br><br>
 
-        <label for="layout">Sơ đồ ghế:</label><br>
-        <input type="text" id="layout" name="layout" value="<%= a.getSeatLayoutMeta() %>" required><br><br>
-
-        <button type="submit">Lưu thay đổi</button>
-        <a href="listAuditorium">Hủy</a>
-    </form>
-</body>
+            <label for="totalSeat">Tổng số ghế:</label><br>
+            <input type="number" id="totalSeat" name="totalSeat" 
+                   value="<%= a.getTotalSeat() %>" min="10" max="80" required><br><br>
+            <button type="submit">Lưu thay đổi</button>
+            <a href="listAuditorium">Hủy</a>
+        </form>
+    </body>
 </html>

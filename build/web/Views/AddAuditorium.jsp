@@ -14,8 +14,8 @@
         <label for="name">Tên phòng:</label><br>
         <input type="text" id="name" name="name" placeholder="Nhập tên phòng chiếu" required><br><br>
 
-        <label for="layout">Sơ đồ ghế:</label><br>
-        <input type="text" id="layout" name="layout" placeholder="Mô tả sơ đồ ghế (VD: 10x12)" required><br><br>
+        <label for="totalSeat">Tổng số ghế:</label><br>
+        <input type="number" id="totalSeat" name="totalSeat" min="10" max="80" placeholder="10-80" required><br><br>
 
         <button type="submit">Thêm</button>
         <a href="${pageContext.request.contextPath}/listAuditorium">Hủy</a>

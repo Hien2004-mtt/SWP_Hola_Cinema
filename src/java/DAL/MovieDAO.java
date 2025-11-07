@@ -127,15 +127,7 @@ public class MovieDAO extends DBContext {
             }
 
         } catch (SQLException e) {
-            LocalDate releaseDate = m.getReleaseDate();
-            if (releaseDate != null) {
-                ps.setDate(5, Date.valueOf(releaseDate));
-            } else {
-                ps.setNull(5, Types.DATE);
-            }
-            m.setRating(rs.getString("rating"));
-            m.setPosterUrl(rs.getString("poster_url"));
-            return m;
+            e.printStackTrace();
         }
         return null;
     }
