@@ -1,3 +1,4 @@
+
 package Models;
 
 
@@ -10,7 +11,6 @@ import java.sql.Date;
  * @author dinhh
  */
 public class Movie {
-
     private int movieId;
     private String title;
     private String rating;
@@ -51,9 +51,9 @@ public class Movie {
         this.genreIds = genreIds;
         this.actorIds = actorIds;
     }
+
     // ======== GETTER & SETTER ========
 
-    // --- Getters & Setters ---
     public int getMovieId() {
         return movieId;
     }

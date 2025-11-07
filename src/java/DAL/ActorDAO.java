@@ -97,7 +97,6 @@ public class ActorDAO {
         }
         return actors;
     }
-
     // ✅ Soft delete actor
     public boolean softDeleteActor(int actorId) throws SQLException {
         String sql = "UPDATE Actor SET is_active = 0 WHERE actor_id = ?";

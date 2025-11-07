@@ -1,0 +1,292 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 2, 2025, 7:59:40 AM
+    Author     : dinhh
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+.form-wrapper {
+    display: flex;
+    gap: 25px;
+}
+
+.poster-section {
+    display: flex;
+    justify-content: center;   /* căn giữa ngang */
+    align-items: center;       /* căn giữa dọc */
+    margin-bottom: 20px;       /* khoảng cách dưới */
+}
+
+.poster-label {
+    font-size: 16px;
+    color: #555;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.poster-section input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.poster-preview {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.movie-form {
+    flex: 2;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.half {
+    flex: 1;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.inline-input {
+    display: flex;
+    gap: 10px;
+}
+
+.small-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.small-btn:hover {
+    background: #0056b3;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button[type="submit"] {
+    background: #28a745;
+    color: #fff;
+}
+
+button.cancel {
+    background: #dc3545;
+    color: #fff;
+}
+
+button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+/* === Modal chung === */
+.modal {
+  display: none; /* mặc định ẩn */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Nội dung modal === */
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* animation nho nhỏ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.manage-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;              /* căn giữa theo chiều ngang */
+}
+
+.manage-table th,
+.manage-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;              /* căn giữa nội dung */
+  vertical-align: middle;          /* căn giữa theo chiều dọc */
+}
+
+.manage-table thead {
+  background: #f8f8f8;
+  font-weight: bold;
+}
+
+/* khối cuộn riêng cho danh sách */
+.manage-table-container {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 55vh;
+  margin-bottom: 10px;
+}
+
+/* phần thêm mới */
+.add-section {
+  display: flex;
+  justify-content: center;   /* căn giữa theo chiều ngang */
+  align-items: center;       /* căn giữa theo chiều dọc */
+  gap: 10px;                 /* khoảng cách giữa ô input và nút */
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+}
+
+.add-section input[type="text"] {
+  width: 60%;                /* chiếm 60% chiều rộng */
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.add-section button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-section button:hover {
+  background: #0056b3;
+}
+
+
+/* nút đóng */
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+}
+.close:hover { color: #000; }
+
+
+.poster-frame {
+    width: 200px;
+    height: 280px;
+    border: 1px solid #aaa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.poster-frame span {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.poster-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 15px;
+    align-self: center;
+}

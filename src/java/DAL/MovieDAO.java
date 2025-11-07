@@ -1,3 +1,4 @@
+
 package DAL;
 
 import static DAL.DBContext.getConnection;
@@ -17,10 +18,10 @@ public class MovieDAO extends DBContext {
     // Check if movie exiests
     public boolean movieExists(String title, String directorName) {
         String sql = """
-            SELECT COUNT(*) FROM Movie
-            WHERE LOWER(TRIM(title)) = LOWER(TRIM(?))
-            AND LOWER(TRIM(director_name)) = LOWER(TRIM(?))
-        """;
+                    SELECT COUNT(*) FROM Movie
+                    WHERE LOWER(TRIM(title)) = LOWER(TRIM(?))
+                    AND LOWER(TRIM(director_name)) = LOWER(TRIM(?))
+                """;
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, title);
             stmt.setString(2, directorName);
@@ -37,19 +38,17 @@ public class MovieDAO extends DBContext {
     // Method to add a new movie and return its generated ID
     public int addMovie(Movie movie) {
         String sql = """
-            INSERT INTO Movie (title, description, duration_minutes, language,
-                release_date, rating, poster_url, trailer_url, director_name, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+                    INSERT INTO Movie (title, description, duration_minutes, language,
+                        release_date, rating, poster_url, trailer_url, director_name, status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
         int movieId = -1;
-
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setNString(1, movie.getTitle());
             ps.setNString(2, movie.getDescription());
             ps.setInt(3, movie.getDurationMinutes());
             ps.setNString(4, movie.getLanguage());
-
             LocalDate releaseDate = movie.getReleaseDate();
             if (releaseDate != null) {
                 ps.setDate(5, Date.valueOf(releaseDate));
@@ -62,7 +61,6 @@ public class MovieDAO extends DBContext {
             ps.setString(8, movie.getTrailerUrl());
             ps.setNString(9, movie.getDirectorName());
             ps.setString(10, movie.getStatus());
-
             int affected = ps.executeUpdate();
             if (affected > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
@@ -129,7 +127,15 @@ public class MovieDAO extends DBContext {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LocalDate releaseDate = m.getReleaseDate();
+            if (releaseDate != null) {
+                ps.setDate(5, Date.valueOf(releaseDate));
+            } else {
+                ps.setNull(5, Types.DATE);
+            }
+            m.setRating(rs.getString("rating"));
+            m.setPosterUrl(rs.getString("poster_url"));
+            return m;
         }
         return null;
     }
@@ -137,10 +143,10 @@ public class MovieDAO extends DBContext {
     // ===== UPDATE MOVIE =====
     public boolean updateMovie(Movie movie) {
         String sql = """
-            UPDATE Movie SET title=?, description=?, duration_minutes=?, language=?, 
-                release_date=?, rating=?, poster_url=?, trailer_url=?, 
-                director_name=?, status=? WHERE movie_id=?
-        """;
+                    UPDATE Movie SET title=?, description=?, duration_minutes=?, language=?, 
+                        release_date=?, rating=?, poster_url=?, trailer_url=?, 
+                        director_name=?, status=? WHERE movie_id=?
+                """;
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setNString(1, movie.getTitle());
@@ -276,19 +282,19 @@ public class MovieDAO extends DBContext {
 
     // Lọc phim theo nhiều tiêu chí
     public List<Movie> filterMoviesWithPaging(String keyword, String genreId, String actorId,
-            String status, String rating, String director, int offset, int pageSize) throws SQLException {
+                                              String status, String rating, String director, int offset, int pageSize) throws SQLException {
         List<Movie> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder("""
-        SELECT DISTINCT m.movie_id, m.title, m.rating, m.language, m.duration_minutes, m.release_date, 
-                        m.status, m.director_name, m.poster_url
-        FROM Movie m
-        LEFT JOIN Movie_Genre mg ON m.movie_id = mg.movie_id
-        LEFT JOIN Genre g ON mg.genre_id = g.genre_id AND g.is_active = 1
-        LEFT JOIN Movie_Actor ma ON m.movie_id = ma.movie_id
-        LEFT JOIN Actor a ON ma.actor_id = a.actor_id AND a.is_active = 1
-        WHERE 1=1
-    """);
+                    SELECT DISTINCT m.movie_id, m.title, m.rating, m.language, m.duration_minutes, m.release_date, 
+                                    m.status, m.director_name, m.poster_url
+                    FROM Movie m
+                    LEFT JOIN Movie_Genre mg ON m.movie_id = mg.movie_id
+                    LEFT JOIN Genre g ON mg.genre_id = g.genre_id AND g.is_active = 1
+                    LEFT JOIN Movie_Actor ma ON m.movie_id = ma.movie_id
+                    LEFT JOIN Actor a ON ma.actor_id = a.actor_id AND a.is_active = 1
+                    WHERE 1=1
+                """);
 
         List<Object> params = new ArrayList<>();
 
@@ -349,16 +355,16 @@ public class MovieDAO extends DBContext {
     }
 
     public int countFilteredMovies(String keyword, String genreId, String actorId,
-            String status, String director) throws SQLException {
+                                   String status, String director) throws SQLException {
         StringBuilder sql = new StringBuilder("""
-        SELECT COUNT(DISTINCT m.movie_id)
-        FROM Movie m
-        LEFT JOIN Movie_Genre mg ON m.movie_id = mg.movie_id
-        LEFT JOIN Genre g ON mg.genre_id = g.genre_id AND g.is_active = 1
-        LEFT JOIN Movie_Actor ma ON m.movie_id = ma.movie_id
-        LEFT JOIN Actor a ON ma.actor_id = a.actor_id AND a.is_active = 1
-        WHERE 1=1
-    """);
+                    SELECT COUNT(DISTINCT m.movie_id)
+                    FROM Movie m
+                    LEFT JOIN Movie_Genre mg ON m.movie_id = mg.movie_id
+                    LEFT JOIN Genre g ON mg.genre_id = g.genre_id AND g.is_active = 1
+                    LEFT JOIN Movie_Actor ma ON m.movie_id = ma.movie_id
+                    LEFT JOIN Actor a ON ma.actor_id = a.actor_id AND a.is_active = 1
+                    WHERE 1=1
+                """);
 
         List<Object> params = new ArrayList<>();
 
@@ -413,13 +419,13 @@ public class MovieDAO extends DBContext {
     private List<Movie> getMoviesByStatus(String status) {
         List<Movie> list = new ArrayList<>();
         String sql = """
-            SELECT m.*, 
-                   d.name AS director_name
-            FROM Movie m
-            LEFT JOIN Director d ON m.director_id = d.director_id
-            WHERE m.status = ?
-            ORDER BY m.release_date DESC
-        """;
+                    SELECT m.*, 
+                           d.name AS director_name
+                    FROM Movie m
+                    LEFT JOIN Director d ON m.director_id = d.director_id
+                    WHERE m.status = ?
+                    ORDER BY m.release_date DESC
+                """;
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -462,12 +468,12 @@ public class MovieDAO extends DBContext {
     public List<Movie> userGetAllMovies() {
         List<Movie> list = new ArrayList<>();
         String sql = """
-            SELECT m.*, 
-                   d.name AS director_name
-            FROM Movie m
-            LEFT JOIN Director d ON m.director_id = d.director_id
-            ORDER BY m.movie_id DESC
-        """;
+                    SELECT m.*, 
+                           d.name AS director_name
+                    FROM Movie m
+                    LEFT JOIN Director d ON m.director_id = d.director_id
+                    ORDER BY m.movie_id DESC
+                """;
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -488,12 +494,12 @@ public class MovieDAO extends DBContext {
     public List<Movie> userSearchMoviesByTitle(String keyword) {
         List<Movie> list = new ArrayList<>();
         String sql = """
-        SELECT m.*, d.name AS director_name
-        FROM Movie m
-        LEFT JOIN Director d ON m.director_id = d.director_id
-        WHERE m.title LIKE ?
-        ORDER BY m.release_date DESC
-    """;
+                    SELECT m.*, d.name AS director_name
+                    FROM Movie m
+                    LEFT JOIN Director d ON m.director_id = d.director_id
+                    WHERE m.title LIKE ?
+                    ORDER BY m.release_date DESC
+                """;
 
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -512,7 +518,9 @@ public class MovieDAO extends DBContext {
         return list;
     }
 
-    /** Lấy danh sách phim đã lưu trữ */
+    /**
+     * Lấy danh sách phim đã lưu trữ
+     */
     public List<Movie> getArchivedMovies() {
         return getMoviesByStatus("archived");
     }

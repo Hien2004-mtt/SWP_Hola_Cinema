@@ -79,6 +79,7 @@ public class MovieManagementServlet extends HttpServlet {
             int totalMovies = movieDAO.countFilteredMovies(keyword, genreId, actorId, status, director);
             int totalPages = (int) Math.ceil((double) totalMovies / pageSize);
 
+
             // Gửi dữ liệu sang JSP
             request.setAttribute("movieList", movies);
             request.setAttribute("movieGenres", movieGenres);
@@ -90,8 +91,6 @@ public class MovieManagementServlet extends HttpServlet {
             request.setAttribute("actorId", actorId);
             request.setAttribute("status", status);
             request.setAttribute("director", director);
-            
-            
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
 
