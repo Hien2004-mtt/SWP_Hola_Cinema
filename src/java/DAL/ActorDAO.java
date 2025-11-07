@@ -32,7 +32,6 @@ public class ActorDAO {
         }
         return actors;
     }
-
     /**
      * ✅ Thêm mới hoặc kích hoạt lại actor nếu đã tồn tại nhưng is_active = 0
      * @return -2 nếu đã tồn tại và active
