@@ -21,7 +21,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link <%= request.getRequestURI().contains("home") ? "active" : "" %>" href="${pageContext.request.contextPath}/home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Movies</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/movies">Movies</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Booking</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Promotions</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>

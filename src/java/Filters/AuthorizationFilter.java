@@ -38,7 +38,7 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/changePassword.jsp")
                 || path.contains("/ValidateOtp")
                 || path.contains("/newPassword")
-                
+                || path.contains("/movies")
                 || path.contains("selectionShowtime")
                 || path.contains("confirmShowtime")) {
             chain.doFilter(req, res);
@@ -55,7 +55,10 @@ public class AuthorizationFilter implements Filter {
         if (path.contains("listAuditorium")
                 || path.contains("addAuditorium")
                 || path.contains("updateAuditorium")
-                || path.contains("deleteAuditorium")) {
+                || path.contains("deleteAuditorium")
+                || path.contains("movie_management")
+                || path.contains("add_movie")
+                || path.contains("edit_movie")) {
 
             if (role != 1) {
                 request.getRequestDispatcher("Views/Unauthorized.jsp").forward(request, response);
