@@ -5,39 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c5618703-cab1-41fd-b551-07bb67de26da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/AdminDashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/AgendaController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/FoodManagementController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/MovieDetailController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/RestoreAuditoriumServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/RevenueController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/SeatAddRowFormServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Controllers/SeatAddRowServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/DAL/AdminDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/DAL/FoodDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/DAL/MovieDetailDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/DAL/RevenueDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Models/Actor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Models/Food.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Models/RevenueRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/Models/Review.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/AddSeatRow.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/Error.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/SeatEdit.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/admin/dashboard.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/agenda.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/foodManagement.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/Views/revenue.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/AddSeatRow.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/Header.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/SeatDelete.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/SeatDetail.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/SeatEdit.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/SeatList.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/schedule.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/home.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/movie_detail.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/search.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/build-impl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/build-impl.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/genfiles.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/genfiles.properties" afterDir="false" />
@@ -45,48 +13,21 @@
       <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/AccountListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/AccountListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/AddAuditoriumServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/AddAuditoriumServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/DashboardServlet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/DeleteAuditoriumServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/DeleteAuditoriumServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/Controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/ListAuditoriumServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/ListAuditoriumServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/LoginServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/RegisterServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/RegisterServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatAddServlet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatDeleteServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/SeatDeleteServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatDetailServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/SeatDetailServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatEditServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/SeatEditServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatListServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/SeatListServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/SeatServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/SeatServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/ShowtimeSelectionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/ShowtimeSelectionServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Controllers/UpdateAuditoriumServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/UpdateAuditoriumServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/DAL/AuditoriumDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/DAL/AuditoriumDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/DAL/DashboardDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Controllers/MovieDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Controllers/MovieDetailController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/DAL/MovieDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/DAL/MovieDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/DAL/SeatDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/DAL/SeatDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/DAL/ShowtimeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/DAL/ShowtimeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/DAL/MovieDetailDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/DAL/MovieDetailDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/Filters/AuthorizationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Filters/AuthorizationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Models/Auditorium.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Models/Auditorium.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/Models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Models/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/Models/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Models/Seat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Util/ForgotPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Util/ForgotPassword.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/Util/NewPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Util/NewPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Inculude/Header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Inculude/Header.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/AddAuditorium.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/AddAuditorium.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/AddSeat.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/Auditorium.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/Auditorium.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/Seat.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/Seat.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/SeatDelete.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/SeatDelete.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/SeatDetail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/SeatDetail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/SeatList.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/SeatList.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/Showtime.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/Showtime.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/UpdateAuditorium.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/UpdateAuditorium.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/dashboard.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/Views/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/home.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/css/Auditorium.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/Auditorium.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/css/Seat.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/Seat.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/js/Seat.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/Seat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/Views/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/Views/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/register.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/Views/revenue.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/revenue.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/Views/updateProfile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/Views/updateProfile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/forgotPassword.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/forgotPassword.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/home.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/movie_detail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/movie_detail.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
