@@ -1,8 +1,11 @@
 package Controllers.Util;
 
+import jakarta.websocket.Session;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 /**
@@ -32,7 +35,7 @@ public class EmailUtil {
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(from, "? HolaCinema Center"));
+            msg.setFrom(new InternetAddress(from, " HolaCinema Center"));
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             msg.setSubject(subject);
 
