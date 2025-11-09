@@ -93,20 +93,6 @@ public class GenreDAO {
         return genres;
     }
 
-    // Không cần dùng nữa nếu đã có insertOrReactivateGenre()
-    public boolean genreExists(String name) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM Genre WHERE name = ? AND is_active = 1";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        }
-        return false;
-    }
-
     // Xóa mềm genre
     public boolean softDeleteGenre(int genreId) throws SQLException {
         String sql = "UPDATE Genre SET is_active = 0 WHERE genre_id = ?";

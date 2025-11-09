@@ -179,7 +179,8 @@
     <nav>
         <ul>
             <li><a href="home" class="active">Home</a></li>
-            <li><a href="#">Movies</a></li>
+            <li><a href="${pageContext.request.contextPath}/movies">Movies</a></li>
+            <li><a href="#">Booking</a></li>
             <li><a href="#">News & Promotion</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
