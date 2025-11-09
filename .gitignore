@@ -10,3 +10,4 @@ build/web/WEB-INF/lib/sqljdbc42.jar
 nbproject/private/private.properties
 nbproject/private/private.xml
 web/WEB-INF/web.xml
+/nbproject/private/
