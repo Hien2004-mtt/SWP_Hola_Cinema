@@ -153,6 +153,7 @@
         th, td {
             padding: 12px 10px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background: #2980b9;

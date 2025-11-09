@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DBContext {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false";
     private static final String USER = "quyennb";     // thay bằng username của bạn
-    private static final String PASS = "123456"; // thay bằng password của bạn
+    private static final String PASS = "123"; // thay bằng password của bạn
 
     public static Connection getConnection() throws SQLException {
         try {
