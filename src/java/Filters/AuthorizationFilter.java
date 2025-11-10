@@ -52,6 +52,14 @@ public class AuthorizationFilter implements Filter {
             return;
         }
 
+                if (path.contains("accountList")) {
+            if (role != 0) {  // Only allow admin (role 0) to access
+                request.getRequestDispatcher("Views/Unauthorized.jsp").forward(request, response);
+                return;
+            }
+            System.out.println(role);
+        }
+        
         if (path.contains("listAuditorium")
                 || path.contains("addAuditorium")
                 || path.contains("updateAuditorium")
@@ -79,6 +87,18 @@ public class AuthorizationFilter implements Filter {
             System.out.println(role);
 
         }
+        
+        // Quản lý lịch chiếu
+        if (path.contains("manageSchedule")
+                || path.contains("agenda")) {
+
+            if (role != 1) {
+                request.getRequestDispatcher("Views/Unauthorized.jsp").forward(request, response);
+                return;
+            }
+            System.out.println(role);
+        }
+
         // ✅ Cho phép đi tiếp nếu hợp lệ
         chain.doFilter(req, res);
     }
