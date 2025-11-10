@@ -60,7 +60,7 @@ public class BookingServlet extends HttpServlet {
                 boolean locked = seatDAO.lockSeat(conn, seat.getSeatId());
                 if (!locked) {
                     conn.rollback();
-                    session.setAttribute("seatMessage", "⚠️ Ghế " + seatCode + " đã được người khác đặt trước!");
+                    session.setAttribute("seatMessage", "️ Ghế " + seatCode + " đã được người khác đặt trước!");
                     response.sendRedirect("seat?showtimeId=" + showtimeId);
                     return;
                 }
@@ -89,17 +89,15 @@ public class BookingServlet extends HttpServlet {
             // ====== COMMIT GIAO DỊCH ======
             conn.commit();
             
-java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-executor.submit(new AutoCancelTask(bookingId));
-executor.shutdown();
-
             // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
             session.setAttribute("bookingId", bookingId);
             session.setAttribute("bookedSeats", selectedSeats);
             session.setAttribute("totalPrice", totalPrice);
-
+            
             // ====== THREAD TỰ HỦY SAU 10 PHÚT (NẾU CHƯA THANH TOÁN) ======
-           
+            java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+executor.submit(new AutoCancelTask(bookingId));
+executor.shutdown();
 
             // ====== LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT ======
             String customerName = user.getName();
@@ -121,6 +119,7 @@ executor.shutdown();
             session.setAttribute("movie_title", movieTitle);
             session.setAttribute("auditorium_name", auditoriumName);
             session.setAttribute("start_time", startTime);
+            session.setAttribute("booking_code", hashCode);
 
             // ====== CHUYỂN SANG TRANG THANH TOÁN ======
             request.getRequestDispatcher("Views/payment.jsp").forward(request, response);

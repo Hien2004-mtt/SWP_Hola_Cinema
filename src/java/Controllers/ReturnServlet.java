@@ -56,13 +56,13 @@ public class ReturnServlet extends HttpServlet {
             double total = info.get("total_price") != null
                     ? (double) info.get("total_price")
                     : 0.0;
-
+            String hashCode = bookingDAO.hashBookingId(bookingId);
             // ✅ Chuẩn bị nội dung QR
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
             String qrText =
                     " Vé xem phim HolaCinema\n" +
                     "-----------------------------\n" +
-                    "Mã đặt vé: " + bookingId + "\n" +
+                    "Mã đặt vé: " + hashCode + "\n" +
                     "Khách hàng: " + customerName + "\n" +
                     "Phim: " + movieTitle + "\n" +
                     "Ghế: " + seatCode + "\n" +

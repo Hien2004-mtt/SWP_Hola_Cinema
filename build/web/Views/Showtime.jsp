@@ -24,9 +24,10 @@
     </head>
 
     <body>
-        <div class="page-container">
-            <jsp:include page="/Inculude/Header.jsp" />
 
+        <div class="page-container">
+
+            <jsp:include page="/Inculude/Header.jsp" />
             <div class="main-content">
                 <h2 style="text-align:center;">Chọn suất chiếu cho phim: <%= movieTitle %></h2>
 
@@ -76,7 +77,8 @@
                 <% } %>
             </div>
 
-            <jsp:include page="/Inculude/Footer.jsp" />
         </div>
+
+        <jsp:include page="/Inculude/Footer.jsp" />
     </body>
 </html>

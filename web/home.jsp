@@ -1,10 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="Models.User" %>
+<%
+    User user = (User) session.getAttribute("user");
+%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Hola Cinema Center</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         :root {
             --primary-color: #5a2fc2;
@@ -169,6 +175,15 @@
                 font-size: 28px;
             }
         }
+
+
+/* Hiện menu khi hover */
+
+.btn.btn-outline-primary.btn-sm {
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-weight: 500;
+}
     </style>
 </head>
 <body>
@@ -186,22 +201,35 @@
     </nav>
 
     <div class="nav-right">
-<form action="home" method="get" class="search-box">
-    <input type="text" name="q" placeholder="Search..." 
-           value="${param.q}" style="padding:6px 12px;border:1px solid #ccc;border-radius:5px;">
-</form>
+        <form action="home" method="get" class="search-box">
+            <input type="text" name="q" placeholder="Search..." 
+                   value="${param.q}" style="padding:6px 12px;border:1px solid #ccc;border-radius:5px;">
+        </form>
 
-
-              <c:choose>
+        <c:choose>
             <c:when test="${not empty loggedUser}">
                 <span>Xin chào, <strong>${loggedUser.name}</strong></span>
-                <!-- 🔹 Nút đi đến trang hồ sơ người dùng -->
-                <a href="updateProfile" class="btn">Profile</a>
-                <a href="logout" class="btn">Đăng xuất</a>
+
+                <!--  PROFILE DROPDOWN -->
+                <div class="dropdown">
+            <button class="btn btn-outline-primary btn-sm dropdown-toggle"
+                    type="button" id="profileMenu"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Profile
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="profileMenu">
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/updateProfile"> Update Profile</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/transactionHistory"> Lịch sử giao dịch</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/voucher?action=list">️ Voucher</a></li>
+            </ul>
+        </div>
+                </div>
+
+                <a href="logout" class="btn btn-danger">Đăng xuất</a>
             </c:when>
             <c:otherwise>
-                <a href="login.jsp" class="btn">Sign in</a>
-                <a href="register" class="btn">Register</a>
+                <a href="login.jsp" class="btn btn-success">Sign in</a>
+                <a href="register" class="btn btn-secondary">Register</a>
             </c:otherwise>
         </c:choose>
     </div>
@@ -256,6 +284,6 @@
 <footer>
     © 2025 Hola Cinema Center — Thiết kế bởi nhóm của bạn.
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

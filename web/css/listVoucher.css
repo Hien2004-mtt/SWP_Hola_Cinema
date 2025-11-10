@@ -1,66 +1,63 @@
-/* Tổng thể */
-body {
+/* Áp dụng riêng cho khu vực voucher */
+.voucher-page {
     font-family: Arial, sans-serif;
     background-color: #fafafa;
-    margin: 30px;
+    padding: 30px;
+    min-height: 80vh;
 }
 
-/* Tiêu đề */
-h2 {
-    color: #c2185b;
-    text-align: left;
-}
-
-/* Thanh trên cùng */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-/* Nút Thêm voucher */
-.btn-add {
-    background-color: #ccc; /* Xám mặc định */
+/* Nút thêm */
+.voucher-page .btn-add {
+    background-color: #ccc;
     color: #000;
     text-decoration: none;
     padding: 8px 14px;
     border-radius: 5px;
     transition: 0.25s;
 }
-.btn-add:hover {
-    background-color: #4CAF50; /* Xanh lá */
+.voucher-page .btn-add:hover {
+    background-color: #4CAF50;
     color: #fff;
     transform: scale(1.05);
 }
 
-/* Bảng hiển thị */
-table {
+/* Bảng voucher */
+.voucher-page table {
     border-collapse: collapse;
     width: 100%;
     background: white;
     box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-th, td {
+.voucher-page th, 
+.voucher-page td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
 }
 
-/* Header bảng – đổi sang nền trắng, chữ đen đậm */
-th {
-    background-color: #ffffff;
+.voucher-page th {
+    background-color: #f9f9f9;
     color: #000;
     font-weight: 700;
+    cursor: pointer;
+    user-select: none;
 }
 
-tr:hover {
-    background-color: #fce4ec;
+/* ❌ Loại bỏ hover đỏ toàn dòng */
+.voucher-page tr:hover td {
+    background-color: inherit !important;
 }
 
-/* Nút hành động chung */
-.btn {
+/* ✅ Chỉ đổi màu khi hover nút */
+.voucher-page .btn:hover {
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.voucher-page .btn {
     display: inline-block;
     padding: 6px 14px;
     border-radius: 6px;
@@ -71,48 +68,74 @@ tr:hover {
     cursor: pointer;
     transition: all 0.25s ease;
     margin: 0 3px;
-    background-color: #ccc; /* Nền xám mặc định */
-    color: #000; /* Chữ đen */
+    background-color: #ccc;
+    color: #000;
 }
 
-/* Hover hiệu ứng chung */
-.btn:hover {
-    color: #fff;
-    transform: scale(1.05);
-}
+/* Nút riêng biệt */
+.voucher-page .btn-edit:hover { background-color: #2196F3; }
+.voucher-page .btn-disable:hover { background-color: #F44336; }
+.voucher-page .btn-activate:hover { background-color: #4CAF50; }
 
-/* Nút "Sửa" */
-.btn-edit:hover {
-    background-color: #2196F3; /* Xanh dương */
-}
-
-/* Nút "Vô hiệu" hoặc "Xoá" */
-.btn-disable:hover {
-    background-color: #F44336; /* Đỏ */
-}
-
-/* Nút "Kích hoạt" */
-.btn-activate:hover {
-    background-color: #4CAF50; /* Xanh lá */
-}
-
-/* Thanh lọc tìm kiếm */
-.filter-bar {
+/* Thanh lọc và sắp xếp */
+.voucher-page .filter-bar {
     margin: 15px 0;
     padding: 10px;
-    background: #ffffff; /* Nền trắng thay vì hồng */
+    background: #ffffff;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 600; /* Chữ đen đậm */
+    font-weight: 600;
     color: #000;
-    border: 1px solid #ddd; /* Thêm đường viền nhẹ */
+    border: 1px solid #ddd;
 }
-
-.filter-bar input,
-.filter-bar select {
+.voucher-page .filter-bar input,
+.voucher-page .filter-bar select {
     padding: 6px 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+/* Biểu tượng sắp xếp */
+.sorted-asc::after {
+    content: " ▲";
+    color: #2196F3;
+}
+.sorted-desc::after {
+    content: " ▼";
+    color: #2196F3;
+}
+
+/* 🎨 Footer đồng bộ tone màu */
+footer.main-footer {
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+}
+footer.main-footer .social-icons {
+    margin-top: 8px;
+}
+footer.main-footer .social-icons a {
+    margin: 0 6px;
+    color: #555;
+    text-decoration: none;
+}
+footer.main-footer .social-icons a:hover {
+    color: #c2185b;
+}
+.voucher-page th {
+  background-color: #f9f9f9;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;        /* con trỏ bàn tay */
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.voucher-page th:hover {
+  background-color: #e9ecef; /* nhạt khi hover */
 }

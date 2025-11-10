@@ -26,12 +26,11 @@ public class EmailUtil {
         props.put("mail.smtp.starttls.enable", "true");
 
         //  Tạo session có xác thực
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
-            }
-        });
+        javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                    return new javax.mail.PasswordAuthentication(from, password);
+                }
+            });
 
         try {
             Message msg = new MimeMessage(session);

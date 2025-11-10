@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/voucherForm.css">
 </head>
 <body>
+    <jsp:include page="/Inculude/Header.jsp" />
 <div class="container">
     
 
@@ -42,5 +43,6 @@
         <button type="submit">Lưu cập nhật</button>
     </form>
 </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
 </body>
 </html>

@@ -25,8 +25,7 @@ import jakarta.servlet.http.HttpSession;
 public class ForgotPassword extends HttpServlet {
 
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +33,7 @@ public class ForgotPassword extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("forgotPassword.jsp");
         dispatcher.forward(request, response);
     }
-
+@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String email = request.getParameter("email");
