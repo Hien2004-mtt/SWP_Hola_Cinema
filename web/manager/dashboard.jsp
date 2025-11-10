@@ -59,7 +59,7 @@
             left: 0;
             bottom: 0;
             padding: 20px;
-            padding-top: 60px;
+            padding-top: 80px;
             overflow-y: auto;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
             z-index: 875;
@@ -163,6 +163,7 @@
     </style>
 </head>
 <body>
+     <jsp:include page="/Inculude/Header.jsp" />
 
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
@@ -177,15 +178,7 @@
         <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
     </div>
 
-    <!-- HEADER -->
-    <header>
-        <button class="mobile-toggle" id="mobileToggle">☰</button>
-        <div class="logo">🎬 Hola Cinema Center</div>
-        <div class="user-info">
-            <span>Xin chào, <strong>${sessionScope.loggedUser.name}</strong></span>
-            <a href="logout" class="btn-logout">Đăng xuất</a>
-        </div>
-    </header>
+ 
 
  
 
