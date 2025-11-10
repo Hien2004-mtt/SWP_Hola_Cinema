@@ -14,6 +14,8 @@
 
     </head>
     <body>
+        <%@include file="../manager/sidebar.jsp" %>
+        <div class ="main-content"> 
         <h2>Danh sách phòng chiếu</h2>
 
         <!-- Thông báo sau thao tác thêm/sửa/xóa -->
@@ -148,6 +150,7 @@
                        style="margin-left:10px;">Sau </a>
                 </c:if>
             </c:if>
+        </div>
         </div>
     </body>
 </html>

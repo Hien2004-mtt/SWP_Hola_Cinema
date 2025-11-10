@@ -59,9 +59,10 @@
             left: 0;
             bottom: 0;
             padding: 20px;
+            padding-top: 60px;
             overflow-y: auto;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 900;
+            z-index: 875;
         }
         .sidebar h4 {
             text-align: center;
@@ -170,7 +171,7 @@
         <a href="movie_management.jsp" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
         <a href="showtime_management.jsp" class="nav-link"><i>🕒</i> <span>Showtime</span></a>
         <a href="ticket_management.jsp" class="nav-link"><i>🎟️</i> <span>Ticket</span></a>
-        <a href="seat_management.jsp" class="nav-link"><i>💺</i> <span>Seat</span></a>
+        <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
         <a href="revenue_management.jsp" class="nav-link"><i>💰</i> <span>Revenue</span></a>
         <a href="staff_management.jsp" class="nav-link"><i>👥</i> <span>Staff</span></a>
         <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
