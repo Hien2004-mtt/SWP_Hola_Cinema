@@ -1,4 +1,3 @@
-
 package DAL;
 
 import static DAL.DBContext.getConnection;
@@ -274,7 +273,7 @@ public class MovieDAO extends DBContext {
 
     // Lọc phim theo nhiều tiêu chí
     public List<Movie> filterMoviesWithPaging(String keyword, String genreId, String actorId,
-                                              String status, String rating, String director, int offset, int pageSize) throws SQLException {
+            String status, String rating, String director, int offset, int pageSize) throws SQLException {
         List<Movie> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder("""
@@ -347,7 +346,7 @@ public class MovieDAO extends DBContext {
     }
 
     public int countFilteredMovies(String keyword, String genreId, String actorId,
-                                   String status, String director) throws SQLException {
+            String status, String director) throws SQLException {
         StringBuilder sql = new StringBuilder("""
                     SELECT COUNT(DISTINCT m.movie_id)
                     FROM Movie m
@@ -392,10 +391,29 @@ public class MovieDAO extends DBContext {
         }
         return 0;
     }
-
+      private Movie extractMovieSafe(ResultSet rs) throws SQLException {
+        Movie m = new Movie();
+        m.setMovieId(rs.getInt("movie_id"));
+        m.setTitle(rs.getString("title"));
+        m.setDurationMinutes(rs.getInt("duration_minutes"));
+        m.setLanguage(rs.getString("language"));
+        Date date = rs.getDate("release_date");
+        if (date != null) {
+            m.setReleaseDate(date.toLocalDate());
+        }
+        m.setRating(rs.getString("rating"));
+        m.setPosterUrl(rs.getString("poster_url"));
+        m.setDirectorName(rs.getString("director_name"));
+        m.setStatus(rs.getString("status"));
+        try {
+            m.setDescription(rs.getString("description"));
+        } catch (SQLException ignore) {
+        }
+        return m;
+    }
 
     public List<Movie> getNowShowingMovies() {
-        return getMoviesByStatus("nơw showing");
+        return getMoviesByStatus("now showing");
     }
 
     /**
@@ -410,25 +428,13 @@ public class MovieDAO extends DBContext {
      */
     private List<Movie> getMoviesByStatus(String status) {
         List<Movie> list = new ArrayList<>();
-        String sql = """
-                    SELECT m.*, 
-                           d.name AS director_name
-                    FROM Movie m
-                    LEFT JOIN Director d ON m.director_id = d.director_id
-                    WHERE m.status = ?
-                    ORDER BY m.release_date DESC
-                """;
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        String sql = "SELECT * FROM Movie WHERE status = ? ORDER BY release_date DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, status);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Movie m = extractMovie(rs);
-                m.setDirectorName(rs.getString("director_name"));
-                list.add(m);
+                list.add(extractMovieSafe(rs));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -483,27 +489,38 @@ public class MovieDAO extends DBContext {
     /**
      * Tìm kiếm phim theo từ khóa (tên phim)
      */
+    // ===== USER SEARCH =====
     public List<Movie> userSearchMoviesByTitle(String keyword) {
         List<Movie> list = new ArrayList<>();
         String sql = """
-                    SELECT m.*, d.name AS director_name
-                    FROM Movie m
-                    LEFT JOIN Director d ON m.director_id = d.director_id
-                    WHERE m.title LIKE ?
-                    ORDER BY m.release_date DESC
-                """;
+        SELECT * FROM Movie
+        WHERE title LIKE ?
+        ORDER BY release_date DESC
+    """;
 
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, "%" + keyword + "%"); // tìm gần đúng
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                Movie m = extractMovie(rs);
+                Movie m = new Movie();
+                m.setMovieId(rs.getInt("movie_id"));
+                m.setTitle(rs.getString("title"));
+                m.setRating(rs.getString("rating"));
+                m.setDurationMinutes(rs.getInt("duration_minutes"));
+                m.setLanguage(rs.getString("language"));
+                Date d = rs.getDate("release_date");
+                if (d != null) {
+                    m.setReleaseDate(d.toLocalDate());
+                }
+                m.setStatus(rs.getString("status"));
+                m.setPosterUrl(rs.getString("poster_url"));
                 m.setDirectorName(rs.getString("director_name"));
+                try {
+                    m.setDescription(rs.getString("description"));
+                } catch (SQLException ignore) {
+                }
                 list.add(m);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
