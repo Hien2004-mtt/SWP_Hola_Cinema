@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<footer class="main-footer">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+
+ <footer class="main-footer">
     <p>&copy; 2025 HOLA Cinema. All rights reserved.</p>
     <div class="social-icons">
         <a href="https://facebook.com" target="_blank" class="icon fb">Facebook</a>

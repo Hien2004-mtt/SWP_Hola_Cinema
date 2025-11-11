@@ -131,7 +131,7 @@ public class BookingServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }, 10, TimeUnit.MINUTES);
+            }, 1, TimeUnit.MINUTES);
 
             response.sendRedirect("Views/payment.jsp");
 
