@@ -1,3 +1,4 @@
+
 let selectedCount = 0;
 let selectedType = null;
 let totalPrice = 0;
@@ -115,3 +116,6 @@ function validateSelection() {
 
     return true;
 }
+            
+
+           
