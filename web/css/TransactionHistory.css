@@ -1,0 +1,19 @@
+/* 🌟 FOOTER - NỀN TRẮNG, CHỮ ĐEN, VIỀN ĐỎ CHỦ ĐẠO */
+html, body {
+    height: 100%;
+}
+footer.main-footer {
+   
+    margin-top: 230px;
+    text-align: center;
+}
+
+/* Dòng bản quyền */
+footer.main-footer p {
+    margin: 0;
+    font-weight: 500;
+    
+}
+
+
+

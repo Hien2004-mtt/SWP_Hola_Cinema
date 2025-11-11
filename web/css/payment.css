@@ -132,8 +132,7 @@
 }
 footer.main-footer {
     width: 100%;
-    background-color: #fff;
-    color: #000;
+    
     text-align: center;
     padding: 25px 10px;
     display: flex;
@@ -152,7 +151,7 @@ footer.main-footer .footer-icons {
 }
 
 footer.main-footer .footer-icons .icon {
-    color: #ddd;
+    
     text-decoration: none;
     margin: 0 18px;    
     font-weight: 500;
@@ -161,6 +160,6 @@ footer.main-footer .footer-icons .icon {
 }
 
 footer.main-footer .footer-icons .icon:hover {
-    color: #00bcd4; /* xanh cyan nhẹ */
+    
     transform: translateY(-2px);
 }

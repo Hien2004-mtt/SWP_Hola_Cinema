@@ -8,6 +8,7 @@
     <script src="${pageContext.request.contextPath}/Views/js/addVoucher.js" defer></script>
 </head>
 <body>
+    <jsp:include page="/Inculude/Header.jsp" />
 <div class="container">
     
 
@@ -51,5 +52,6 @@
         <button type="submit">Thêm</button>
     </form>
 </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
 </body>
 </html>

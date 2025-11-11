@@ -46,6 +46,10 @@
         <servlet-name>RestoreAuditoriumServlet</servlet-name>
         <servlet-class>Controllers.RestoreAuditoriumServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TransactionHistoryController</servlet-name>
+        <servlet-class>Controllers.TransactionHistoryController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
@@ -141,6 +145,10 @@
     <servlet-mapping>
         <servlet-name>RestoreAuditoriumServlet</servlet-name>
         <url-pattern>/restoreAuditorium</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransactionHistoryController</servlet-name>
+        <url-pattern>/transactionHistory</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>
