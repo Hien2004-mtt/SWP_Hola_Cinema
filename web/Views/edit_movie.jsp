@@ -18,6 +18,7 @@
         <script src="js/add_movie.js"></script>
     </head>
     <body>
+        <jsp:include page="/Inculude/Header.jsp" />
         <div class="container">
             <h2>Edit Movie</h2>
             <div class="form-wrapper">
@@ -223,5 +224,6 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
     </body>
 </html>

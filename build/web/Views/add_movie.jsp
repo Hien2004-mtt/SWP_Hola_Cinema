@@ -13,9 +13,11 @@
 
 
         <link href="css/add_movie.css" rel="stylesheet" >
+        <link href="css/Layout.css" rel="stylesheet" >
         <script src="js/add_movie.js"></script>
     </head>
     <body>
+        <jsp:include page="/Inculude/Header.jsp" />
         <div class="container">
             <h2>Add Movie</h2>
             <div class="form-wrapper">
@@ -211,6 +213,7 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
     </body>
 </html>
 

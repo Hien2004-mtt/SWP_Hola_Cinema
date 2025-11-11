@@ -11,6 +11,7 @@
     <head>
         <title>Movie Management</title>
         <link rel="stylesheet" href="css/movie_management.css">
+        <link rel="stylesheet" href="css/Layout.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
@@ -20,6 +21,10 @@
 
     </head>
     <body>
+        <%@include file="../manager/sidebar.jsp" %>
+        <jsp:include page="/Inculude/Header.jsp" />
+        
+        <div class="main-content">
         <h2 style="text-align:center;">Movie Management</h2>
 
         <div class="toolbar">
@@ -219,5 +224,7 @@
             </c:url>
             <a href="${nextUrl}" class="page-btn ${currentPage == totalPages ? 'disabled' : ''}">Next</a>
         </div>
+        </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
     </body>
 </html>

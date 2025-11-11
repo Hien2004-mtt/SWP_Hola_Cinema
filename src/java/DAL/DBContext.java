@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author dinhh
  */
 public class DBContext {
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=cinema3;encrypt=false";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false";
     private static final String USER = "sa";     // thay bằng username của bạn
     private static final String PASS = "123"; // thay bằng password của bạn
 

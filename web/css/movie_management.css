@@ -31,8 +31,13 @@ img {
     border-radius: 4px;
 }
 .btn-edit {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
 }
 
 /* ====== TOOLBAR ====== */
@@ -215,4 +220,14 @@ p.no-result {
     text-align: center;
     color: gray;
     margin-top: 20px;
+}
+
+.main-content {
+    margin-left: 260px; /* đẩy nội dung sang phải tránh sidebar */
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    min-height: 100vh;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
 }
