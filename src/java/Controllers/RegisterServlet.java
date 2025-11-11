@@ -56,6 +56,13 @@ public class RegisterServlet extends HttpServlet {
         } else if (password.length() < 6) {
             errors.put("password", "Password must be at least 6 characters long!");
         }
+        if (password == null || password.trim().isEmpty()) {
+            errors.put("password", "Password cannot be empty!");
+        } else if (password.length() < 6) {
+            errors.put("password", "Password must be at least 6 characters long!");
+        } else if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$")) {
+            errors.put("password", "Password must contain letters, numbers, and special characters!");
+        }
 
         if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
             errors.put("confirmPassword", "Please confirm your password!");

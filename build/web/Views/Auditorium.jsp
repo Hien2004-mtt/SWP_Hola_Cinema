@@ -152,7 +152,9 @@
                            style="margin-left:10px;">Sau </a>
                     </c:if>
                 </c:if>
+               
             </div>
+                <%@include file="../Inculude/Footer.jsp" %>
         </div>
     </body>
 </html>

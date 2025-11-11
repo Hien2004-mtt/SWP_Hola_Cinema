@@ -3,6 +3,22 @@ package Controllers;
 import Controller.Util.AutoCancelTask;
 import DAL.*;
 import Models.*;
+import DAL.BookingDAO;
+import DAL.BookingItemDAO;
+import DAL.SeatDAO;
+import DAL.ShowtimeDAO;
+import Models.Booking;
+import Models.BookingItem;
+import Models.Seat;
+import Models.User;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import java.io.IOException;
@@ -12,6 +28,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class BookingServlet extends HttpServlet {
+
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,23 +66,45 @@ public class BookingServlet extends HttpServlet {
 
         try (Connection conn = DAL.DBContext.getConnection()) {
             conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-            List<BookingItem> items = new ArrayList<>();
-
-            // ====== LOCK GHẾ ======
+            // Lấy danh sách ghế từ code
+            List<Seat> seatList = new ArrayList<>();
+            List<Integer> seatIds = new ArrayList<>();
             for (String seatCode : selectedSeats) {
                 Seat seat = seatDAO.getSeatByCode(seatCode, auditoriumId);
-                if (seat == null) continue;
-
-                boolean locked = seatDAO.lockSeat(conn, seat.getSeatId());
-                if (!locked) {
-                    conn.rollback();
-                    session.setAttribute("seatMessage", "️ Ghế " + seatCode + " đã được người khác đặt trước!");
-                    response.sendRedirect("seat?showtimeId=" + showtimeId);
-                    return;
+                if (seat != null) {
+                    seatList.add(seat);
+                    seatIds.add(seat.getSeatId());
                 }
+            }
 
+            if (seatIds.isEmpty()) {
+                request.setAttribute("message", "Không tìm thấy ghế hợp lệ!");
+                request.getRequestDispatcher("Views/Seat.jsp").forward(request, response);
+                return;
+            }
+
+            // Gọi DAO để lock nhiều ghế
+            boolean locked = seatDAO.lockSeats(conn, seatIds);
+            if (!locked) {
+                conn.rollback();
+                session.setAttribute("seatMessage", "Một hoặc nhiều ghế đã được người khác đặt trước!");
+                response.sendRedirect("seat?showtimeId=" + showtimeId);
+                return;
+            }
+
+            // Tạo booking
+            int bookingId = bookingDAO.addBooking(conn, user.getUserId(), showtimeId, totalPrice);
+            if (bookingId == -1) {
+                conn.rollback();
+                response.sendRedirect("seat?showtimeId=" + showtimeId + "&error=bookingFailed");
+                return;
+            }
+
+            // Lưu BookingItem
+            List<BookingItem> items = new ArrayList<>();
+            for (Seat seat : seatList) {
                 double seatPrice = basePrice;
                 if (seat.getSeatType().equalsIgnoreCase("VIP")) seatPrice += 70000;
                 else if (seat.getSeatType().equalsIgnoreCase("SweetBox")) seatPrice += 100000;
@@ -75,18 +115,7 @@ public class BookingServlet extends HttpServlet {
                 items.add(item);
             }
 
-            // ====== TẠO BOOKING ======
-            int bookingId = bookingDAO.addBooking(conn, user.getUserId(), showtimeId, totalPrice);
-            if (bookingId == -1) {
-                conn.rollback();
-                response.sendRedirect("seat?showtimeId=" + showtimeId + "&error=bookingFailed");
-                return;
-            }
-
-            // ====== LƯU BOOKING ITEM ======
             itemDAO.addBookingItems(conn, bookingId, showtimeId, items);
-
-            // ====== COMMIT GIAO DỊCH ======
             conn.commit();
             
             // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
@@ -95,9 +124,23 @@ public class BookingServlet extends HttpServlet {
             session.setAttribute("totalPrice", totalPrice);
             
             // ====== THREAD TỰ HỦY SAU 10 PHÚT (NẾU CHƯA THANH TOÁN) ======
-            java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-executor.submit(new AutoCancelTask(bookingId));
-executor.shutdown();
+            scheduler.schedule(() -> {
+                try {
+                    Booking booking = bookingDAO.getBookingById(bookingId);
+                    if (booking != null && booking.getStatus().equalsIgnoreCase("pending")) {
+                        bookingDAO.updateBookingStatus(bookingId, "cancelled");
+                        List<BookingItem> bookedItems = itemDAO.getItemsByBookingId(bookingId);
+                        List<Integer> ids = new ArrayList<>();
+                        for (BookingItem bi : bookedItems) {
+                            ids.add(bi.getSeatId());
+                        }
+                        seatDAO.unlockSeats(ids);
+                        System.out.println("Booking #" + bookingId + " đã bị hủy do quá hạn thanh toán.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, 10, TimeUnit.MINUTES);
 
             // ====== LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT ======
             String customerName = user.getName();
@@ -105,6 +148,8 @@ executor.shutdown();
             String auditoriumName = showtimeDAO.getAuditoriumNameByShowtime(showtimeId);
             String hashCode = bookingDAO.hashBookingId(bookingId);
             Timestamp startTime = bookingDAO.getShowtimeStartByBookingId(bookingId);
+           
+            
 
             request.setAttribute("booking_code", hashCode);
             request.setAttribute("customer_name", customerName);
@@ -126,7 +171,7 @@ executor.shutdown();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("seat?showtimeId=" + showtimeId + "&error=system");
+            response.sendRedirect("seat?showtimeId=" + showtimeId + "&errorSeat=system");
         }
     }
 }

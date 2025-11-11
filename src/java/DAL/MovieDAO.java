@@ -392,128 +392,94 @@ public class MovieDAO extends DBContext {
         }
         return 0;
     }
-
-
-    public List<Movie> getNowShowingMovies() {
-        return getMoviesByStatus("nơw showing");
-    }
-
-    /**
-     * Lấy danh sách phim sắp chiếu
-     */
-    public List<Movie> getComingSoonMovies() {
-        return getMoviesByStatus("coming soon");
-    }
-
-    /**
-     * Hàm chung lấy danh sách phim theo trạng thái
-     */
-    private List<Movie> getMoviesByStatus(String status) {
-        List<Movie> list = new ArrayList<>();
-        String sql = """
-                    SELECT m.*, 
-                           d.name AS director_name
-                    FROM Movie m
-                    LEFT JOIN Director d ON m.director_id = d.director_id
-                    WHERE m.status = ?
-                    ORDER BY m.release_date DESC
-                """;
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, status);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Movie m = extractMovie(rs);
-                m.setDirectorName(rs.getString("director_name"));
-                list.add(m);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    /**
-     * Hàm hỗ trợ: tạo đối tượng Movie từ ResultSet
-     */
-    private Movie extractMovie(ResultSet rs) throws SQLException {
+    
+    // ===== HELPER EXTRACTION =====
+    private Movie extractMovieSafe(ResultSet rs) throws SQLException {
         Movie m = new Movie();
         m.setMovieId(rs.getInt("movie_id"));
         m.setTitle(rs.getString("title"));
-        m.setDescription(rs.getString("description"));
         m.setDurationMinutes(rs.getInt("duration_minutes"));
         m.setLanguage(rs.getString("language"));
-        m.setReleaseDate(rs.getDate("release_date") != null
-                ? rs.getDate("release_date").toLocalDate() : null);
+        Date date = rs.getDate("release_date");
+        if (date != null) {
+            m.setReleaseDate(date.toLocalDate());
+        }
         m.setRating(rs.getString("rating"));
         m.setPosterUrl(rs.getString("poster_url"));
         m.setDirectorName(rs.getString("director_name"));
         m.setStatus(rs.getString("status"));
+        try {
+            m.setDescription(rs.getString("description"));
+        } catch (SQLException ignore) {
+        }
         return m;
     }
 
-    /**
-     * Lấy toàn bộ danh sách phim (dành cho admin hoặc quản lý)
-     */
-    public List<Movie> userGetAllMovies() {
+    // ===== SIMPLE FILTERS =====
+    public List<Movie> getNowShowingMovies() {
+        return getMoviesByStatus("now showing");
+    }
+
+    public List<Movie> getComingSoonMovies() {
+        return getMoviesByStatus("coming soon");
+    }
+
+    public List<Movie> getArchivedMovies() {
+        return getMoviesByStatus("archived");
+    }
+
+    
+
+    private List<Movie> getMoviesByStatus(String status) {
         List<Movie> list = new ArrayList<>();
-        String sql = """
-                    SELECT m.*, 
-                           d.name AS director_name
-                    FROM Movie m
-                    LEFT JOIN Director d ON m.director_id = d.director_id
-                    ORDER BY m.movie_id DESC
-                """;
-
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        String sql = "SELECT * FROM Movie WHERE status = ? ORDER BY release_date DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Movie m = extractMovie(rs);
-                m.setDirectorName(rs.getString("director_name"));
-                list.add(m);
+                list.add(extractMovieSafe(rs));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-
-    /**
-     * Tìm kiếm phim theo từ khóa (tên phim)
-     */
+    
+    // ===== USER SEARCH =====
     public List<Movie> userSearchMoviesByTitle(String keyword) {
         List<Movie> list = new ArrayList<>();
         String sql = """
-                    SELECT m.*, d.name AS director_name
-                    FROM Movie m
-                    LEFT JOIN Director d ON m.director_id = d.director_id
-                    WHERE m.title LIKE ?
-                    ORDER BY m.release_date DESC
-                """;
+        SELECT * FROM Movie
+        WHERE title LIKE ?
+        ORDER BY release_date DESC
+    """;
 
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, "%" + keyword + "%"); // tìm gần đúng
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                Movie m = extractMovie(rs);
+                Movie m = new Movie();
+                m.setMovieId(rs.getInt("movie_id"));
+                m.setTitle(rs.getString("title"));
+                m.setRating(rs.getString("rating"));
+                m.setDurationMinutes(rs.getInt("duration_minutes"));
+                m.setLanguage(rs.getString("language"));
+                Date d = rs.getDate("release_date");
+                if (d != null) {
+                    m.setReleaseDate(d.toLocalDate());
+                }
+                m.setStatus(rs.getString("status"));
+                m.setPosterUrl(rs.getString("poster_url"));
                 m.setDirectorName(rs.getString("director_name"));
+                try {
+                    m.setDescription(rs.getString("description"));
+                } catch (SQLException ignore) {
+                }
                 list.add(m);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
-    }
-
-    /**
-     * Lấy danh sách phim đã lưu trữ
-     */
-    public List<Movie> getArchivedMovies() {
-        return getMoviesByStatus("archived");
     }
 }

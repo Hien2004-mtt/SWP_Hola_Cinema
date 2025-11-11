@@ -300,4 +300,44 @@ public class SeatDAO {
                 }
         return false;
     }
+    
+     public boolean lockSeats(Connection conn, List<Integer> seatIds) throws SQLException {
+        if (seatIds == null || seatIds.isEmpty()) return false;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < seatIds.size(); i++) {
+            sb.append("?");
+            if (i < seatIds.size() - 1) sb.append(",");
+        }
+
+        String sql = "UPDATE Seat SET is_active = 0 WHERE seat_id IN (" + sb + ") AND is_active = 1";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (int i = 0; i < seatIds.size(); i++) {
+                ps.setInt(i + 1, seatIds.get(i));
+            }
+            int updated = ps.executeUpdate();
+            return updated == seatIds.size();
+        }
+    }
+
+    // ===== Unlock nhiều ghế =====
+    public void unlockSeats(List<Integer> seatIds) {
+        if (seatIds == null || seatIds.isEmpty()) return;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < seatIds.size(); i++) {
+            sb.append("?");
+            if (i < seatIds.size() - 1) sb.append(",");
+        }
+
+        String sql = "UPDATE Seat SET is_active = 1 WHERE seat_id IN (" + sb + ")";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (int i = 0; i < seatIds.size(); i++) {
+                ps.setInt(i + 1, seatIds.get(i));
+            }
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

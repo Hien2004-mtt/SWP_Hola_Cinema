@@ -254,11 +254,11 @@
                     <span class="bi bi-film"></span> Hola Cinema
                 </div>
                 <div class="nav-links">
-                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
-                    <a href="revenue" class="active"><i class="bi bi-graph-up"></i> Doanh thu</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
-                    <a href="../home"><i class="bi bi-house"></i> Trang người dùng</a>
-                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
+                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
+                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="../home"><i class="bi bi-house"></i> User Page</a>
+                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 </div>
             </div>
         </header>
@@ -267,7 +267,7 @@
 
             <!-- Page Title -->
             <h1 class="page-title">
-                <i class="bi bi-graph-up-arrow"></i> Quản lý Doanh thu Nâng cao
+                <i class="bi bi-graph-up-arrow"></i> Advanced Revenue Management
             </h1>
 
             <!-- Filters - KHÔNG CÒN ĐÈ CHỮ -->
@@ -277,11 +277,11 @@
                     <!-- Lọc ngày -->
                     <div class="filter-group">
                         <form method="get" action="revenue">
-                            <label>Từ:</label>
+                            <label>From:</label>
                             <input type="date" name="from" value="${fromDate}" class="form-control">
-                            <label>Đến:</label>
+                            <label>To:</label>
                             <input type="date" name="to" value="${toDate}" class="form-control">
-                            <button type="submit" class="btn btn-primary">Lọc</button>
+                            <button type="submit" class="btn btn-primary">Filter</button>
                         </form>
                     </div>
 
@@ -290,9 +290,9 @@
                         <form method="get" action="revenue">
                             <input type="hidden" name="from" value="${fromDate}">
                             <input type="hidden" name="to" value="${toDate}">
-                            <label>Tên phim:</label>
-                            <input type="text" name="movieName" placeholder="Nhập tên..." value="${movieName}" class="form-control">
-                            <button type="submit" name="action" value="searchByName" class="btn btn-primary">Tìm</button>
+                            <label>Movie name:</label>
+                            <input type="text" name="movieName" placeholder="Enter name..." value="${movieName}" class="form-control">
+                            <button type="submit" name="action" value="searchByName" class="btn btn-primary">Find</button>
                         </form>
                     </div>
 
@@ -301,11 +301,11 @@
                         <form method="get" action="revenue">
                             <input type="hidden" name="from" value="${fromDate}">
                             <input type="hidden" name="to" value="${toDate}">
-                            <label>Từ:</label>
+                            <label>From:</label>
                             <input type="number" step="1000" name="min" placeholder="VNĐ" value="${min}" class="form-control">
-                            <label>Đến:</label>
+                            <label>To:</label>
                             <input type="number" step="1000" name="max" placeholder="VNĐ" value="${max}" class="form-control">
-                            <button type="submit" name="action" value="searchByPrice" class="btn btn-primary">Lọc tiền</button>
+                            <button type="submit" name="action" value="searchByPrice" class="btn btn-primary">Filter</button>
                         </form>
                     </div>
 
@@ -315,12 +315,12 @@
                             <form method="get" action="revenue">
                                 <input type="hidden" name="from" value="${fromDate}">
                                 <input type="hidden" name="to" value="${toDate}">
-                                <button type="submit" name="action" value="sortAsc" class="btn btn-outline-secondary">Tăng dần</button>
+                                <button type="submit" name="action" value="sortAsc" class="btn btn-outline-secondary">Ascending</button>
                             </form>
                             <form method="get" action="revenue">
                                 <input type="hidden" name="from" value="${fromDate}">
                                 <input type="hidden" name="to" value="${toDate}">
-                                <button type="submit" name="action" value="sortDesc" class="btn btn-outline-secondary">Giảm dần</button>
+                                <button type="submit" name="action" value="sortDesc" class="btn btn-outline-secondary">Descending</button>
                             </form>
                         </div>
                     </div>
@@ -333,11 +333,12 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>STT</th>
-                            <th>Tên phim</th>
-                            <th>Số vé bán</th>
-                            <th>Doanh thu (VNĐ)</th>
-                            <th>Ngày thanh toán gần nhất</th>
+                            <th>No.</th>
+                            <th>Movie</th>
+                            <th>Tickets Sold</th>
+                            <th>Revenue (VND)</th>
+                            <th>Last Payment Date</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -357,130 +358,133 @@
                         <%  }
                     } else { %>
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">Không có dữ liệu phù hợp</td>
+                            <td colspan="5" class="text-center py-4 text-muted">No matching data</td>
                         </tr>
                         <% } %>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Biểu đồ -->
+            <!-- Charts -->
             <% if (list != null && !list.isEmpty()) { %>
             <div class="charts-grid">
-                <!-- Biểu đồ cột -->
+                <!-- Bar Chart -->
                 <div class="chart-container">
-                    <h3><i class="bi bi-bar-chart-fill"></i> Doanh thu theo phim</h3>
+                    <h3><i class="bi bi-bar-chart-fill"></i> Revenue by Movie</h3>
                     <canvas id="revenueBarChart"></canvas>
                 </div>
 
-                <!-- Biểu đồ tròn -->
+                <!-- Pie Chart -->
                 <div class="chart-container">
-                    <h3><i class="bi bi-pie-chart-fill"></i> Tỷ lệ đóng góp</h3>
+                    <h3><i class="bi bi-pie-chart-fill"></i> Contribution Ratio</h3>
                     <canvas id="revenuePieChart"></canvas>
                 </div>
             </div>
 
-            <!-- Biểu đồ đường -->
+            <!-- Line Chart -->
             <div class="chart-container" style="grid-column: span 2; height: 400px;">
-                <h3><i class="bi bi-graph-up-arrow"></i> Xu hướng doanh thu theo ngày</h3>
+                <h3><i class="bi bi-graph-up-arrow"></i> Revenue Trend by Day</h3>
                 <canvas id="revenueLineChart"></canvas>
             </div>
 
-            <script>
-                const movies = [
-                <% for (RevenueRecord r : list) { %>
-                    {name: "<%= r.getMovieTitle().replace("\"", "\\\"") %>",
-                        revenue: <%= r.getTotalRevenue() %>,
-                        tickets: <%= r.getTotalTickets() %>,
-                        date: "<%= r.getPaidAt() %>"},
-                <% } %>
-                ];
-
-                // Biểu đồ cột
-                new Chart(document.getElementById('revenueBarChart').getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: movies.map(m => m.name.length > 15 ? m.name.substring(0, 15) + '...' : m.name),
-                        datasets: [{
-                                label: 'Doanh thu (₫)',
-                                data: movies.map(m => m.revenue),
-                                backgroundColor: 'rgba(109, 40, 217, 0.7)',
-                                borderColor: '#6d28d9',
-                                borderWidth: 1
-                            }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {legend: {display: false}},
-                        scales: {y: {beginAtZero: true}}
-                    }
-                });
-
-                // Biểu đồ tròn
-                new Chart(document.getElementById('revenuePieChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: movies.map(m => m.name.length > 12 ? m.name.substring(0, 12) + '...' : m.name),
-                        datasets: [{
-                                data: movies.map(m => m.revenue),
-                                backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6'],
-                                borderWidth: 2,
-                                borderColor: '#fff'
-                            }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {legend: {position: 'bottom'}}
-                    }
-                });
-
-                // Biểu đồ đường
-                const dateMap = {};
-                movies.forEach(m => {
-                    dateMap[m.date] = (dateMap[m.date] || 0) + m.revenue;
-                });
-                const sortedDates = Object.keys(dateMap).sort();
-                const lineData = sortedDates.map(d => dateMap[d]);
-
-                new Chart(document.getElementById('revenueLineChart').getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: sortedDates,
-                        datasets: [{
-                                label: 'Doanh thu theo ngày',
-                                data: lineData,
-                                borderColor: '#6d28d9',
-                                backgroundColor: 'rgba(109, 40, 217, 0.1)',
-                                fill: true,
-                                tension: 0.4,
-                                pointBackgroundColor: '#6d28d9',
-                                pointRadius: 5
-                            }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {legend: {display: false}},
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {callback: v => v.toLocaleString('vi-VN') + '₫'}
-                            }
-                        }
-                    }
-                });
-            </script>
-            <% } %>
-
+            <canvas id="revenueLineChart"></canvas>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            © 2025 Hola Cinema — Admin Dashboard. Được thiết kế với <i class="bi bi-heart-fill text-danger"></i> bởi Team Dev
-        </footer>
+        <script>
+            const movies = [
+            <% for (RevenueRecord r : list) { %>
+                {name: "<%= r.getMovieTitle().replace("\"", "\\\"") %>",
+                    revenue: <%= r.getTotalRevenue() %>,
+                    tickets: <%= r.getTotalTickets() %>,
+                    date: "<%= r.getPaidAt() %>"},
+            <% } %>
+            ];
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+            // Biểu đồ cột
+            new Chart(document.getElementById('revenueBarChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: movies.map(m => m.name.length > 15 ? m.name.substring(0, 15) + '...' : m.name),
+                    datasets: [{
+                            label: 'Doanh thu (₫)',
+                            data: movies.map(m => m.revenue),
+                            backgroundColor: 'rgba(109, 40, 217, 0.7)',
+                            borderColor: '#6d28d9',
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {legend: {display: false}},
+                    scales: {y: {beginAtZero: true}}
+                }
+            });
+
+            // Biểu đồ tròn
+            new Chart(document.getElementById('revenuePieChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: movies.map(m => m.name.length > 12 ? m.name.substring(0, 12) + '...' : m.name),
+                    datasets: [{
+                            data: movies.map(m => m.revenue),
+                            backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {legend: {position: 'bottom'}}
+                }
+            });
+
+            // Biểu đồ đường
+            const dateMap = {};
+            movies.forEach(m => {
+                dateMap[m.date] = (dateMap[m.date] || 0) + m.revenue;
+            });
+            const sortedDates = Object.keys(dateMap).sort();
+            const lineData = sortedDates.map(d => dateMap[d]);
+
+            new Chart(document.getElementById('revenueLineChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: [{
+                            label: 'Doanh thu theo ngày',
+                            data: lineData,
+                            borderColor: '#6d28d9',
+                            backgroundColor: 'rgba(109, 40, 217, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#6d28d9',
+                            pointRadius: 5
+                        }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {legend: {display: false}},
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {callback: v => v.toLocaleString('vi-VN') + '₫'}
+                        }
+                    }
+                }
+            });
+        </script>
+        <% } %>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Hola Cinema — Admin Dashboard. Được thiết kế với <i class="bi bi-heart-fill text-danger"></i> bởi Team Dev
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
