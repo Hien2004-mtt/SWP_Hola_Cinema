@@ -26,7 +26,7 @@
             🔍 Tìm kiếm:
             <input type="text" id="searchInput" placeholder="Nhập từ khóa...">
             <label for="sortColumn" hidden>Sắp xếp theo:</label>
-            <select id="sortColumn" hidden>
+            <select id="sortColumn" >
                 <option value="0">ID</option>
                 <option value="1">Code</option>
                 <option value="2">Loại</option>
@@ -34,7 +34,7 @@
                 <option value="4">Ngày bắt đầu</option>
                 <option value="5">Ngày kết thúc</option>
             </select>
-            <select id="sortOrder" hidden>
+            <select id="sortOrder" >
                 <option value="asc">️Tăng dần</option>
                 <option value="desc">️Giảm dần</option>
             </select>
@@ -102,6 +102,18 @@
                 </c:forEach>
             </tbody>
         </table>
+        <div class="pagination">
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <c:choose>
+            <c:when test="${i == currentPage}">
+                <span class="page active">${i}</span>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/voucher?action=list&page=${i}" class="page">${i}</a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+</div>
     </div>
 
     <jsp:include page="/Inculude/Footer.jsp" />

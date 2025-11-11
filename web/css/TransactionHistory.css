@@ -14,6 +14,63 @@ footer.main-footer p {
     font-weight: 500;
     
 }
+.filter-bar {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  font-weight: 600;
+  color: #000;
+}
+
+.filter-bar input,
+.filter-bar select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 🌟 Phân trang */
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pagination .page {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #000;
+  transition: 0.2s;
+}
+
+.pagination .page:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #d81b60;
+  color: #fff;
+  border-color: #d81b60;
+}
+
+/* Biểu tượng sắp xếp */
+.sorted-asc::after {
+  content: " ▲";
+  color: #2196F3;
+}
+.sorted-desc::after {
+  content: " ▼";
+  color: #2196F3;
+}
 
 
 

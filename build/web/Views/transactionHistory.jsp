@@ -6,16 +6,39 @@
 
 <div class="container mt-5 mb-5">
     <h2 class="mb-4 text-center">Lịch sử giao dịch</h2>
-    <table class="table table-striped table-hover text-center align-middle">
+
+    <!-- 🔍 Bộ lọc tìm kiếm & sắp xếp -->
+    <div class="filter-bar mb-3">
+        🔍 <b>Tìm kiếm:</b>
+        <input type="text" id="searchInput" placeholder="Nhập từ khóa...">
+
+        <label for="sortColumn">Sắp xếp theo:</label>
+        <select id="sortColumn">
+            <option value="0">Booking ID</option>
+            <option value="1">Phim</option>
+            <option value="2">Suất chiếu</option>
+            <option value="3">Số tiền</option>
+            <option value="4">Phương thức</option>
+            <option value="5">Trạng thái</option>
+            <option value="6">Thời gian thanh toán</option>
+        </select>
+
+        <select id="sortOrder">
+            <option value="asc">Tăng dần</option>
+            <option value="desc">Giảm dần</option>
+        </select>
+    </div>
+
+    <table id="transactionTable" class="table table-striped table-hover text-center align-middle">
         <thead class="table-dark">
             <tr>
-                <th>Booking ID</th>
-                <th>Movie</th>
-                <th>Showtime</th>
-                <th>Amount (VND)</th>
-                <th>Method</th>
-                <th>Status</th>
-                <th>Paid At</th>
+                <th data-index="0">Booking ID</th>
+                <th data-index="1">Movie</th>
+                <th data-index="2">Showtime</th>
+                <th data-index="3">Amount (VND)</th>
+                <th data-index="4">Method</th>
+                <th data-index="5">Status</th>
+                <th data-index="6">Paid At</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +67,10 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <!-- 📄 Phân trang -->
+    <div class="pagination"></div>
 </div>
 
 <jsp:include page="/Inculude/Footer.jsp" />
+<script src="${pageContext.request.contextPath}/Views/js/transactionHistory.js" defer></script>

@@ -1,52 +1,74 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Voucher list loaded ✅");
+  console.log("Voucher list loaded ");
 
-  // ️ Xác nhận vô hiệu hóa ===
+  // ️ Xác nhận vô hiệu hóa
   document.querySelectorAll(".btn-disable").forEach(btn => {
     btn.addEventListener("click", e => {
       if (!confirm("️Bạn có chắc muốn vô hiệu hóa voucher này?")) e.preventDefault();
     });
   });
 
-  //  TÌM KIẾM ===
-  const searchInput = document.getElementById("searchInput");
-  searchInput?.addEventListener("input", () => {
-    const keyword = searchInput.value.toLowerCase();
-    document.querySelectorAll("tbody tr").forEach(row => {
-      row.style.display = row.innerText.toLowerCase().includes(keyword) ? "" : "none";
-    });
-  });
-
-  // ️ SẮP XẾP (Header + Dropdown) ===
   const table = document.getElementById("voucherTable");
   if (!table) return;
   const tbody = table.querySelector("tbody");
   const headers = table.querySelectorAll("th");
+  const searchInput = document.getElementById("searchInput");
   const sortColumn = document.getElementById("sortColumn");
   const sortOrder = document.getElementById("sortOrder");
 
-  // 🧩 Hàm parse giá trị (tự nhận dạng kiểu dữ liệu)
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const rowsPerPage = 15;
+  let currentPage = 1;
+  let filteredRows = [...rows];
+
+  // 🧮 Cập nhật hiển thị bảng theo trang
+  function renderTable() {
+    tbody.innerHTML = "";
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    filteredRows.slice(start, end).forEach(r => tbody.appendChild(r));
+    renderPagination();
+  }
+
+  // 🧾 Phân trang động
+  function renderPagination() {
+    let pagination = document.querySelector(".pagination");
+    if (!pagination) {
+      pagination = document.createElement("div");
+      pagination.classList.add("pagination");
+      table.insertAdjacentElement("afterend", pagination);
+    }
+    pagination.innerHTML = "";
+
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("span");
+      btn.className = "page " + (i === currentPage ? "active" : "");
+      btn.textContent = i;
+      btn.addEventListener("click", () => {
+        currentPage = i;
+        renderTable();
+      });
+      pagination.appendChild(btn);
+    }
+  }
+
+  // 🧩 Hàm parse giá trị (để sắp xếp thông minh)
   function parseValue(val) {
     if (!val) return "";
-    // Nếu là số
     if (!isNaN(val)) return parseFloat(val);
-    // Nếu là ngày định dạng YYYY-MM-DD
     if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return new Date(val).getTime();
-    // Còn lại coi là chuỗi
     return val.toLowerCase();
   }
 
-  //  Hàm sắp xếp chính
+  // ⚙️ Hàm sắp xếp
   function sortTable(index, direction = 1) {
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-
-    rows.sort((a, b) => {
+    filteredRows.sort((a, b) => {
       const A = a.children[index]?.innerText.trim() || "";
       const B = b.children[index]?.innerText.trim() || "";
-
       const valA = parseValue(A);
       const valB = parseValue(B);
-
       if (typeof valA === "number" && typeof valB === "number") {
         return (valA - valB) * direction;
       } else {
@@ -54,43 +76,44 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Cập nhật lại bảng
-    rows.forEach(r => tbody.appendChild(r));
-
-    // Hiển thị icon 
     headers.forEach(h => h.classList.remove("sorted-asc", "sorted-desc"));
     headers[index]?.classList.add(direction === 1 ? "sorted-asc" : "sorted-desc");
+    currentPage = 1;
+    renderTable();
   }
 
-  // ️ Click tiêu đề cột để sắp xếp
+  // 🔍 Tìm kiếm
+  searchInput?.addEventListener("input", () => {
+    const keyword = searchInput.value.toLowerCase();
+    filteredRows = rows.filter(r =>
+      r.innerText.toLowerCase().includes(keyword)
+    );
+    currentPage = 1;
+    renderTable();
+  });
+
+  // 🔼 Sắp xếp khi click tiêu đề
   headers.forEach(th => {
     th.addEventListener("click", () => {
       const index = parseInt(th.dataset.index);
       if (isNaN(index)) return;
-
-      // Nếu click lại cùng cột thì đảo chiều
       const currentOrder = th.classList.contains("sorted-asc") ? -1 : 1;
       sortTable(index, currentOrder);
-
-      // Cập nhật dropdown theo cột đang chọn
       sortColumn.value = index.toString();
       sortOrder.value = currentOrder === 1 ? "asc" : "desc";
     });
   });
 
-  //  Khi đổi dropdown, tự sắp xếp
+  // Khi đổi dropdown
   function handleDropdownSort() {
     const index = parseInt(sortColumn.value);
     const direction = sortOrder.value === "asc" ? 1 : -1;
     if (!isNaN(index)) sortTable(index, direction);
   }
 
-  // Gắn sự kiện
   sortColumn?.addEventListener("change", handleDropdownSort);
   sortOrder?.addEventListener("change", handleDropdownSort);
 
-  //  Khởi tạo mặc định (tự sắp ID tăng dần lúc load)
-  if (sortColumn && sortOrder) {
-    sortTable(parseInt(sortColumn.value), sortOrder.value === "asc" ? 1 : -1);
-  }
+  // 🏁 Khởi tạo
+  renderTable();
 });

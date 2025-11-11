@@ -28,7 +28,8 @@ public class MovieDetailDAO {
                 movie.setDescription(rs.getString("description"));
                 movie.setDurationMinutes(rs.getInt("duration_minutes"));
                 movie.setLanguage(rs.getString("language"));
-                movie.setReleaseDate(rs.getDate("release_date"));
+                movie.setReleaseDate(rs.getDate("release_date") != null
+                        ? rs.getDate("release_date").toLocalDate() : null);
                 movie.setRating(rs.getString("rating"));
                 movie.setDirectorName(rs.getString("director_name"));
                 movie.setPosterUrl(rs.getString("poster_url"));

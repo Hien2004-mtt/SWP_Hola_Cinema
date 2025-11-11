@@ -293,4 +293,79 @@ public class VoucherDAO {
     }
     return true;
 }
+    public List<Voucher> getVouchersByPage(int offset, int limit) throws SQLException {
+    autoUpdateVoucherStatus();
+    List<Voucher> list = new ArrayList<>();
+    String sql = """
+        SELECT * FROM Voucher
+        ORDER BY voucher_id DESC
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, offset);
+        ps.setInt(2, limit);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(mapVoucher(rs));
+        }
+    }
+    return list;
+}
+
+/* ==========================================================
+   📊 Đếm tổng số voucher (phục vụ phân trang)
+   ========================================================== */
+public int getTotalVoucherCount() throws SQLException {
+    String sql = "SELECT COUNT(*) FROM Voucher";
+    try (Statement st = conn.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    }
+    return 0;
+}
+public List<Voucher> getActiveVouchersByPage(int offset, int limit) throws SQLException {
+    autoUpdateVoucherStatus();
+
+    List<Voucher> list = new ArrayList<>();
+    String sql = """
+        SELECT * FROM Voucher
+        WHERE is_active = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+          AND usage_limit > 0
+          AND per_user_limit > 0
+        ORDER BY valid_to ASC
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, offset);
+        ps.setInt(2, limit);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapVoucher(rs));
+            }
+        }
+    }
+    return list;
+}
+
+/* ==========================================================
+   🔹 Đếm tổng số voucher còn hiệu lực (cho khách hàng)
+   ========================================================== */
+public int getActiveVoucherCount() throws SQLException {
+    autoUpdateVoucherStatus();
+    String sql = """
+        SELECT COUNT(*) FROM Voucher
+        WHERE is_active = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+          AND usage_limit > 0
+          AND per_user_limit > 0
+    """;
+    try (Statement st = conn.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+        if (rs.next()) return rs.getInt(1);
+    }
+    return 0;
+}
 }
