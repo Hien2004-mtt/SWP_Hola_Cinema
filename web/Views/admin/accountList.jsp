@@ -11,7 +11,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Account List</title>
-    <link rel="stylesheet" href="css/admin.css">
     <style>
         .pagination { margin-top:24px; display:flex; justify-content:center; gap:8px; }
         .page-btn {
@@ -153,6 +152,7 @@
         th, td {
             padding: 12px 10px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background: #2980b9;

@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Thêm phòng chiếu</title>
-    <link rel="stylesheet" href="../css/Auditorium.css">
+    <link rel="stylesheet" href="../css/auditoriumAdd.css">
 </head>
 <body>
+    <div class="form-container">
     <h2>Thêm phòng chiếu mới</h2>
 
     <!-- Form gửi đến AddAuditoriumServlet -->
@@ -21,5 +22,6 @@
         <button type="submit">Thêm</button>
         <a href="${pageContext.request.contextPath}/listAuditorium">Hủy</a>
     </form>
+    </div>
 </body>
 </html>

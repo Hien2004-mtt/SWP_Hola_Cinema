@@ -1,0 +1,130 @@
+/* --- CĂN GIỮA CẢ KHỐI TIÊU ĐỀ + FORM --- */
+.form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 60px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 420px;
+    text-align: center;
+}
+
+/* --- TIÊU ĐỀ --- */
+.form-container h2 {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #003366;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- FORM BÊN TRONG --- */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* --- INPUT --- */
+form input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 18px;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* --- NÚT --- */
+form button {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+form button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+/* --- LINK HỦY --- */
+form a {
+    text-decoration: none;
+    color: #007bff;
+    margin-top: 12px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+form a:hover {
+    color: #0056b3;
+}
+
+/* --- NỀN --- */
+body {
+    background: linear-gradient(135deg, #e0f7fa, #e3f2fd);
+    height: 100vh;
+    margin: 0;
+}
+
+form button {
+    background: linear-gradient(135deg, #28a745, #6edc5f);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background: linear-gradient(135deg, #1e7e34, #46b454);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    transform: scale(1.05);
+}
+
+/* --- NÚT HỦY (ĐỎ) --- */
+form a {
+    display: inline-block;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+form a:hover {
+    background: linear-gradient(135deg, #e63946, #ff1e56);
+    box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
+    transform: scale(1.05);
+}
+
+/* --- NẾU MUỐN HAI NÚT NẰM CẠNH NHAU --- */
+form button, form a {
+    display: inline-block;
+    margin: 10px 8px 0 8px;
+}
