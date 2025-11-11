@@ -13,6 +13,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class BookingServlet extends HttpServlet {
+
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -44,9 +49,6 @@ public class BookingServlet extends HttpServlet {
         double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
         int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
 
-        // Thêm để redirect đúng nếu ghế bị trùng
-        String seatConflictCode = null;
-
         BookingDAO bookingDAO = new BookingDAO();
         BookingItemDAO itemDAO = new BookingItemDAO();
         SeatDAO seatDAO = new SeatDAO();
@@ -56,46 +58,31 @@ public class BookingServlet extends HttpServlet {
 
         try (Connection conn = DAL.DBContext.getConnection()) {
             conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-            List<BookingItem> items = new ArrayList<>();
-
-            //Lock từng ghế
+            // Lấy danh sách ghế từ code
+            List<Seat> seatList = new ArrayList<>();
+            List<Integer> seatIds = new ArrayList<>();
             for (String seatCode : selectedSeats) {
                 Seat seat = seatDAO.getSeatByCode(seatCode, auditoriumId);
-                if (seat == null) {
-                    continue;
+                if (seat != null) {
+                    seatList.add(seat);
+                    seatIds.add(seat.getSeatId());
                 }
-
-                boolean locked = seatDAO.lockSeat(conn, seat.getSeatId());
-                if (!locked) {
-                    conn.rollback();
-
-                    // 🔹 Lưu thông báo vào session
-                    session.setAttribute("seatMessage", " Ghế " + seatCode + " đã được người khác đặt trước!");
-
-                    // 🔹 Quay lại trang seat (SeatServlet) với showtimeId hiện tại
-                    response.sendRedirect("seat?showtimeId=" + showtimeId);
-                    return;
-                }
-
-                double seatPrice = basePrice;
-                if (seat.getSeatType().equalsIgnoreCase("VIP")) {
-                    seatPrice += 70000;
-                } else if (seat.getSeatType().equalsIgnoreCase("SweetBox")) {
-                    seatPrice += 100000;
-                }
-
-                BookingItem item = new BookingItem();
-                item.setSeatId(seat.getSeatId());
-                item.setPrice(seatPrice);
-                items.add(item);
             }
 
-            // Nếu có ghế trùng, redirect về trang seat
-            if (seatConflictCode != null) {
-                // rollback đã thực hiện ở trên rồi
-                response.sendRedirect("seat?showtimeId=" + showtimeId + "&errorSeat=" + seatConflictCode);
+            if (seatIds.isEmpty()) {
+                request.setAttribute("message", "Không tìm thấy ghế hợp lệ!");
+                request.getRequestDispatcher("Views/Seat.jsp").forward(request, response);
+                return;
+            }
+
+            // Gọi DAO để lock nhiều ghế
+            boolean locked = seatDAO.lockSeats(conn, seatIds);
+            if (!locked) {
+                conn.rollback();
+                session.setAttribute("seatMessage", "Một hoặc nhiều ghế đã được người khác đặt trước!");
+                response.sendRedirect("seat?showtimeId=" + showtimeId);
                 return;
             }
 
@@ -108,38 +95,49 @@ public class BookingServlet extends HttpServlet {
             }
 
             // Lưu BookingItem
-            itemDAO.addBookingItems(conn, bookingId, showtimeId, items);
+            List<BookingItem> items = new ArrayList<>();
+            for (Seat seat : seatList) {
+                double seatPrice = basePrice;
+                if (seat.getSeatType().equalsIgnoreCase("VIP")) seatPrice += 70000;
+                else if (seat.getSeatType().equalsIgnoreCase("SweetBox")) seatPrice += 100000;
 
-            //  Commit giao dịch
+                BookingItem item = new BookingItem();
+                item.setSeatId(seat.getSeatId());
+                item.setPrice(seatPrice);
+                items.add(item);
+            }
+
+            itemDAO.addBookingItems(conn, bookingId, showtimeId, items);
             conn.commit();
 
             session.setAttribute("bookingId", bookingId);
             session.setAttribute("bookedSeats", selectedSeats);
             session.setAttribute("totalPrice", totalPrice);
 
-            //  Thread tự động hủy sau 10 phút
-            new Thread(() -> {
+            // Hủy tự động sau 10 phút
+            scheduler.schedule(() -> {
                 try {
-                    Thread.sleep(1 * 60 * 1000);
-                    Booking b = bookingDAO.getBookingById(bookingId);
-                    if (b != null && b.getStatus().equalsIgnoreCase("pending")) {
+                    Booking booking = bookingDAO.getBookingById(bookingId);
+                    if (booking != null && booking.getStatus().equalsIgnoreCase("pending")) {
                         bookingDAO.updateBookingStatus(bookingId, "cancelled");
-                        List<BookingItem> booked = itemDAO.getItemsByBookingId(bookingId);
-                        for (BookingItem bi : booked) {
-                            seatDAO.unlockSeat(bi.getSeatId());
+                        List<BookingItem> bookedItems = itemDAO.getItemsByBookingId(bookingId);
+                        List<Integer> ids = new ArrayList<>();
+                        for (BookingItem bi : bookedItems) {
+                            ids.add(bi.getSeatId());
                         }
+                        seatDAO.unlockSeats(ids);
                         System.out.println("Booking #" + bookingId + " đã bị hủy do quá hạn thanh toán.");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }).start();
+            }, 10, TimeUnit.MINUTES);
 
             response.sendRedirect("Views/payment.jsp");
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("seat?showtimeId=" + request.getParameter("showtimeId") + "&errorSeat=system");
+            response.sendRedirect("seat?showtimeId=" + showtimeId + "&errorSeat=system");
         }
     }
 }
