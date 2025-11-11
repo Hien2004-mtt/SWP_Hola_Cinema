@@ -96,8 +96,8 @@ public class UserDAO {
             throw new RuntimeException("❌ Lỗi khi cập nhật profile: " + e.getMessage(), e);
         }
     }
-    
-        public User getUserByEmail(String email) {
+
+    public User getUserByEmail(String email) {
         User user = null;
         try (Connection conn = DBContext.getConnection(); PreparedStatement pstmt = conn.prepareStatement(SELECT_USER_BY_EMAIL_FULL)) {
             pstmt.setString(1, email);

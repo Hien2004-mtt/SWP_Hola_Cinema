@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Không có quyền truy cập </title>
-        <link rel="stylesheet" href="css/Unauthorized.css"/>
+        <link rel="stylesheet" href="css/unauthorized.css"/>
     </head>
     <body>
         <h2>Bạn không có quyền truy cập vào trang này.</h2>

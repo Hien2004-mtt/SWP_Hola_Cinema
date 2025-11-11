@@ -13,11 +13,12 @@
         <meta charset="UTF-8">
         <title>Movies | Filter</title>
         <link rel="stylesheet" href="css/movie_list.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
         <script src="js/movie_list.js"></script>
     </head>
     <body>
+        <jsp:include page="/Inculude/Header.jsp" />
         <div class="movie-list-container">
-
             <h2 class="page-title">MOVIES</h2>
 
             <div class="filter-bar">
@@ -108,5 +109,6 @@
                 </c:forEach>
             </div>
         </div>
+        <jsp:include page="/Inculude/Footer.jsp" />
     </body>
 </html>

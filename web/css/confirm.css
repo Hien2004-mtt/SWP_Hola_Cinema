@@ -1,24 +1,43 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Sep 29, 2025, 9:28:29 PM
+    Author     : USER
+*/
 
-        body { font-family: Arial, sans-serif; background: #f9f9f9; }
-        .confirm-box {
-            width: 600px;
-            background: #fff;
-            margin: 80px auto;
-            padding: 40px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 60px;
+        }
+        .container {
+            background-color: white;
+            width: 400px;
+            margin: auto;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h2 { text-align: center; color: #27ae60; }
-        .details p { margin: 10px 0; font-size: 16px; }
-        .buttons { text-align: center; margin-top: 30px; }
-        button {
-            background: #27ae60;
+        .message {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 6px;
+            text-decoration: none;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-        button:hover { background: #219150; }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
     

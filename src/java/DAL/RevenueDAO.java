@@ -13,14 +13,15 @@ public class RevenueDAO {
         List<RevenueRecord> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder("""
-            SELECT m.title AS movieTitle,
-                   COUNT(bi.booking_item_id) AS totalTickets,
-                   SUM(p.amount) AS totalRevenue,
-                   MAX(p.paid_at) AS paidAt
+            SELECT 
+                m.title AS movieTitle,
+                COUNT(bi.booking_item_id) AS totalTickets,
+                SUM(p.amount) AS totalRevenue,
+                MAX(p.paid_at) AS paidAt
             FROM Payment p
             JOIN Booking b ON p.booking_id = b.booking_id
             JOIN BookingItem bi ON b.booking_id = bi.booking_id
-            JOIN Showtime s ON s.showtime_id = b.showtime_id
+            JOIN Showtime s ON s.showtime_id = bi.showtime_id
             JOIN Movie m ON s.movie_id = m.movie_id
             WHERE p.status = 'success'
               AND p.paid_at BETWEEN ? AND ?
@@ -102,5 +103,60 @@ public class RevenueDAO {
             e.printStackTrace();
         }
         return BigDecimal.ZERO;
+    }
+
+    // ======== MAIN TEST ========
+    public static void main(String[] args) {
+        RevenueDAO dao = new RevenueDAO();
+
+        System.out.println("===== TEST 1: LẤY DOANH THU TOÀN BỘ TRONG KHOẢNG =====");
+        BigDecimal total = dao.getTotalRevenue("2025-11-01", "2025-11-10");
+        System.out.println("💰 Tổng doanh thu từ 2025-11-01 đến 2025-11-10: " + total + " VND");
+
+        System.out.println("\n===== TEST 2: LẤY DANH SÁCH DOANH THU THEO PHIM =====");
+        List<RevenueRecord> list = dao.getRevenueByCondition(
+                "2025-11-01",
+                "2025-11-10",
+                "",
+                null,
+                null,
+                "desc"
+        );
+
+        if (list.isEmpty()) {
+            System.out.println("⚠ Không có dữ liệu doanh thu nào trong khoảng này.");
+        } else {
+            for (RevenueRecord r : list) {
+                System.out.printf("🎬 %s | Vé: %d | Doanh thu: %s | Thanh toán gần nhất: %s%n",
+                        r.getMovieTitle(),
+                        r.getTotalTickets(),
+                        r.getTotalRevenue(),
+                        r.getPaidAt());
+            }
+        }
+
+        System.out.println("\n===== TEST 3: LỌC THEO TÊN PHIM (ví dụ: 'Avengers') =====");
+        List<RevenueRecord> filtered = dao.getRevenueByCondition(
+                "2025-11-01",
+                "2025-11-10",
+                "Avengers",
+                new BigDecimal("100"),
+                new BigDecimal("5000"),
+                "asc"
+        );
+
+        if (filtered.isEmpty()) {
+            System.out.println("⚠ Không có doanh thu cho phim 'Avengers' trong khoảng này.");
+        } else {
+            for (RevenueRecord r : filtered) {
+                System.out.printf("🎞 %s | Vé: %d | Doanh thu: %s | Gần nhất: %s%n",
+                        r.getMovieTitle(),
+                        r.getTotalTickets(),
+                        r.getTotalRevenue(),
+                        r.getPaidAt());
+            }
+        }
+
+        System.out.println("\n===== TEST DONE =====");
     }
 }

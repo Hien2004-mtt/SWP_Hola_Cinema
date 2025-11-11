@@ -459,7 +459,7 @@
         <% } %>
     </div>
 
-    <a href="../home.jsp" class="btn btn-outline-secondary btn-sm">Quay lại trang chủ</a>
+    <a href="${pageContext.request.contextPath}/home" class="btn btn-outline-secondary btn-sm">Quay lại trang chủ</a>
 
 </div>
 
