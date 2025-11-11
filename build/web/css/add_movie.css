@@ -290,3 +290,7 @@ button {
     margin-left: 15px;
     align-self: center;
 }
+
+body {
+    padding-top: 120px !important;
+}
