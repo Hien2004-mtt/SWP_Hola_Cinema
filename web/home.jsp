@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Hola Cinema Center</title>
@@ -181,24 +181,23 @@
             <li><a href="home" class="active">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/movies">Movies</a></li>
             <li><a href="#">Booking</a></li>
-            <li><a href="#">News & Promotion</a></li>
+            <li><a href="#">News & Promotions</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
     </nav>
 
     <div class="nav-right">
-<form action="home" method="get" class="search-box">
-    <input type="text" name="q" placeholder="Search..." 
-           value="${param.q}" style="padding:6px 12px;border:1px solid #ccc;border-radius:5px;">
-</form>
+        <form action="home" method="get" class="search-box">
+            <input type="text" name="q" placeholder="Search..." 
+                   value="${param.q}" style="padding:6px 12px;border:1px solid #ccc;border-radius:5px;">
+        </form>
 
-
-              <c:choose>
+        <c:choose>
             <c:when test="${not empty loggedUser}">
-                <span>Xin chào, <strong>${loggedUser.name}</strong></span>
-                <!-- 🔹 Nút đi đến trang hồ sơ người dùng -->
+                <span>Hello, <strong>${loggedUser.name}</strong></span>
+                <!-- 🔹 Button to user profile -->
                 <a href="updateProfile" class="btn">Profile</a>
-                <a href="logout" class="btn">Đăng xuất</a>
+                <a href="logout" class="btn">Logout</a>
             </c:when>
             <c:otherwise>
                 <a href="login.jsp" class="btn">Sign in</a>
@@ -214,10 +213,10 @@
 
 <div class="movies-section">
     <div class="section-header">
-        <h2>Phim đang chiếu</h2>
+        <h2>Now Showing</h2>
     </div>
     <c:if test="${empty moviesNow}">
-        <p>Hiện chưa có phim đang chiếu.</p>
+        <p>No movies are currently showing.</p>
     </c:if>
     <div class="movie-grid">
         <c:forEach var="m" items="${moviesNow}">
@@ -225,8 +224,8 @@
                 <img src="${m.posterUrl}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/220x300?text=No+Image'">
                 <div class="movie-info">
                     <div class="movie-title">${m.title}</div>
-                    <div class="movie-meta">⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</div>
-                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Chi tiết</a>
+                    <div class="movie-meta">⏱ ${m.durationMinutes} mins | ⭐ ${m.rating}</div>
+                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Details</a>
                 </div>
             </div>
         </c:forEach>
@@ -235,10 +234,10 @@
 
 <div class="movies-section" style="background-color: #fff; margin-top: 40px;">
     <div class="section-header">
-        <h2>Phim sắp chiếu</h2>
+        <h2>Coming Soon</h2>
     </div>
     <c:if test="${empty moviesComing}">
-        <p>Hiện chưa có phim sắp chiếu.</p>
+        <p>No upcoming movies at the moment.</p>
     </c:if>
     <div class="movie-grid">
         <c:forEach var="m" items="${moviesComing}">
@@ -246,8 +245,8 @@
                 <img src="${m.posterUrl}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/220x300?text=No+Image'">
                 <div class="movie-info">
                     <div class="movie-title">${m.title}</div>
-                    <div class="movie-meta">⏱ ${m.durationMinutes} phút | ⭐ ${m.rating}</div>
-                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Chi tiết</a>
+                    <div class="movie-meta">⏱ ${m.durationMinutes} mins | ⭐ ${m.rating}</div>
+                    <a href="movieDetail?id=${m.movieId}" class="btn btn-details">Details</a>
                 </div>
             </div>
         </c:forEach>
@@ -255,7 +254,7 @@
 </div>
 
 <footer>
-    © 2025 Hola Cinema Center — Thiết kế bởi nhóm của bạn.
+    © 2025 Hola Cinema Center — Designed by your team.
 </footer>
 
 </body>
