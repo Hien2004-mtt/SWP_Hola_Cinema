@@ -175,6 +175,7 @@
         <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
         <a href="revenue_management.jsp" class="nav-link"><i>💰</i> <span>Revenue</span></a>
         <a href="staff_management.jsp" class="nav-link"><i>👥</i> <span>Staff</span></a>
+        <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>💺</i> <span>Voucher Management</span></a>
         <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
     </div>
 
