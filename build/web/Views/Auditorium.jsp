@@ -154,7 +154,7 @@
                 </c:if>
                
             </div>
-                <%@include file="../Inculude/Footer.jsp" %>
         </div>
+                <%@include file="../Inculude/Footer.jsp" %>
     </body>
 </html>

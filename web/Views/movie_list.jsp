@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <title>Movies | Filter</title>
         <link rel="stylesheet" href="css/movie_list.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Layout.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
         <script src="js/movie_list.js"></script>
     </head>
     <body>

@@ -140,7 +140,7 @@ public class BookingServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }, 10, TimeUnit.MINUTES);
+            }, 1, TimeUnit.MINUTES);
 
             // ====== LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT ======
             String customerName = user.getName();

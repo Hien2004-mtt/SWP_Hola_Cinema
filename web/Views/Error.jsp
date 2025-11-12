@@ -36,7 +36,7 @@
     <body>
         <div class="error-box">
             <h2>${error}</h2>
-            <a href="seatList">⬅ Quay lại danh sách phòng</a>
+            <a href="listAuditorium">⬅ Quay lại danh sách phòng</a>
         </div>
     </body>
 </html>

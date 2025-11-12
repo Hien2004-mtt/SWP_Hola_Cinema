@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../css/auditoriumAdd.css">
 </head>
 <body>
+     <%@include file="../manager/sidebar.jsp" %>
+        <jsp:include page="/Inculude/Header.jsp" />
     <div class="form-container">
     <h2>Thêm phòng chiếu mới</h2>
 
@@ -23,5 +25,6 @@
         <a href="${pageContext.request.contextPath}/listAuditorium">Hủy</a>
     </form>
     </div>
+    <jsp:include page="/Inculude/Footer.jsp" />
 </body>
 </html>

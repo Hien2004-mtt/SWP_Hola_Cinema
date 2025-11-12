@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %><%@ page  %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sidebar.css"/>
 
