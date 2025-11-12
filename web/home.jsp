@@ -220,7 +220,13 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="profileMenu">
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/updateProfile"> Update Profile</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/transactionHistory"> Lịch sử giao dịch</a></li>
+                <% if (user.getRole() == 2) { %>
+                            <li>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/transactionHistory">
+                                    Lịch sử giao dịch
+                                </a>
+                            </li>
+                            <% } %>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/voucher?action=list">️ Voucher</a></li>
             </ul>
         </div>

@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
 
         <style>
             :root {
-                --primary: #6d28d9;     /* Tím hiện đại */
+                --primary: #6d28d9;
                 --primary-light: #a78bff;
                 --primary-dark: #5b21b6;
                 --accent: #e879f9;
@@ -222,11 +222,11 @@
                     <span class="bi bi-film"></span> Hola Cinema
                 </div>
                 <div class="nav-links">
-                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Doanh thu</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
-                    <a href="../home"><i class="bi bi-house"></i> Trang người dùng</a>
-                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
+                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
+                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="../home"><i class="bi bi-house"></i> User Page</a>
+                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 </div>
             </div>
         </header>
@@ -237,8 +237,8 @@
             <div class="welcome-card">
                 <div class="bi bi-person-circle"></div>
                 <div>
-                    Xin chào, <strong>${adminUser.name}</strong>!  
-                    <small class="text-muted d-block">| Vai trò: <em>Quản trị viên</em></small>
+                    Welcome, <strong>${adminUser.name}</strong>!  
+                    <small class="text-muted d-block">| Role: <em>Administrator</em></small>
                 </div>
             </div>
 
@@ -249,86 +249,86 @@
                         <i class="bi bi-currency-exchange"></i>
                     </div>
                     <h3><fmt:formatNumber value="${todayRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Doanh thu hôm nay</p>
+                    <p>Today's Revenue</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
                         <i class="bi bi-calendar-month"></i>
                     </div>
                     <h3><fmt:formatNumber value="${monthRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Doanh thu tháng</p>
+                    <p>Monthly Revenue</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
                         <i class="bi bi-calendar3"></i>
                     </div>
                     <h3><fmt:formatNumber value="${yearRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Doanh thu năm</p>
+                    <p>Yearly Revenue</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
                         <i class="bi bi-ticket-perforated"></i>
                     </div>
                     <h3><c:out value="${totalTickets}"/></h3>
-                    <p>Vé đã bán</p>
+                    <p>Tickets Sold</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
                         <i class="bi bi-play-circle"></i>
                     </div>
                     <h3><c:out value="${nowShowing}"/></h3>
-                    <p>Phim đang chiếu</p>
+                    <p>Now Showing</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
                         <i class="bi bi-clock-history"></i>
                     </div>
                     <h3><c:out value="${comingSoon}"/></h3>
-                    <p>Phim sắp chiếu</p>
+                    <p>Coming Soon</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
                         <i class="bi bi-building"></i>
                     </div>
                     <h3><c:out value="${activeCinemas}"/></h3>
-                    <p>Rạp đang hoạt động</p>
+                    <p>Active Cinemas</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
                         <i class="bi bi-people"></i>
                     </div>
                     <h3><c:out value="${totalUsers}"/></h3>
-                    <p>Tổng người dùng</p>
+                    <p>Total Users</p>
                 </div>
                 <div class="stat-card">
                     <div class="icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
                         <i class="bi bi-star-fill"></i>
                     </div>
                     <h3><fmt:formatNumber value="${avgRating}" pattern="#.##"/></h3>
-                    <p>Đánh giá trung bình</p>
+                    <p>Average Rating</p>
                 </div>
             </div>
 
             <!-- Charts Section -->
             <div class="charts-section">
 
-                <!-- Biểu đồ đường: Doanh thu 12 tháng -->
+                <!-- Line Chart: 12-Month Revenue -->
                 <div class="chart-container">
-                    <h3><i class="bi bi-graph-up-arrow"></i> Doanh thu 12 tháng</h3>
+                    <h3><i class="bi bi-graph-up-arrow"></i> 12-Month Revenue</h3>
                     <canvas id="revenueLineChart"></canvas>
                 </div>
 
-                <!-- Biểu đồ tròn: Phân bố loại phim -->
+                <!-- Pie Chart: Movie Distribution -->
                 <div class="chart-container small-chart">
-                    <h3><i class="bi bi-pie-chart"></i> Phân bố phim</h3>
+                    <h3><i class="bi bi-pie-chart"></i> Movie Distribution</h3>
                     <canvas id="movieTypeChart"></canvas>
                 </div>
             </div>
 
-            <!-- Biểu đồ cột: Doanh thu theo rạp (nếu có dữ liệu) -->
+            <!-- Bar Chart: Revenue by Cinema (if data available) -->
             <c:if test="${not empty cinemaRevenue}">
                 <div class="chart-container" style="margin-top: 1.5rem;">
-                    <h3><i class="bi bi-building-fill-gear"></i> Doanh thu theo rạp</h3>
+                    <h3><i class="bi bi-building-fill-gear"></i> Revenue by Cinema</h3>
                     <canvas id="cinemaBarChart"></canvas>
                 </div>
             </c:if>
@@ -336,30 +336,30 @@
         </div>
 
         <footer>
-            © 2025 Hola Cinema — Admin Dashboard. Được thiết kế với <i class="bi bi-heart-fill text-danger"></i> bởi Team Dev
+            © 2025 Hola Cinema — Admin Dashboard. Designed with <i class="bi bi-heart-fill text-danger"></i> by the Dev Team.
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // Dữ liệu từ server
+            // Data from server
             const monthlyRevenue = [
             <c:forEach var="r" items="${monthlyRevenue}" varStatus="loop">
                 ${r}<c:if test="${!loop.last}">,</c:if>
             </c:forEach>
             ];
 
-            // Giả lập dữ liệu phân bố phim (có thể thay bằng dữ liệu thật)
-            const movieTypes = ['Hành động', 'Tình cảm', 'Kinh dị', 'Hài', 'Hoạt hình'];
+            // Example data for movie distribution (replace with actual data)
+            const movieTypes = ['Action', 'Romance', 'Horror', 'Comedy', 'Animation'];
             const movieCounts = [25, 18, 15, 22, 12];
 
-            // Biểu đồ đường
+            // Line Chart
             const ctxLine = document.getElementById('revenueLineChart').getContext('2d');
             new Chart(ctxLine, {
                 type: 'line',
                 data: {
-                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                            label: 'Doanh thu (₫)',
+                            label: 'Revenue (₫)',
                             data: monthlyRevenue,
                             borderColor: '#6d28d9',
                             backgroundColor: 'rgba(109, 40, 217, 0.1)',
@@ -380,14 +380,14 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: value => value.toLocaleString('vi-VN') + '₫'
+                                callback: value => value.toLocaleString('en-US') + '₫'
                             }
                         }
                     }
                 }
             });
 
-            // Biểu đồ tròn
+            // Pie Chart
             const ctxPie = document.getElementById('movieTypeChart').getContext('2d');
             new Chart(ctxPie, {
                 type: 'doughnut',
@@ -411,10 +411,10 @@
                 }
             });
 
-            // Biểu đồ cột (nếu có dữ liệu rạp)
+            // Bar Chart (if cinema data exists)
             <c:if test="${not empty cinemaRevenue}">
             const ctxBar = document.getElementById('cinemaBarChart').getContext('2d');
-                    const cinemaNames = [<c:forEach var="entry" items="${cinemaRevenue}">'${entry.key}',</c:forEach>];
+            const cinemaNames = [<c:forEach var="entry" items="${cinemaRevenue}">'${entry.key}',</c:forEach>];
             const cinemaRevenues = [<c:forEach var="entry" items="${cinemaRevenue}">${entry.value},</c:forEach>];
 
             new Chart(ctxBar, {
@@ -422,7 +422,7 @@
                 data: {
                     labels: cinemaNames,
                     datasets: [{
-                            label: 'Doanh thu',
+                            label: 'Revenue',
                             data: cinemaRevenues,
                             backgroundColor: 'rgba(109, 40, 217, 0.7)',
                             borderColor: '#6d28d9',

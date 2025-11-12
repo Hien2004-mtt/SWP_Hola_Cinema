@@ -1,9 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="Models.User" %>
-<%
-    User user = (User) session.getAttribute("user");
-%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -172,14 +168,14 @@
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <h4>🎬 Manager</h4>
-        <a href="dashboard.jsp" class="nav-link active"><i></i> <span>Overview</span></a>
-        <a href="movie_management.jsp" class="nav-link"><i></i> <span>Movie Management</span></a>
-        <a href="showtime_management.jsp" class="nav-link"><i></i> <span>Showtime</span></a>
-        <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>️</i> <span>Voucher Management</span></a>
-        <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i></i> <span>Auditorium Management</span></a>
-        <a href="revenue_management.jsp" class="nav-link"><i></i> <span>Revenue</span></a>
-        <a href="staff_management.jsp" class="nav-link"><i></i> <span>Staff</span></a>
-        <a href="user_management.jsp" class="nav-link"><i></i> <span>User</span></a>
+        <a href="dashboard.jsp" class="nav-link active"><i>📊</i> <span>Overview</span></a>
+        <a href="${pageContext.request.contextPath}/movie_management" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
+        <a href="showtime_management.jsp" class="nav-link"><i>🕒</i> <span>Showtime</span></a>
+        <a href="ticket_management.jsp" class="nav-link"><i>🎟️</i> <span>Ticket</span></a>
+        <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
+        <a href="revenue_management.jsp" class="nav-link"><i>💰</i> <span>Revenue</span></a>
+        <a href="staff_management.jsp" class="nav-link"><i>👥</i> <span>Staff</span></a>
+        <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
     </div>
 
  

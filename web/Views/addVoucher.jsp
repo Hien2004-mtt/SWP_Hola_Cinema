@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
@@ -9,6 +9,9 @@
 </head>
 <body>
     <jsp:include page="/Inculude/Header.jsp" />
+    <div class="dashboard-layout">
+        <%@include file="../manager/sidebar.jsp" %>
+        <div class = "content-wrapper">
 <div class="container">
     
 
@@ -52,6 +55,8 @@
         <button type="submit">Thêm</button>
     </form>
 </div>
+    </div>
+    </div>
         <jsp:include page="/Inculude/Footer.jsp" />
 </body>
 </html>

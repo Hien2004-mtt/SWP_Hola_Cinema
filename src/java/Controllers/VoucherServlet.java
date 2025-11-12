@@ -13,14 +13,13 @@ import java.util.List;
 
 public class VoucherServlet extends HttpServlet {
 
-    @Override
+     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        
-        // 🧩 Nếu chưa đăng nhập → quay lại login
+
         if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
@@ -31,58 +30,64 @@ public class VoucherServlet extends HttpServlet {
 
         try (Connection conn = new DBContext().getConnection()) {
             VoucherDAO dao = new VoucherDAO(conn);
-             dao.autoUpdateVoucherStatus();
-            // 🧠 Nếu role = 2 (customer)
+            dao.autoUpdateVoucherStatus();
+
             if ("list".equalsIgnoreCase(action)) {
-    //  Thêm phân trang cho khách hàng
-    int page = 1;
-    int recordsPerPage = 15;
 
-    if (req.getParameter("page") != null) {
-        page = Integer.parseInt(req.getParameter("page"));
+                int page = 1;
+                int recordsPerPage = 15;
+                String sortColumn = req.getParameter("sortColumn");
+                String sortOrder = req.getParameter("sortOrder");
+                 String keyword = req.getParameter("q");
+
+                if (req.getParameter("page") != null) {
+                    page = Integer.parseInt(req.getParameter("page"));
+                }
+                if (sortColumn == null || sortColumn.isEmpty()) sortColumn = "voucher_id";
+                if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "ASC";
+
+                List<Voucher> list;
+                int totalRecords;
+                int totalPages;
+
+                  if (user.getRole() == 2) {
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            totalRecords = dao.getActiveVoucherCountByKeyword(keyword);
+            totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+            list = dao.searchActiveVouchersByPageSorted(keyword, (page - 1) * recordsPerPage, recordsPerPage, sortColumn, sortOrder);
+        } else {
+            totalRecords = dao.getActiveVoucherCount();
+            totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+            list = dao.getActiveVouchersByPageSorted((page - 1) * recordsPerPage, recordsPerPage, sortColumn, sortOrder);
+        }
+    } else {
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            totalRecords = dao.getTotalVoucherCountByKeyword(keyword);
+            totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+            list = dao.searchVouchersByPageSorted(keyword, (page - 1) * recordsPerPage, recordsPerPage, sortColumn, sortOrder);
+        } else {
+            totalRecords = dao.getTotalVoucherCount();
+            totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+            list = dao.getVouchersByPageSorted((page - 1) * recordsPerPage, recordsPerPage, sortColumn, sortOrder);
+        }
     }
-
-    // Gọi hàm mới trong DAO (chúng ta sẽ bổ sung ở bước dưới)
-    List<Voucher> activeVouchers = dao.getActiveVouchersByPage((page - 1) * recordsPerPage, recordsPerPage);
-    int totalRecords = dao.getActiveVoucherCount();
-    int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
-
-    req.setAttribute("list", activeVouchers);
-    req.setAttribute("currentPage", page);
-    req.setAttribute("totalPages", totalPages);
-
-    req.getRequestDispatcher("/Views/listVoucher.jsp").forward(req, resp);
-    return;
-}
-
-            // ✅ Admin & Staff
-            switch (action) {
-                case "list":
-    dao.autoUpdateVoucherStatus();
-
-    int page = 1;
-    int recordsPerPage = 15;
-
-    if (req.getParameter("page") != null) {
-        page = Integer.parseInt(req.getParameter("page"));
-    }
-
-    int totalRecords = dao.getTotalVoucherCount();
-    int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
-
-    List<Voucher> list = dao.getVouchersByPage((page - 1) * recordsPerPage, recordsPerPage);
 
     req.setAttribute("list", list);
     req.setAttribute("currentPage", page);
     req.setAttribute("totalPages", totalPages);
+    req.setAttribute("sortColumn", sortColumn);
+    req.setAttribute("sortOrder", sortOrder);
+    req.setAttribute("q", keyword);
 
-    req.getRequestDispatcher("/Views/listVoucher.jsp").forward(req, resp);
-    break;
+                req.getRequestDispatcher("/Views/listVoucher.jsp").forward(req, resp);
+                return;
+            }
 
+            // Các hành động khác (add, edit, delete, activate)
+            switch (action) {
                 case "delete":
                     int idDel = Integer.parseInt(req.getParameter("id"));
                     dao.setActive(idDel, false);
-                     
                     resp.sendRedirect("voucher?action=list");
                     break;
 

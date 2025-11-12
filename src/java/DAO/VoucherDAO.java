@@ -368,4 +368,192 @@ public int getActiveVoucherCount() throws SQLException {
     }
     return 0;
 }
+public List<Voucher> getVouchersByPageSorted(int offset, int limit, String sortColumn, String sortOrder) throws SQLException {
+    autoUpdateVoucherStatus();
+
+    // Bảo vệ cột và thứ tự sắp xếp tránh SQL injection
+    String validColumn = switch (sortColumn) {
+        case "code" -> "code";
+        case "type" -> "type";
+        case "value" -> "value";
+        case "valid_from" -> "valid_from";
+        case "valid_to" -> "valid_to";
+        case "usage_limit" -> "usage_limit";
+        case "per_user_limit" -> "per_user_limit";
+        case "is_active" -> "is_active";
+        default -> "voucher_id";
+    };
+
+    String order = sortOrder.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+
+    String sql = String.format("""
+        SELECT * FROM Voucher
+        ORDER BY %s %s
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """, validColumn, order);
+
+    List<Voucher> list = new ArrayList<>();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, offset);
+        ps.setInt(2, limit);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(mapVoucher(rs));
+        }
+    }
+    return list;
+}
+
+public List<Voucher> getActiveVouchersByPageSorted(int offset, int limit, String sortColumn, String sortOrder) throws SQLException {
+    autoUpdateVoucherStatus();
+
+    String validColumn = switch (sortColumn) {
+        case "code" -> "code";
+        case "type" -> "type";
+        case "value" -> "value";
+        case "valid_from" -> "valid_from";
+        case "valid_to" -> "valid_to";
+        case "usage_limit" -> "usage_limit";
+        case "per_user_limit" -> "per_user_limit";
+        case "is_active" -> "is_active";
+        default -> "voucher_id";
+    };
+    String order = sortOrder.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+
+    String sql = String.format("""
+        SELECT * FROM Voucher
+        WHERE is_active = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+          AND usage_limit > 0
+          AND per_user_limit > 0
+        ORDER BY %s %s
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """, validColumn, order);
+
+    List<Voucher> list = new ArrayList<>();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, offset);
+        ps.setInt(2, limit);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(mapVoucher(rs));
+        }
+    }
+    return list;
+}
+public List<Voucher> searchVouchersByPageSorted(String keyword, int offset, int limit, String sortColumn, String sortOrder) throws SQLException {
+    autoUpdateVoucherStatus();
+
+    String validColumn = switch (sortColumn) {
+        case "code" -> "code";
+        case "type" -> "type";
+        case "value" -> "value";
+        case "valid_from" -> "valid_from";
+        case "valid_to" -> "valid_to";
+        case "usage_limit" -> "usage_limit";
+        case "per_user_limit" -> "per_user_limit";
+        case "is_active" -> "is_active";
+        default -> "voucher_id";
+    };
+
+    String order = sortOrder.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+
+    String sql = String.format("""
+        SELECT * FROM Voucher
+        WHERE code LIKE ? OR type LIKE ? OR CAST(value AS NVARCHAR) LIKE ?
+        ORDER BY %s %s
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """, validColumn, order);
+
+    List<Voucher> list = new ArrayList<>();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String kw = "%" + keyword + "%";
+        ps.setString(1, kw);
+        ps.setString(2, kw);
+        ps.setString(3, kw);
+        ps.setInt(4, offset);
+        ps.setInt(5, limit);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) list.add(mapVoucher(rs));
+    }
+    return list;
+}
+
+// ==============================================
+// 🔍 Tìm kiếm (Customer - chỉ voucher active)
+// ==============================================
+public List<Voucher> searchActiveVouchersByPageSorted(String keyword, int offset, int limit, String sortColumn, String sortOrder) throws SQLException {
+    autoUpdateVoucherStatus();
+
+    String validColumn = switch (sortColumn) {
+        case "code" -> "code";
+        case "type" -> "type";
+        case "value" -> "value";
+        case "valid_from" -> "valid_from";
+        case "valid_to" -> "valid_to";
+        case "usage_limit" -> "usage_limit";
+        case "per_user_limit" -> "per_user_limit";
+        case "is_active" -> "is_active";
+        default -> "voucher_id";
+    };
+
+    String order = sortOrder.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+
+    String sql = String.format("""
+        SELECT * FROM Voucher
+        WHERE is_active = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+          AND (code LIKE ? OR type LIKE ? OR CAST(value AS NVARCHAR) LIKE ?)
+        ORDER BY %s %s
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """, validColumn, order);
+
+    List<Voucher> list = new ArrayList<>();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String kw = "%" + keyword + "%";
+        ps.setString(1, kw);
+        ps.setString(2, kw);
+        ps.setString(3, kw);
+        ps.setInt(4, offset);
+        ps.setInt(5, limit);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) list.add(mapVoucher(rs));
+    }
+    return list;
+}
+
+// Đếm số lượng bản ghi cho tìm kiếm
+public int getTotalVoucherCountByKeyword(String keyword) throws SQLException {
+    String sql = """
+        SELECT COUNT(*) FROM Voucher
+        WHERE code LIKE ? OR type LIKE ? OR CAST(value AS NVARCHAR) LIKE ?
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String kw = "%" + keyword + "%";
+        ps.setString(1, kw);
+        ps.setString(2, kw);
+        ps.setString(3, kw);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1);
+    }
+    return 0;
+}
+
+public int getActiveVoucherCountByKeyword(String keyword) throws SQLException {
+    String sql = """
+        SELECT COUNT(*) FROM Voucher
+        WHERE is_active = 1
+          AND GETDATE() BETWEEN valid_from AND valid_to
+          AND (code LIKE ? OR type LIKE ? OR CAST(value AS NVARCHAR) LIKE ?)
+    """;
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String kw = "%" + keyword + "%";
+        ps.setString(1, kw);
+        ps.setString(2, kw);
+        ps.setString(3, kw);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1);
+    }
+    return 0;
+}
 }

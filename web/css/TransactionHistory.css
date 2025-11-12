@@ -37,30 +37,35 @@ footer.main-footer p {
 
 /* 🌟 Phân trang */
 .pagination {
-  text-align: center;
-  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 6px;
 }
 
-.pagination .page {
-  display: inline-block;
+.pagination .page,
+.pagination a.page {
   padding: 6px 12px;
-  margin: 0 4px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 6px;
+  background: #fff;
   color: #000;
-  transition: 0.2s;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
 }
 
-.pagination .page:hover {
-  background-color: #f0f0f0;
+.pagination .page.active {
+    background-color: white;
+    color: black;
+    border-color: gray;
+    cursor: default;
 }
 
-.pagination .active {
-  background-color: #d81b60;
-  color: #fff;
-  border-color: #d81b60;
+.pagination .page:hover:not(.active) {
+  background: #e6f0ff;
 }
+
 
 /* Biểu tượng sắp xếp */
 .sorted-asc::after {

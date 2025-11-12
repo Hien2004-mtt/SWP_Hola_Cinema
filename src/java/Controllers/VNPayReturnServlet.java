@@ -57,13 +57,13 @@ public class VNPayReturnServlet extends HttpServlet {
                     ? new SimpleDateFormat("HH:mm dd/MM/yyyy").format(info.get("start_time"))
                     : "N/A";
             double total = Double.parseDouble(vnp_Amount) / 100; // VNPay trả *100
-
+            String hashCode = bookingDAO.hashBookingId(bookingId);
             // ✅ Sinh nội dung QR code
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
             String qrText =
                     " Vé xem phim HolaCinema\n" +
                     "-----------------------------\n" +
-                    "Mã đặt vé: " + bookingId + "\n" +
+                    "Mã đặt vé: " + hashCode + "\n" +
                     "Khách hàng: " + customerName + "\n" +
                     "Phim: " + movieTitle + "\n" +
                     "Ghế: " + seatCode + "\n" +
