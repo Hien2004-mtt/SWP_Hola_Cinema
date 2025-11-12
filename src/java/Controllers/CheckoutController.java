@@ -39,19 +39,29 @@ public class CheckoutController extends HttpServlet {
 
         int bookingId = (int) session.getAttribute("bookingId");
         double totalPrice = (double) session.getAttribute("totalPrice");
+Double discountedTotal = (Double) session.getAttribute("discountedTotal");
+
+// ⚙️ Đồng bộ logic tính amount như VNPay
+double finalAmount = (discountedTotal != null && discountedTotal > 0)
+        ? discountedTotal
+        : totalPrice;
+
+if (finalAmount <= 0) {
+    throw new IllegalArgumentException("Giá trị thanh toán không hợp lệ");
+}
 
         // ⚙️ Sinh mã MoMo
         String requestId = String.valueOf(System.currentTimeMillis());
         String orderId = "HC" + "_" + requestId; // để MoMo dùng riêng, tránh trùng
         String orderInfo = "Thanh toán vé HolaCinema #" + bookingId;
         String extraData = String.valueOf(bookingId); // gửi bookingId thật để xử lý sau
-        long amount = Math.round(totalPrice);
+        long amount = Math.round(finalAmount);
 
         // ⚙️ Chuỗi rawHash
         String rawHash =
                 "accessKey=" + MomoConfig.accessKey +
-                "&amount=" + amount +
-                "&extraData=" + extraData +
+                "&amount=" + discountedTotal +
+                "&extraData=" + amount +
                 "&ipnUrl=" + MomoConfig.ipnUrl +
                 "&orderId=" + orderId +
                 "&orderInfo=" + orderInfo +
