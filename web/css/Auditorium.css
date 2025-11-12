@@ -36,6 +36,8 @@ body {
     backdrop-filter: blur(10px);
     min-height: 100vh;
     border-radius: 12px 0 0 12px;
+    margin-bottom: 60px;
+    
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
 }
 

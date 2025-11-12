@@ -4,16 +4,19 @@
     Auditorium a = (Auditorium) request.getAttribute("auditorium");
 %>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Sửa thông tin phòng chiếu</title>
-        <link rel="stylesheet" href="css/Auditorium.css">
-    </head>
-    <body>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa thông tin phòng chiếu</title>
+    <link rel="stylesheet" href="css/auditoriumAdd.css"> <%-- dùng lại style của add --%>
+</head>
+<body>
+    <%@include file="../manager/sidebar.jsp" %>
+    <jsp:include page="/Inculude/Header.jsp" />
+
+    <div class="form-container">
         <h2>Sửa thông tin phòng chiếu</h2>
 
-        <!-- Form gửi đến UpdateAuditoriumServlet -->
         <form method="post" action="updateAuditorium">
             <input type="hidden" name="id" value="<%= a.getAuditoriumId() %>">
 
@@ -23,11 +26,16 @@
             <label for="totalSeat">Tổng số ghế:</label><br>
             <input type="number" id="totalSeat" name="totalSeat" 
                    value="<%= a.getTotalSeat() %>" min="10" max="80" required><br><br>
+
             <label for="description">Mô tả:</label><br>
-            <input type="text" id="description" name="description" value="<%= a.getDescription() %>"
-                   maxlength="250" required> <br><br>
+            <input type="text" id="description" name="description" 
+                   value="<%= a.getDescription() %>" maxlength="250" required><br><br>
+
             <button type="submit">Lưu thay đổi</button>
             <a href="listAuditorium">Hủy</a>
         </form>
-    </body>
+    </div>
+
+    <jsp:include page="/Inculude/Footer.jsp" />
+</body>
 </html>
