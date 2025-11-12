@@ -118,10 +118,7 @@ public class BookingServlet extends HttpServlet {
             itemDAO.addBookingItems(conn, bookingId, showtimeId, items);
             conn.commit();
             
-            // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
-            session.setAttribute("bookingId", bookingId);
-            session.setAttribute("bookedSeats", selectedSeats);
-            session.setAttribute("totalPrice", totalPrice);
+            
             
             // ====== THREAD TỰ HỦY SAU 10 PHÚT (NẾU CHƯA THANH TOÁN) ======
             scheduler.schedule(() -> {
@@ -141,7 +138,10 @@ public class BookingServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }, 1, TimeUnit.MINUTES);
-
+            // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
+            session.setAttribute("bookingId", bookingId);
+            session.setAttribute("bookedSeats", selectedSeats);
+            session.setAttribute("totalPrice", totalPrice);
             // ====== LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT ======
             String customerName = user.getName();
             String movieTitle = showtimeDAO.getMovieTitleByShowtime(showtimeId);
