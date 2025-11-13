@@ -34,10 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 error = " 'Ngày kết thúc' phải sau 'Ngày bắt đầu'.";
             }
             // 🧮 Kiểm tra logic giá trị giảm
-            else if (type.toLowerCase() === "percent" && (value < 1 || value > 100)) {
-                error = " Giá trị phần trăm phải nằm trong khoảng 1–100.";
-            } else if (type.toLowerCase() === "fixed" && (value <= 0 || value > 100000)) {
-                error = " Giá trị giảm cố định phải từ 1 đến 100000 VND.";
+            else if (type.toLowerCase() === "percent" && (value < 1 || value > 70)) {
+                error = " Giá trị phần trăm phải nằm trong khoảng 1–70.";
+            } else if (type.toLowerCase() === "fixed" && (value <= 0 || value > 50000)) {
+                error = " Giá trị giảm cố định phải từ 1 đến 50000 VND.";
             } else if (usageLimit <= 0 || perUserLimit <= 0) {
                 error = " Usage limit và per-user limit phải > 0.";
             } else if (usageLimit < perUserLimit) {

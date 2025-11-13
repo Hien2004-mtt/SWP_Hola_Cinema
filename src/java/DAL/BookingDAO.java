@@ -329,4 +329,31 @@ public class BookingDAO {
     }
     return 0;
 }
+    public int getVoucherIdByBookingId(int bookingId) {
+    String sql = "SELECT voucher_id FROM Booking WHERE booking_id = ?";
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, bookingId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next() && rs.getObject("voucher_id") != null) {
+            return rs.getInt("voucher_id");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+    public void removeVoucherFromBooking(int bookingId) {
+    String sql = "UPDATE Booking SET voucher_id = NULL WHERE booking_id = ?";
+    try (Connection conn = DBContext.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, bookingId);
+        ps.executeUpdate();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
 }

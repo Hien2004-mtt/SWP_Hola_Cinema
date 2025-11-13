@@ -3,6 +3,7 @@ package Controllers;
 import Controller.Util.AutoCancelTask;
 import DAL.*;
 import Models.*;
+import DAO.VoucherDAO;
 import DAL.BookingDAO;
 import DAL.BookingItemDAO;
 import DAL.SeatDAO;
@@ -28,7 +29,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class BookingServlet extends HttpServlet {
-
+    
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     @Override
@@ -57,10 +58,12 @@ public class BookingServlet extends HttpServlet {
         int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
 
         // ====== KHAI BÁO DAO ======
+        
         BookingDAO bookingDAO = new BookingDAO();
         BookingItemDAO itemDAO = new BookingItemDAO();
         SeatDAO seatDAO = new SeatDAO();
         ShowtimeDAO showtimeDAO = new ShowtimeDAO();
+        
 
         int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
 
@@ -95,6 +98,7 @@ public class BookingServlet extends HttpServlet {
             }
 
             // Tạo booking
+            VoucherDAO voucherDAO = new VoucherDAO(conn);
             int bookingId = bookingDAO.addBooking(conn, user.getUserId(), showtimeId, totalPrice);
             if (bookingId == -1) {
                 conn.rollback();
@@ -124,8 +128,11 @@ public class BookingServlet extends HttpServlet {
             scheduler.schedule(() -> {
                 try {
                     Booking booking = bookingDAO.getBookingById(bookingId);
+                    int voucherId = booking.getVoucherId();
                     if (booking != null && booking.getStatus().equalsIgnoreCase("pending")) {
                         bookingDAO.updateBookingStatus(bookingId, "cancelled");
+                        bookingDAO.removeVoucherFromBooking(bookingId);
+                        voucherDAO.restoreUsage(voucherId);
                         List<BookingItem> bookedItems = itemDAO.getItemsByBookingId(bookingId);
                         List<Integer> ids = new ArrayList<>();
                         for (BookingItem bi : bookedItems) {

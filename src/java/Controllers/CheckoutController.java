@@ -33,46 +33,45 @@ public class CheckoutController extends HttpServlet {
     private void processMomo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
         HttpSession session = req.getSession(false);
-        if (session == null) {
-            throw new IllegalStateException("Phiên thanh toán không tồn tại");
+        if (session == null) throw new IllegalStateException("Phiên thanh toán không tồn tại");
+
+        Integer bookingId = (Integer) session.getAttribute("bookingId");
+        Double total = (Double) session.getAttribute("totalPrice");
+        Double discounted = (Double) session.getAttribute("discountedTotal");
+
+        if (bookingId == null || total == null) {
+            throw new IllegalStateException("Dữ liệu thanh toán không hợp lệ");
         }
 
-        int bookingId = (int) session.getAttribute("bookingId");
-        double totalPrice = (double) session.getAttribute("totalPrice");
-Double discountedTotal = (Double) session.getAttribute("discountedTotal");
+        double finalAmount = (discounted != null && discounted >= 0 && discounted < total)
+                ? discounted
+                : total;
 
-// ⚙️ Đồng bộ logic tính amount như VNPay
-double finalAmount = (discountedTotal != null && discountedTotal > 0)
-        ? discountedTotal
-        : totalPrice;
+        if (finalAmount <= 0) {
+            throw new IllegalArgumentException("Số tiền thanh toán không hợp lệ");
+        }
 
-if (finalAmount <= 0) {
-    throw new IllegalArgumentException("Giá trị thanh toán không hợp lệ");
-}
-
-        // ⚙️ Sinh mã MoMo
-        String requestId = String.valueOf(System.currentTimeMillis());
-        String orderId = "HC" + "_" + requestId; // để MoMo dùng riêng, tránh trùng
-        String orderInfo = "Thanh toán vé HolaCinema #" + bookingId;
-        String extraData = String.valueOf(bookingId); // gửi bookingId thật để xử lý sau
         long amount = Math.round(finalAmount);
 
-        // ⚙️ Chuỗi rawHash
-        String rawHash =
-                "accessKey=" + MomoConfig.accessKey +
-                "&amount=" + discountedTotal +
-                "&extraData=" + amount +
-                "&ipnUrl=" + MomoConfig.ipnUrl +
-                "&orderId=" + orderId +
-                "&orderInfo=" + orderInfo +
-                "&partnerCode=" + MomoConfig.partnerCode +
-                "&redirectUrl=" + MomoConfig.redirectUrl +
-                "&requestId=" + requestId +
-                "&requestType=payWithATM";
+        // rawHash đúng
+        String requestId = String.valueOf(System.currentTimeMillis());
+        String orderId = "HC_" + requestId;
+        String orderInfo = "Thanh toán vé HolaCinema #" + bookingId;
+        String extraData = bookingId.toString();
+
+        String rawHash = "accessKey=" + MomoConfig.accessKey
+                + "&amount=" + amount
+                + "&extraData=" + extraData
+                + "&ipnUrl=" + MomoConfig.ipnUrl
+                + "&orderId=" + orderId
+                + "&orderInfo=" + orderInfo
+                + "&partnerCode=" + MomoConfig.partnerCode
+                + "&redirectUrl=" + MomoConfig.redirectUrl
+                + "&requestId=" + requestId
+                + "&requestType=payWithATM";
 
         String signature = Controllers.Util.HmacUtil.hmacSha256(rawHash, MomoConfig.secretKey);
 
-        // ⚙️ Body gửi đến MoMo
         JsonObject body = new JsonObject();
         body.addProperty("partnerCode", MomoConfig.partnerCode);
         body.addProperty("partnerName", "HolaCinema");
@@ -94,15 +93,19 @@ if (finalAmount <= 0) {
         if (json != null && json.has("payUrl")) {
             resp.sendRedirect(json.get("payUrl").getAsString());
         } else {
-            String msg = (json != null && json.has("message")) ? json.get("message").getAsString() : "MoMo Error";
-            resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
-                    URLEncoder.encode(msg, "UTF-8"));
+            String msg = (json != null && json.has("message"))
+                    ? json.get("message").getAsString()
+                    : "MoMo Error";
+
+            resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg="
+                    + URLEncoder.encode(msg, "UTF-8"));
         }
 
     } catch (Exception e) {
         e.printStackTrace();
-        resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
-                URLEncoder.encode("Lỗi processMomo: " + e.getMessage(), "UTF-8"));
+        resp.sendRedirect(req.getContextPath()
+                + "/Views/payment.jsp?page=fail&msg="
+                + URLEncoder.encode("Lỗi processMomo: " + e.getMessage(), "UTF-8"));
     }
 }
     private void processVNPay(HttpServletRequest req, HttpServletResponse resp) throws IOException {

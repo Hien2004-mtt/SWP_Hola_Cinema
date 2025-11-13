@@ -556,4 +556,19 @@ public int getActiveVoucherCountByKeyword(String keyword) throws SQLException {
     }
     return 0;
 }
+public void restoreUsage(int voucherId) throws SQLException {
+    String sql = """
+        UPDATE Voucher 
+        SET usage_limit = usage_limit + 1 
+        WHERE voucher_id = ?
+    """;
+
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, voucherId);
+        ps.executeUpdate();
+    }
+    
+    autoUpdateVoucherStatus();
+}
+
 }
