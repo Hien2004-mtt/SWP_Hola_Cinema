@@ -7,46 +7,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Tin Tức & Khuyến Mãi - Hola Cinema</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/Views/css/schedule.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/newsAndPromotion.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .content-preview {
-            max-height: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-        }
-        .image-preview {
-            max-width: 150px;
-            max-height: 100px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="sidebar">
-            <h2>Menu</h2>
-            <nav>
-                <a href="${pageContext.request.contextPath}/agenda">
-                    <i class="fas fa-calendar-alt" style="margin-right:8px;"></i> Lịch Chiếu Phim
-                </a>
-                <a href="${pageContext.request.contextPath}/manageSchedule">
-                    <i class="fas fa-cogs" style="margin-right:8px;"></i> Quản Lý Lịch Chiếu
-                </a>
-                <a href="${pageContext.request.contextPath}/manageNewsAndPromotion" class="active">
-                    <i class="fas fa-newspaper" style="margin-right:8px;"></i> Tin Tức & Khuyến Mãi
-                </a>
-            </nav>
-        </div>
-        <div class="main-content fade-in" style="margin-left:250px;">
+<body class="news-page">
+    <%@include file="../manager/sidebar.jsp" %>
+    <jsp:include page="/Inculude/Header.jsp" />
+
+    
+    <div class="news-wrapper">
+        <div class="main-content fade-in">
             <h1><i class="fas fa-newspaper"></i> Quản Lý Tin Tức & Khuyến Mãi</h1>
             
             <!-- Alert Messages -->
@@ -76,7 +46,7 @@
             </c:if>
             
             <!-- Add New News/Promotion Form -->
-            <div class="form-section">
+            <div class="form-section card-surface">
                 <h2><i class="fas fa-plus-circle"></i> Thêm Mới</h2>
                 <form action="manageNewsAndPromotion" method="post" id="addForm">
                     <input type="hidden" name="action" value="add"/>
@@ -124,7 +94,7 @@
             </div>
             
             <!-- News/Promotion List -->
-            <div class="table-container">
+            <div class="table-container card-surface">
                 <div style="margin-bottom: 10px;">
                     <h2 style="margin: 0 0 16px 0; text-align: center;"><i class="fas fa-list"></i> Danh Sách Tin Tức & Khuyến Mãi</h2>
                     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 28px; margin-bottom: 18px;">
@@ -160,7 +130,8 @@
                         </div>
                     </div>
                 </div>
-                <table style="table-layout: auto;">
+                <div class="table-scroll">
+                <table class="news-table">
                     <thead>
                         <tr>
                             <th style="white-space: nowrap;"><i class="fas fa-hashtag"></i> ID</th>
@@ -333,6 +304,7 @@
                         </c:if>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>
