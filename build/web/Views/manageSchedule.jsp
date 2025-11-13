@@ -12,19 +12,9 @@
 </head>
 
 <body>
-    <jsp:include page="/Inculude/Header.jsp" />
 
-        <!-- SIDEBAR -->
-        <div class="sidebar" id="sidebar">
-            <h4>🎬 Manager</h4>
-            <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📊</i> <span>Overview</span></a>
-            <a href="${pageContext.request.contextPath}/movie_management" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
-            <a href="${pageContext.request.contextPath}/manageSchedule" class="nav-link active"><i>🕒</i> <span>Showtime Management</span></a>
-            <a href="${pageContext.request.contextPath}/agenda" class="nav-link"><i>𝄜</i> <span>Agenda</span></a>
-            <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>👤</i> <span>Voucher Management</span></a>
-            <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
-            <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📅</i> <span>News and Promotion Management</span></a>
-        </div>
+        <%@include file="../manager/sidebar.jsp" %>
+        <jsp:include page="/Inculude/Header.jsp" />
     
     <div class="schedule-layout">
         <div class="main-content fade-in">
