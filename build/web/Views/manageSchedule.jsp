@@ -14,19 +14,17 @@
 <body>
     <jsp:include page="/Inculude/Header.jsp" />
 
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <h4>🎬 Manager</h4>
-        <a href="manager/dashboard.jsp" class="nav-link"><i>📊</i> <span>Overview</span></a>
-        <a href="${pageContext.request.contextPath}/movie_management" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
-        <a href="${pageContext.request.contextPath}/manageSchedule" class="nav-link active"><i>🕒</i> <span>Showtime</span></a>
-        <a href="ticket_management.jsp" class="nav-link"><i>🎟️</i> <span>Ticket</span></a>
-        <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
-        <a href="revenue_management.jsp" class="nav-link"><i>💰</i> <span>Revenue</span></a>
-        <a href="staff_management.jsp" class="nav-link"><i>👥</i> <span>Staff</span></a>
-        <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>💺</i> <span>Voucher Management</span></a>
-        <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
-    </div>
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <h4>🎬 Manager</h4>
+            <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📊</i> <span>Overview</span></a>
+            <a href="${pageContext.request.contextPath}/movie_management" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
+            <a href="${pageContext.request.contextPath}/manageSchedule" class="nav-link active"><i>🕒</i> <span>Showtime Management</span></a>
+            <a href="${pageContext.request.contextPath}/agenda" class="nav-link"><i>𝄜</i> <span>Agenda</span></a>
+            <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>👤</i> <span>Voucher Management</span></a>
+            <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
+            <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📅</i> <span>News and Promotion Management</span></a>
+        </div>
     
     <div class="schedule-layout">
         <div class="main-content fade-in">
