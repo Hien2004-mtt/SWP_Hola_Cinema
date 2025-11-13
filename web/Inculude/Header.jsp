@@ -65,7 +65,10 @@
             background: #ff6f61;
             transition: all 0.3s ease;
         }
-        
+                /* Khi header cố định, thêm padding trên body để nội dung không bị che */
+        body {
+            padding-top: 70px; /* tương ứng chiều cao navbar */
+        }
         
     </style>
 </head>

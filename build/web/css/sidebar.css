@@ -5,7 +5,7 @@
     background: #1a1a1a;
     color: #ddd;
     position: fixed;
-    top: 0;
+    top: 70px; /* offset below fixed header */
     left: 0;
     bottom: 0;
     padding: 20px;
