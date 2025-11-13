@@ -115,13 +115,14 @@
                                     Lịch sử giao dịch
                                 </a>
                             </li>
-                            <% } %>
+                            
 
                             <li>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/voucher?action=list">
                                     Voucher
                                 </a>
                             </li>
+                            <% } %>
                         </ul>
                     </div>
 
