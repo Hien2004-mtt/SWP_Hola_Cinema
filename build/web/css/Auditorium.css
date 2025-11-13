@@ -9,6 +9,7 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
+    
 }
 
 /* --- SIDEBAR (nếu muốn đổi luôn tone màu) --- */
@@ -37,10 +38,9 @@ body {
     min-height: 100vh;
     border-radius: 12px 0 0 12px;
     margin-bottom: 60px;
-    
+    margin-top: 19px; /* ✅ HẠ XUỐNG DƯỚI 19px */
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
 }
-
 /* --- TIÊU ĐỀ --- */
 h2 {
     text-align: center;
