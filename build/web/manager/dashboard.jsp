@@ -15,6 +15,7 @@
                 font-family: "Segoe UI", Arial, sans-serif;
                 background-color: #f4f6f9;
                 color: #333;
+                padding-top: 25px;
             }
 
             /* HEADER */
@@ -183,6 +184,89 @@
             .mobile-toggle {
                 display: none;
             }
+            .main-content {
+    margin-left: 240px;
+    padding: 40px 60px;
+    background: #f9fafc;
+    min-height: 100vh;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 25px;
+    border-left: 5px solid #007bff;
+    padding-left: 12px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-card h3 {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.stat-card .number {
+    font-size: 26px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Nút tác vụ nhanh */
+.quick-actions {
+    margin-top: 50px;
+}
+
+.quick-actions h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.action-buttons .btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.btn-primary { background: linear-gradient(135deg, #007bff, #00c6ff); }
+.btn-success { background: linear-gradient(135deg, #28a745, #6edc5f); }
+.btn-warning { background: linear-gradient(135deg, #ffb347, #ffcc33); }
+
         </style>
     </head>
     <body>
@@ -198,7 +282,20 @@
             <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>💺</i> <span>Voucher Management</span></a>
             <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📅</i> <span>News and Promotion Management</span></a>
         </div>
+<div class="main-content">
+    <h1 class="page-title">🎬 Manager Dashboard</h1>
+    <p>Xin chào <b>Manager</b>, chào mừng bạn quay lại hệ thống quản lý Hola Cinema Center!</p>
 
+  
+    <div class="quick-actions">
+        <h2>🚀 Tác vụ nhanh</h2>
+        <div class="action-buttons">
+            <a href="${pageContext.request.contextPath}/movie_management" class="btn btn-primary">🎥 Quản lý phim</a>
+            <a href="${pageContext.request.contextPath}/listAuditorium" class="btn btn-success">💺 Quản lý phòng chiếu</a>
+            <a href="${pageContext.request.contextPath}/voucher?action=list" class="btn btn-warning">🎟️ Quản lý voucher</a>
+        </div>
+    </div>
+</div>
 
 
 
