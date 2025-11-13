@@ -40,7 +40,8 @@ public class AuthorizationFilter implements Filter {
                 || path.contains("/newPassword")
                 || path.contains("/movies")
                 || path.contains("selectionShowtime")
-                || path.contains("confirmShowtime")) {
+                || path.contains("confirmShowtime")
+                || path.contains("/viewNews")) {
             chain.doFilter(req, res);
             return;
         }
