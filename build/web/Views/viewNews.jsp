@@ -5,6 +5,7 @@
 <%
     User user = (User) session.getAttribute("user");
 %>
+<c:set var="loggedUser" value="${sessionScope.user}" />
 <!DOCTYPE html>
 <html lang="vi">
 <head>
