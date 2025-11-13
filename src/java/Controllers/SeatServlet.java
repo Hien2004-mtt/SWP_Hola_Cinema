@@ -102,6 +102,31 @@ public class SeatServlet extends HttpServlet {
                 // Xóa sau khi hiển thị 1 lần
                 request.getSession().removeAttribute("seatMessage");
             }
+            if (seats == null || seats.isEmpty()) {
+                request.setAttribute("error",
+                        "Phòng chiếu này chưa được cấu hình ghế. Vui lòng thử vào 1 ngày khác!");
+                request.getRequestDispatcher("/Views/Error2.jsp")
+                        .forward(request, response);
+                return;
+            }
+           
+          
+            boolean hasAvailableSeat = false;
+
+            for (Seat s : seats) {
+                if (s.isIsActivate()) {
+                    hasAvailableSeat = true;
+                    break;
+                }
+            }
+
+            if (!hasAvailableSeat) {
+                request.setAttribute("error",
+                        "Phòng chiếu này hiện không còn ghế trống nào. Vui lòng chọn suất chiếu khác.");
+                request.getRequestDispatcher("/Views/Error2.jsp")
+                        .forward(request, response);
+                return;
+            }
 
             // 🔹 Gửi dữ liệu sang JSP
             request.setAttribute("movieTitle", m != null ? m.getTitle() : "Không tìm thấy phim");

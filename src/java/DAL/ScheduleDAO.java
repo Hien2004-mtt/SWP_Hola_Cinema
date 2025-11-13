@@ -46,7 +46,7 @@ public class ScheduleDAO {
 
     public List<ShowtimeSchedule> getActiveAuditoriums() throws SQLException, ClassNotFoundException {
         List<ShowtimeSchedule> auditoriums = new ArrayList<>();
-        String sql = "SELECT auditorium_id, name AS auditoriumName FROM Auditorium WHERE is_active = 1";
+        String sql = "SELECT auditorium_id, name AS auditoriumName FROM Auditorium WHERE is_deleted = 0";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 auditoriums.add(new ShowtimeSchedule(0, 0, null, rs.getInt("auditorium_id"), rs.getString("auditoriumName"), null, null, 0.0));
@@ -56,7 +56,8 @@ public class ScheduleDAO {
     }
 
     public boolean checkTimeConflict(int auditoriumId, Timestamp startTime, Timestamp endTime) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT COUNT(*) FROM Showtime WHERE auditorium_id = ? AND status = 'active' AND ((start_time <= ? AND end_time > ?) OR (start_time < ? AND end_time >= ?))";
+        // db now uses is_active instead of status
+        String sql = "SELECT COUNT(*) FROM Showtime WHERE auditorium_id = ? AND is_active = 1 AND ((start_time <= ? AND end_time > ?) OR (start_time < ? AND end_time >= ?))";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, auditoriumId);
             stmt.setTimestamp(2, startTime);
@@ -73,7 +74,7 @@ public class ScheduleDAO {
     }
 
     public boolean checkTimeConflictExcept(int showtimeId, int auditoriumId, Timestamp startTime, Timestamp endTime) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT COUNT(*) FROM Showtime WHERE auditorium_id = ? AND showtime_id <> ? AND status = 'active' AND ((start_time <= ? AND end_time > ?) OR (start_time < ? AND end_time >= ?))";
+        String sql = "SELECT COUNT(*) FROM Showtime WHERE auditorium_id = ? AND showtime_id <> ? AND is_active = 1 AND ((start_time <= ? AND end_time > ?) OR (start_time < ? AND end_time >= ?))";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, auditoriumId);
             stmt.setInt(2, showtimeId);
@@ -94,7 +95,8 @@ public class ScheduleDAO {
         if (checkTimeConflict(auditoriumId, startTime, endTime)) {
             return -1; // Trả về -1 nếu có xung đột
         }
-        String sql = "INSERT INTO Showtime (movie_id, auditorium_id, start_time, end_time, base_price, status) VALUES (?, ?, ?, ?, ?, 'active')";
+        // insert with is_active flag instead of status
+        String sql = "INSERT INTO Showtime (movie_id, auditorium_id, start_time, end_time, base_price, is_active) VALUES (?, ?, ?, ?, ?, 1)";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, movieId);
             stmt.setInt(2, auditoriumId);
@@ -115,23 +117,25 @@ public class ScheduleDAO {
 
     public List<ShowtimeSchedule> getAllShowtimes() throws SQLException, ClassNotFoundException {
         List<ShowtimeSchedule> schedules = new ArrayList<>();
-        String sql = "SELECT s.showtime_id, s.movie_id, m.title AS movieTitle, s.auditorium_id, a.name AS auditoriumName, s.start_time, s.end_time, s.base_price, COALESCE(s.status, 'active') AS status "
+        // read is_active boolean and map to model; keep status string in model for backward compatibility
+        String sql = "SELECT s.showtime_id, s.movie_id, m.title AS movieTitle, s.auditorium_id, a.name AS auditoriumName, s.start_time, s.end_time, s.base_price, COALESCE(s.is_active, 1) AS is_active "
                 + "FROM Showtime s "
                 + "JOIN Movie m ON s.movie_id = m.movie_id "
                 + "JOIN Auditorium a ON s.auditorium_id = a.auditorium_id "
                 + "ORDER BY s.start_time DESC";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
+                boolean isActive = rs.getInt("is_active") == 1;
                 schedules.add(new ShowtimeSchedule(
-                        rs.getInt("showtime_id"),
-                        rs.getInt("movie_id"),
-                        rs.getString("movieTitle"),
-                        rs.getInt("auditorium_id"),
-                        rs.getString("auditoriumName"),
-                        rs.getTimestamp("start_time"),
-                        rs.getTimestamp("end_time"),
-                        rs.getDouble("base_price"),
-                        rs.getString("status")
+                    rs.getInt("showtime_id"),
+                    rs.getInt("movie_id"),
+                    rs.getString("movieTitle"),
+                    rs.getInt("auditorium_id"),
+                    rs.getString("auditoriumName"),
+                    rs.getTimestamp("start_time"),
+                    rs.getTimestamp("end_time"),
+                    rs.getDouble("base_price"),
+                    isActive
                 ));
             }
         }
@@ -156,7 +160,8 @@ public class ScheduleDAO {
 
     // Soft delete - đánh dấu là cancelled thay vì xóa thật
     public boolean cancelShowtime(int showtimeId) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE Showtime SET status = 'cancelled' WHERE showtime_id = ?";
+        // soft delete -> mark is_active = 0
+        String sql = "UPDATE Showtime SET is_active = 0 WHERE showtime_id = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, showtimeId);
             return stmt.executeUpdate() > 0;
@@ -165,7 +170,7 @@ public class ScheduleDAO {
     
     // Khôi phục suất chiếu đã bị hủy
     public boolean restoreShowtime(int showtimeId) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE Showtime SET status = 'active' WHERE showtime_id = ? AND status = 'cancelled'";
+        String sql = "UPDATE Showtime SET is_active = 1 WHERE showtime_id = ? AND is_active = 0";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, showtimeId);
             return stmt.executeUpdate() > 0;
@@ -175,9 +180,11 @@ public class ScheduleDAO {
 
     // Cập nhật trạng thái lịch chiếu (ví dụ: completed)
     public void updateShowtimeStatus(int showtimeId, String status) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE Showtime SET status = ? WHERE showtime_id = ?";
+        // map status string to is_active boolean for DB
+        String sql = "UPDATE Showtime SET is_active = ? WHERE showtime_id = ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, status);
+            boolean active = "active".equalsIgnoreCase(status);
+            stmt.setInt(1, active ? 1 : 0);
             stmt.setInt(2, showtimeId);
             stmt.executeUpdate();
         }

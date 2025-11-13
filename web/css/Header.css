@@ -7,7 +7,7 @@
     background-color: #ffffff;
     border-bottom: 2px solid #eaeaea;
     transition: all 0.3s ease;
-     position: fixed;
+     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -84,4 +84,48 @@ body {
     .navbar .text-muted {
         display: none;
     }
+}
+.navbar {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #e60000 !important;
+    transition: 0.3s;
+}
+
+.navbar-brand:hover {
+    color: #ff6f61 !important;
+}
+
+.navbar-nav .nav-link {
+    color: #333 !important;
+    font-weight: 500;
+    transition: color 0.25s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ff6f61 !important;
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.btn-outline-primary,
+.btn-outline-danger,
+.btn-outline-success,
+.btn-outline-secondary {
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
 }

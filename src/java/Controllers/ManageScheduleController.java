@@ -78,14 +78,6 @@ public class ManageScheduleController extends HttpServlet {
 
             // Lấy danh sách lịch chiếu
             java.util.List<ShowtimeSchedule> scheduleList = dao.getAllShowtimes();
-            java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
-            for (ShowtimeSchedule schedule : scheduleList) {
-                if (schedule.getEndTime() != null && schedule.getEndTime().before(now) && "active".equals(schedule.getStatus())) {
-                    // Chuyển trạng thái thành completed nếu đã qua thời gian kết thúc
-                    dao.updateShowtimeStatus(schedule.getShowtimeId(), "completed");
-                    schedule.setStatus("completed");
-                }
-            }
 
             // Lọc theo trạng thái nếu có filter
             if (filter != null && !filter.equals("all")) {
