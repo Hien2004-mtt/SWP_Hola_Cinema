@@ -21,7 +21,7 @@
     <body>
         <jsp:include page="/Inculude/Header.jsp" />
         <div class="container">
-            <h2>Edit Movie</h2>
+            <h2 style="margin-top: 30px;">Edit Movie</h2>
             <div class="form-wrapper">
                 <form class="movie-form" action="${pageContext.request.contextPath}/edit_movie" method="post">
                     <input type="hidden" name="movieId" value="${movie.movieId}">

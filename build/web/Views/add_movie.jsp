@@ -19,7 +19,7 @@
     <body>
         <jsp:include page="/Inculude/Header.jsp" />
         <div class="container">
-            <h2>Add Movie</h2>
+            <h2 style="margin-top: 30px;">Add Movie</h2>
             <div class="form-wrapper">
 
                 <!-- Right: Form -->
