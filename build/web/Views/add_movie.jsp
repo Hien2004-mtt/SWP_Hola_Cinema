@@ -35,8 +35,8 @@
                     </div>
 
                     <!-- Poster Modal -->
-                    <div id="posterModal" class="modal">
-                        <div class="modal-content">
+                    <div id="posterModal" class="popup-modal">
+                        <div class="popup-modal-content">
                             <span class="close" onclick="closePosterModal()">&times;</span>
                             <h3>Add Poster URL</h3>
                             <input type="text" id="posterUrlInput" placeholder="Enter poster URL">
@@ -143,8 +143,8 @@
         </div>
 
         <!-- Modal Genre -->
-        <div id="genreModal" class="modal">
-            <div class="modal-content">
+        <div id="genreModal" class="popup-modal">
+            <div class="popup-modal-content">
                 <span class="close" onclick="closeModal('genreModal')">&times;</span>
                 <h3>Manage Genres</h3>
 
@@ -179,8 +179,8 @@
         </div>
 
         <!-- Modal Actor -->
-        <div id="actorModal" class="modal">
-            <div class="modal-content">
+        <div id="actorModal" class="popup-modal">
+            <div class="popup-modal-content">
                 <span class="close" onclick="closeModal('actorModal')">&times;</span>
                 <h3>Manage Actors</h3>
 

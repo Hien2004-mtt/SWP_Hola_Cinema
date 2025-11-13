@@ -10,8 +10,25 @@
     <link rel="stylesheet" href="css/schedule.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
+    <jsp:include page="/Inculude/Header.jsp" />
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <h4>🎬 Manager</h4>
+        <a href="manager/dashboard.jsp" class="nav-link"><i>📊</i> <span>Overview</span></a>
+        <a href="${pageContext.request.contextPath}/movie_management" class="nav-link"><i>🎥</i> <span>Movie Management</span></a>
+        <a href="${pageContext.request.contextPath}/manageSchedule" class="nav-link active"><i>🕒</i> <span>Showtime</span></a>
+        <a href="ticket_management.jsp" class="nav-link"><i>🎟️</i> <span>Ticket</span></a>
+        <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
+        <a href="revenue_management.jsp" class="nav-link"><i>💰</i> <span>Revenue</span></a>
+        <a href="staff_management.jsp" class="nav-link"><i>👥</i> <span>Staff</span></a>
+        <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>💺</i> <span>Voucher Management</span></a>
+        <a href="user_management.jsp" class="nav-link"><i>👤</i> <span>User</span></a>
+    </div>
+    
+    <div class="schedule-layout">
         <div class="main-content fade-in">
             <h1><i class="fas fa-calendar-alt"></i> Quản Lý Lịch Chiếu</h1>
             
@@ -107,6 +124,7 @@
                             <input type="number" name="basePrice" step="1000" min="0" placeholder="Nhập giá vé..." required value="${form_basePrice}">
                         </div>
                     </div>
+                    <br>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Thêm Lịch Chiếu
                     </button>
@@ -175,7 +193,7 @@
                         </form>
                     </div>
                 </div>
-                <table>
+                <table id="schedule-table">
                     <thead>
                         <tr>
                             <th><i class="fas fa-hashtag"></i> ID</th>
@@ -318,6 +336,8 @@
                         </c:if>
                     </tbody>
                 </table>
+                <!-- Pagination controls injected here -->
+                <div id="pagination" class="pagination-container" aria-label="Pagination"></div>
             </div>
         </div>
     </div>
@@ -496,6 +516,74 @@
                 window.scrollTo(0, parseInt(scroll));
                 localStorage.removeItem('manageScheduleScroll');
             }
+        });
+
+        // -------------------- Pagination (client-side) --------------------
+        function initPagination() {
+            const ITEMS_PER_PAGE = 5;
+            const table = document.getElementById('schedule-table');
+            if (!table) return;
+            const allRows = Array.from(table.querySelectorAll('tbody tr.schedule-row'));
+            const paginationContainer = document.getElementById('pagination');
+            if (!paginationContainer) return;
+            const totalItems = allRows.length;
+            if (totalItems === 0) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            let currentPage = 1;
+
+            function showPage(page) {
+                currentPage = page;
+                allRows.forEach((row, idx) => {
+                    const pageIndex = Math.floor(idx / ITEMS_PER_PAGE) + 1;
+                    const editRow = row.nextElementSibling && row.nextElementSibling.classList.contains('edit-form') ? row.nextElementSibling : null;
+                    if (pageIndex === page) {
+                        row.style.display = '';
+                        // keep edit row hidden until user opens it
+                        if (editRow) editRow.style.display = 'none';
+                    } else {
+                        row.style.display = 'none';
+                        if (editRow) editRow.style.display = 'none';
+                    }
+                });
+                renderPagination();
+            }
+
+            function renderPagination() {
+                paginationContainer.innerHTML = '';
+                if (totalPages <= 1) return;
+
+                const prev = document.createElement('button');
+                prev.className = 'page-link';
+                prev.textContent = '‹ Prev';
+                prev.disabled = currentPage === 1;
+                prev.addEventListener('click', () => showPage(Math.max(1, currentPage - 1)));
+                paginationContainer.appendChild(prev);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'page-link' + (i === currentPage ? ' active' : '');
+                    btn.textContent = i;
+                    btn.addEventListener('click', () => showPage(i));
+                    paginationContainer.appendChild(btn);
+                }
+
+                const next = document.createElement('button');
+                next.className = 'page-link';
+                next.textContent = 'Next ›';
+                next.disabled = currentPage === totalPages;
+                next.addEventListener('click', () => showPage(Math.min(totalPages, currentPage + 1)));
+                paginationContainer.appendChild(next);
+            }
+
+            // Initialize
+            showPage(1);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            try { initPagination(); } catch (e) { console.error('Pagination init failed', e); }
         });
     </script>
 </body>

@@ -22,10 +22,11 @@
     </head>
     <body>
         <%@include file="../manager/sidebar.jsp" %>
-        <jsp:include page="/Inculude/Header.jsp" />
+
         
         <div class="main-content">
-        <h2 style="text-align:center;">Movie Management</h2>
+            <jsp:include page="/Inculude/Header.jsp" />
+        <h2 style="margin-top: 20px;text-align:center;">Movie Management</h2>
 
         <div class="toolbar">
             <form action="movie_management" method="get" class="main-filter-form">
@@ -224,7 +225,7 @@
             </c:url>
             <a href="${nextUrl}" class="page-btn ${currentPage == totalPages ? 'disabled' : ''}">Next</a>
         </div>
-        </div>
         <jsp:include page="/Inculude/Footer.jsp" />
+        </div>
     </body>
 </html>
