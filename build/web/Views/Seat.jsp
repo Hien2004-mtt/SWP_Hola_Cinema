@@ -23,13 +23,13 @@
     </head>
 
     <body>
-        <jsp:include page="/Inculude/Header.jsp" />
         
-    <c:if test="${not empty message}">
-        <div class="alert alert-danger">${message}</div>
-    </c:if>
 
     <div class="container">
+        <jsp:include page="/Inculude/Header.jsp" />
+         <c:if test="${not empty message}">
+        <div class="alert alert-danger">${message}</div>
+    </c:if>
         <h2 style="text-align:center;">🎬 Chọn ghế cho phim: "<%= movieTitle %>"</h2>
         <p style="text-align:center;">⏰ Suất chiếu: <%= startTime %></p>
 

@@ -7,7 +7,7 @@
     background-color: #ffffff;
     border-bottom: 2px solid #eaeaea;
     transition: all 0.3s ease;
-     position: fixed;
+     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
