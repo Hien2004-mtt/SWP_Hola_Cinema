@@ -10,6 +10,6 @@
     <a href="${pageContext.request.contextPath}/agenda" class="nav-link"><i>𝄜</i> <span>Agenda</span></a>
     <a href="${pageContext.request.contextPath}/voucher?action=list" class="nav-link"><i>👤</i> <span>Voucher Management</span></a>
     <a href="${pageContext.request.contextPath}/listAuditorium" class="nav-link"><i>💺</i> <span>Auditorium Management</span></a>
-    <a href="${pageContext.request.contextPath}/manager/dashboard.jsp" class="nav-link"><i>📅</i> <span>News and Promotion Management</span></a>
+    <a href="${pageContext.request.contextPath}/manageNewsAndPromotion" class="nav-link"><i>📅</i> <span>News and Promotion Management</span></a>
 </div>
 
