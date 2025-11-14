@@ -14,11 +14,11 @@ html, body {
     top: 0;
     left: 0;
     width: 240px;
-    height: 100vh;
+    
     background: #111;
     color: white;
     padding: 20px 15px;
-    overflow-y: auto;
+    overflow-y: hidden;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
     z-index: 1000;
    
@@ -41,7 +41,7 @@ html, body {
 
 /* HEADER */
 .header {
-    height: 70px;
+    height: 40px;
     background: #fff;
     display: flex;
     align-items: center;

@@ -15,7 +15,9 @@
 </head>
 
 <body>
-
+<div class="header">
+            <%@ include file="/Inculude/Header.jsp" %>
+        </div>
     <!-- ============================
          1. SIDEBAR CỐ ĐỊNH BÊN TRÁI
          ============================ -->
@@ -31,9 +33,7 @@
     <div class="main-panel">
 
         <!-- 🔹 HEADER -->
-        <div class="header">
-            <%@ include file="/Inculude/Header.jsp" %>
-        </div>
+        
 
         <!-- 🔹 CONTENT -->
         <div class="content-wrapper">

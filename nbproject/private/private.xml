@@ -6,24 +6,35 @@
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/MovieListServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/WEB-INF/web.xml</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AddGenreServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/ListAuditoriumServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/BookingDAO.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AdminDashboardController.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AddMovieServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/MovieManagementServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/BookingItem.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Services/BookingService.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAO/PaymentDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/DAO.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/css/dashboard.css</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/DBContext.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Util/QRCodeUtil.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/UserAccount.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/EditMovieServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/LoginServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/css/listVoucher.css</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/TestConnection.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/BookingItemServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/css/Auditorium.css</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/addVoucher.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/DashboardServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/Showtime.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/CheckoutController.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/EditRoleServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/RevenueController.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/TransactionHistoryController.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Util/ValidateOtp.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/home.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/css/voucherForm.css</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Config/VNPayConfig.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Util/HmacUtil.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/movie_list.jsp</file>
@@ -35,16 +46,23 @@
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/ApplyVoucherServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/BookingServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAO/VoucherDAO.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/Payment.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Inculude/Header.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/DeleteUserServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/js/listVoucher.js</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/register.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/forgotPassword.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/User.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/MovieDetailDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Config/MomoConfig.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AgendaController.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/home.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/editVoucher.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/VNPayReturnServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/QRCodeServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/DeleteAuditoriumServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/ActorManagementServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAO/TransactionHistoryDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/movie_detail.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/VoucherServlet.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/Voucher.java</file>
@@ -53,23 +71,16 @@
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/Services/VoucherService.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/login.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/Auditorium.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Models/Booking.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/DAL/UserDAO.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AddAuditoriumServlet.java</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AccountListController.java</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/payment.jsp</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/css/sidebar.css</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/manager/dashboard.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/manager/sidebar.jsp</file>
             <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/src/java/Controllers/AddActorServlet.java</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/manager/sidebar.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/Views/agenda.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/css/agenda.css</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/css/newsAndPromotion.css</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/Views/manageNewsAndPromotion.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/Views/manageSchedule.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/src/java/Filters/AuthorizationFilter.java</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/Views/viewNews.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/manager/dashboard.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/Views/newsDetail.jsp</file>
-            <file>file:/C:/Users/ASUS/OneDrive/Desktop/SWP_Hola_Cinema/web/css/schedule.css</file>
+            <file>file:/D:/New%20folder%20(2)/SWP_Hola_Cinema/web/Views/js/addVoucher.js</file>
         </group>
     </open-files>
 </project-private>
