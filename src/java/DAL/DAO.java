@@ -72,7 +72,9 @@ public class DAO {
                 u.setRole(rs.getInt("role"));
                 u.setCreatedAt(rs.getTimestamp("created_at"));
                 u.setUpdatedAt(rs.getTimestamp("updated_at"));
-                u.setStatus(rs.getBoolean("status"));
+                // Status is VARCHAR: 'active' or 'locked'
+                String statusStr = rs.getString("status");
+                u.setStatus(statusStr != null && statusStr.equalsIgnoreCase("active"));
                 return u;
             }
         } catch (SQLException e) {
@@ -103,7 +105,9 @@ public class DAO {
                 u.setRole(rs.getInt("role"));
                 u.setCreatedAt(rs.getTimestamp("created_at"));
                 u.setUpdatedAt(rs.getTimestamp("updated_at"));
-                u.setStatus(rs.getBoolean("status"));
+                // Status is VARCHAR: 'active' or 'locked'
+                String statusStr = rs.getString("status");
+                u.setStatus(statusStr != null && statusStr.equalsIgnoreCase("active"));
                 return u;
             }
         } catch (SQLException e) {
@@ -173,7 +177,9 @@ public class DAO {
                 u.setRole(rs.getInt("role"));
                 u.setCreatedAt(rs.getTimestamp("created_at"));
                 u.setUpdatedAt(rs.getTimestamp("updated_at"));
-                u.setStatus(rs.getBoolean("status"));
+                // Status is VARCHAR: 'active' or 'locked'
+                String statusStr = rs.getString("status");
+                u.setStatus(statusStr != null && statusStr.equalsIgnoreCase("active"));
                 userList.add(u);
             }
         } catch (java.sql.SQLException e) {
@@ -209,13 +215,36 @@ public class DAO {
     }
 
     public boolean updateUserStatus(int userId, boolean status) {
+        // Status column is VARCHAR: 'active' or 'locked'
+        String statusValue = status ? "active" : "locked";
         String sql = "UPDATE Users SET status = ?, updated_at = GETDATE() WHERE user_id = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setBoolean(1, status);
+        
+        System.out.println("DAO.updateUserStatus - userId: " + userId + ", status boolean: " + status + ", statusValue: " + statusValue);
+        
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, statusValue);
             ps.setInt(2, userId);
-            return ps.executeUpdate() > 0;
+            
+            System.out.println("Executing SQL: UPDATE Users SET status = '" + statusValue + "', updated_at = GETDATE() WHERE user_id = " + userId);
+            
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+            
+            if (rowsAffected == 0) {
+                System.err.println("No rows updated. User might not exist or status is already set to: " + statusValue);
+            }
+            
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Error updating user status: " + e.getMessage());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            if (e.getNextException() != null) {
+                System.err.println("Next Exception: " + e.getNextException().getMessage());
+            }
             return false;
         }
     }
