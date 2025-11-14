@@ -44,7 +44,7 @@
             min-height: 100vh;
         }
 
-        /* Header */
+        /* Header - Match Dashboard */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -72,13 +72,17 @@
             transition: all 0.3s ease;
         }
 
-        .nav-links a:hover,
-        .nav-links a.active {
+        .nav-links a:hover {
             background: rgba(255,255,255,0.15);
             color: white;
         }
 
-        /* Container */
+        .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Main Container */
         .main-container {
             padding: 2rem;
             max-width: 1400px;
@@ -115,111 +119,73 @@
             color: var(--primary);
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-weight: 700;
         }
 
-        /* Search and Filter Section */
-        .search-filter-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
+        /* Search Form */
+        .search-form {
             margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
             align-items: center;
         }
 
-        .search-box {
+        .search-form input[type="text"] {
             flex: 1;
             min-width: 250px;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .search-box input {
-            flex: 1;
             padding: 0.75rem 1rem;
             border: 1px solid var(--border);
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
-        .search-box input:focus {
+        .search-form input[type="text"]:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
         }
 
-        .btn {
+        .search-form button {
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
+            font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
         }
 
-        .btn-primary {
+        .btn-primary-custom {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-primary-custom:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
         }
 
-        .btn-secondary {
+        .btn-secondary-custom {
             background: var(--text-light);
             color: white;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary-custom:hover {
             background: var(--text);
         }
 
-        .btn-warning {
+        .btn-warning-custom {
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
         }
 
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-
-        /* Filter Buttons */
-        .filter-group {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .filter-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .filter-group input[type="radio"] {
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
         /* Table */
-        .table-wrapper {
+        .table-container {
             overflow-x: auto;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(109, 40, 217, 0.08);
         }
 
         table {
@@ -228,78 +194,67 @@
             background: var(--card);
         }
 
-        thead {
+        th {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-        }
-
-        th {
             padding: 1rem;
-            text-align: left;
+            text-align: center;
             font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.95rem;
         }
 
         td {
             padding: 1rem;
+            text-align: center;
             border-bottom: 1px solid var(--border);
         }
 
-        tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        tbody tr:hover {
+        tr:hover {
             background: rgba(109, 40, 217, 0.05);
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
         /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
+        .action-btn {
             padding: 0.5rem 1rem;
-            font-size: 0.85rem;
             border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-success {
+        .btn-detail {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
         }
 
-        .btn-success:hover {
+        .btn-detail:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
         }
 
-        .btn-info {
+        .btn-edit-role {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-edit-role:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-edit-status {
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
         }
 
-        .btn-info:hover {
+        .btn-edit-status:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
         }
 
         .btn-disabled {
@@ -309,219 +264,92 @@
             pointer-events: none;
         }
 
-        /* Role Badge */
-        .role-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .role-admin {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .role-manager {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-        }
-
-        .role-customer {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .status-locked {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            color: white;
-        }
-
         /* Pagination */
         .pagination {
+            margin-top: 2rem;
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
         }
 
         .page-btn {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text);
+            padding: 0.75rem 1.25rem;
             border-radius: 8px;
+            border: 1px solid var(--primary);
+            background: var(--card);
+            color: var(--primary);
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            min-width: 44px;
-        }
-
-        .page-btn:hover:not(.active):not(:disabled) {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-2px);
         }
 
         .page-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-color: var(--primary);
             cursor: not-allowed;
         }
 
         .page-btn:disabled {
             background: var(--border);
             color: var(--text-light);
+            border-color: var(--border);
             cursor: not-allowed;
-            opacity: 0.6;
         }
 
-        /* Sort Popup */
-        .sort-popup {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            border-radius: 12px;
-            padding: 1.5rem;
-            z-index: 1001;
-            min-width: 280px;
-            margin-top: 0.5rem;
+        .page-btn:not(:disabled):not(.active):hover {
+            background: rgba(109, 40, 217, 0.1);
         }
 
-        .sort-popup h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 1rem;
+            flex-wrap: wrap;
         }
 
-        .sort-popup .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .sort-popup label {
+        .filter-section label {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-right: 1rem;
-            cursor: pointer;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--card);
-            padding: 2rem;
-            border-radius: 16px;
-            min-width: 400px;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .modal-content h2 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: transparent;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-light);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--border);
-            color: var(--text);
-        }
-
-        .modal-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-form-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
             font-weight: 500;
             cursor: pointer;
         }
 
-        .modal-form-group input[type="radio"] {
+        .filter-section input[type="radio"] {
             accent-color: var(--primary);
         }
 
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            margin-top: 1.5rem;
+        /* Sort Popup */
+        #sortPopup {
+            background: var(--card);
+            box-shadow: 0 8px 24px rgba(109, 40, 217, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 280px;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-light);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
+        #sortPopup h3 {
+            color: var(--primary);
             margin-bottom: 1rem;
-            color: var(--border);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content-custom {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(109, 40, 217, 0.2);
+        }
+
+        .modal-header-custom h2 {
+            color: var(--primary);
+            margin: 0;
         }
 
         /* Footer */
@@ -539,158 +367,115 @@
             .main-container {
                 padding: 1rem;
             }
-            
-            .search-filter-section {
+            .search-form {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
-            .search-box {
+            .filter-section {
+                margin-left: 0;
                 width: 100%;
             }
         }
 
         @media (max-width: 576px) {
-            .header {
-                padding: 1rem;
+            .table-container {
+                overflow-x: scroll;
             }
-            
-            .nav-links {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .nav-links a {
-                font-size: 0.85rem;
-                padding: 0.4rem 0.75rem;
-            }
-            
-            .content-card {
-                padding: 1rem;
-            }
-            
-            table {
-                font-size: 0.85rem;
-            }
-            
             th, td {
                 padding: 0.75rem 0.5rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .modal-content {
-                min-width: 90%;
-                padding: 1.5rem;
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header - Match Dashboard -->
     <header class="header">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="logo">
                 <span class="bi bi-film"></span> Hola Cinema
             </div>
             <div class="nav-links">
-                    <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                    <a href="foodManagement" ><i class="bi bi-cup-straw"></i> Manage Food</a>
-                    <a href="../accountList" class="active"><i class="bi bi-people"></i> Account List</a>
-                    <a href="../home"><i class="bi bi-house"></i> User Page</a>
-                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
+                <a href="${pageContext.request.contextPath}/admin/revenue"><i class="bi bi-graph-up"></i> Revenue</a>
+                <a href="${pageContext.request.contextPath}/admin/foodManagement"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                <a href="${pageContext.request.contextPath}/admin/accountList" class="active"><i class="bi bi-people"></i> Account List</a>
+                <a href="${pageContext.request.contextPath}/home"><i class="bi bi-house"></i> User Page</a>
+                <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- Welcome Card -->
+        <!-- Welcome Card - Match Dashboard -->
         <div class="welcome-card">
-            <div class="bi bi-people-fill"></div>
+            <div class="bi bi-person-circle"></div>
             <div>
                 <strong>Account Management</strong>
                 <small class="text-muted d-block">Manage user accounts, roles, and status</small>
             </div>
         </div>
-
         <!-- Content Card -->
         <div class="content-card">
-            <h2><i class="bi bi-list-ul"></i> User List</h2>
+            <h2><i class="bi bi-people"></i> User List</h2>
             
-            <!-- Alert Messages -->
-            <c:if test="${not empty success}">
-                <div class="alert alert-success" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="bi bi-check-circle-fill"></i> ${success}
-                </div>
-                <c:remove var="success" scope="session"/>
-            </c:if>
-            <c:if test="${not empty error}">
-                <div class="alert alert-error" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="bi bi-exclamation-circle-fill"></i> ${error}
-                </div>
-                <c:remove var="error" scope="session"/>
-            </c:if>
-            
-            <!-- Search and Filter Section -->
-            <form action="accountList" method="get" class="search-filter-section">
-                <div class="search-box">
-                    <input type="text" name="search" placeholder="Search by email, name or phone..." value="${param.search}">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-search"></i> Search
+            <form action="accountList" method="get" class="search-form">
+                <input type="text" name="search" placeholder="Search by email, name or phone" value="${param.search}">
+                <button type="submit" class="btn-primary-custom">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                <c:if test="${not empty param.search}">
+                    <button type="button" onclick="window.location.href='accountList'" class="btn-secondary-custom">
+                        <i class="bi bi-x-circle"></i> Clear
                     </button>
-                    <c:if test="${not empty param.search}">
-                        <a href="accountList" class="btn btn-secondary">
-                            <i class="bi bi-x-circle"></i> Clear
-                        </a>
-                    </c:if>
-                </div>
-                
-                <div style="position: relative;">
-                    <button type="button" id="sortBtn" class="btn btn-warning">
-                        <i class="bi bi-sort-down"></i> Sort
-                    </button>
-                    <div id="sortPopup" class="sort-popup" style="display:none;">
-                        <h3>Sort Options</h3>
-                        <div class="form-group">
-                            <label><input type="radio" name="sortFieldPopup" value="userId" checked> ID</label>
-                            <label><input type="radio" name="sortFieldPopup" value="role"> Role</label>
-                        </div>
-                        <div class="form-group">
-                            <label><input type="radio" name="sortOrderPopup" value="asc" checked> Ascending</label>
-                            <label><input type="radio" name="sortOrderPopup" value="desc"> Descending</label>
-                        </div>
-                        <div class="modal-actions">
-                            <button type="button" id="applySortBtn" class="btn btn-primary">Apply</button>
-                            <button type="button" id="closeSortBtn" class="btn btn-secondary">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="filter-group">
+                </c:if>
+                <button type="button" id="sortBtn" class="btn-warning-custom">
+                    <i class="bi bi-sort-down"></i> Sort
+                </button>
+                <div class="filter-section">
                     <label>
-                        <input type="radio" name="roleFilter" value="all" <c:if test='${roleFilter == null || roleFilter == "all"}'>checked</c:if> onchange="handleRoleFilterChange(this)">
-                        Show All
+                        <input type="radio" name="roleFilter" value="all" <c:if test='${roleFilter == null || roleFilter == "all"}'>checked</c:if>> Show All
                     </label>
                     <label>
-                        <input type="radio" name="roleFilter" value="0" <c:if test='${roleFilter == "0"}'>checked</c:if> onchange="handleRoleFilterChange(this)">
-                        Admin
+                        <input type="radio" name="roleFilter" value="0" <c:if test='${roleFilter == "0"}'>checked</c:if>> Admin
                     </label>
                     <label>
-                        <input type="radio" name="roleFilter" value="1" <c:if test='${roleFilter == "1"}'>checked</c:if> onchange="handleRoleFilterChange(this)">
-                        Manager
+                        <input type="radio" name="roleFilter" value="1" <c:if test='${roleFilter == "1"}'>checked</c:if>> Manager
                     </label>
                     <label>
-                        <input type="radio" name="roleFilter" value="2" <c:if test='${roleFilter == "2"}'>checked</c:if> onchange="handleRoleFilterChange(this)">
-                        Customer
+                        <input type="radio" name="roleFilter" value="2" <c:if test='${roleFilter == "2"}'>checked</c:if>> Customer
                     </label>
                 </div>
             </form>
-
-            <!-- Table -->
-            <div class="table-wrapper">
+            
+            <!-- Sort popup -->
+            <div id="sortPopup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:1001;">
+                <div class="modal-content-custom" style="padding: 2rem;">
+                    <h3><i class="bi bi-sort-alpha-down"></i> Sort Options</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="margin-right: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <input type="radio" name="sortFieldPopup" value="userId" checked> ID
+                        </label>
+                        <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <input type="radio" name="sortFieldPopup" value="role"> Role
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="margin-right: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <input type="radio" name="sortOrderPopup" value="asc" checked> Ascending
+                        </label>
+                        <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <input type="radio" name="sortOrderPopup" value="desc"> Descending
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+                        <button type="button" id="applySortBtn" class="btn-primary-custom">Apply</button>
+                        <button type="button" id="closeSortBtn" class="btn-secondary-custom">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -699,80 +484,71 @@
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Role</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:choose>
                             <c:when test="${empty userList}">
                                 <tr>
-                                    <td colspan="7" class="empty-state">
-                                        <i class="bi bi-inbox"></i>
-                                        <p>No accounts available</p>
+                                    <td colspan="6" style="text-align:center; color:#ef4444; font-weight:bold; padding: 2rem;">
+                                        <i class="bi bi-exclamation-circle"></i> No accounts available
                                     </td>
                                 </tr>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="user" items="${userList}">
                                     <tr>
-                                        <td><strong>#${user.userId}</strong></td>
+                                        <td>${user.userId}</td>
                                         <td>${user.email}</td>
                                         <td>${user.name}</td>
                                         <td>${user.phone}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${user.role == 0}">
-                                                    <span class="role-badge role-admin">Admin</span>
+                                                    <span style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem; font-weight: 500;">Admin</span>
                                                 </c:when>
                                                 <c:when test="${user.role == 1}">
-                                                    <span class="role-badge role-manager">Manager</span>
+                                                    <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem; font-weight: 500;">Manager</span>
                                                 </c:when>
                                                 <c:when test="${user.role == 2}">
-                                                    <span class="role-badge role-customer">Customer</span>
+                                                    <span style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem; font-weight: 500;">Customer</span>
                                                 </c:when>
                                             </c:choose>
                                         </td>
                                         <td>
+                                            <a href="#" class="action-btn btn-detail detail-btn" 
+                                                data-userid="${user.userId}"
+                                                data-email="${user.email}"
+                                                data-name="${user.name}"
+                                                data-phone="${user.phone}"
+                                                data-dob="${user.dob}"
+                                                data-gender="${user.gender}"
+                                                data-role="${user.role}"
+                                                data-createdat="${user.createdAt}"
+                                                data-updatedat="${user.updatedAt}"
+                                                data-status="${user.status}">
+                                                <i class="bi bi-info-circle"></i> Detail
+                                            </a>
                                             <c:choose>
-                                                <c:when test="${user.status}">
-                                                    <span class="status-badge status-active">Active</span>
+                                                <c:when test="${user.role == 0}">
+                                                    <a href="#" class="action-btn btn-disabled">
+                                                        <i class="bi bi-shield-lock"></i> Edit Role
+                                                    </a>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="status-badge status-locked">Locked</span>
+                                                    <a href="#" class="action-btn btn-edit-role edit-role-btn" 
+                                                        data-userid="${user.userId}"
+                                                        data-role="${user.role}">
+                                                        <i class="bi bi-pencil-square"></i> Edit Role
+                                                    </a>
                                                 </c:otherwise>
                                             </c:choose>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="#" class="btn btn-success btn-sm detail-btn" 
-                                                    data-userid="${user.userId}"
-                                                    data-email="${user.email}"
-                                                    data-name="${user.name}"
-                                                    data-phone="${user.phone}"
-                                                    data-dob="${user.dob}"
-                                                    data-gender="${user.gender}"
-                                                    data-role="${user.role}"
-                                                    data-createdat="${user.createdAt}"
-                                                    data-updatedat="${user.updatedAt}"
-                                                    data-status="${user.status}">
-                                                    <i class="bi bi-eye"></i> Detail
-                                                </a>
-                                                <c:choose>
-                                                    <c:when test="${user.role == 0}">
-                                                        <span class="btn btn-disabled btn-sm">
-                                                            <i class="bi bi-pencil"></i> Edit Role
-                                                        </span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="#" class="btn btn-warning btn-sm edit-role-btn" 
-                                                            data-userid="${user.userId}"
-                                                            data-role="${user.role}">
-                                                            <i class="bi bi-pencil"></i> Edit Role
-                                                        </a>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
+                                            <a href="#" class="action-btn btn-edit-status edit-status-btn"
+                                                data-userid="${user.userId}"
+                                                data-status="${user.status}">
+                                                <i class="bi bi-toggle-on"></i> Status: <c:choose><c:when test="${user.status}">Active</c:when><c:otherwise>Locked</c:otherwise></c:choose>
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -781,7 +557,6 @@
                     </tbody>
                 </table>
             </div>
-
             <!-- Pagination -->
             <div class="pagination">
                 <c:forEach var="i" begin="1" end="${totalPages}">
@@ -789,11 +564,89 @@
                         type="button"
                         class="page-btn <c:if test='${i == currentPage}'>active</c:if>"
                         <c:if test='${totalPages == 1 || i == currentPage}'>disabled</c:if>
-                        onclick="window.location.href='accountList?page=${i}<c:if test='${not empty param.search}'>&search=${param.search}</c:if><c:if test='${not empty param.role}'>&role=${param.role}</c:if><c:if test='${not empty param.sortField}'>&sortField=${param.sortField}</c:if><c:if test='${not empty param.sortOrder}'>&sortOrder=${param.sortOrder}</c:if>'"
+                        onclick="window.location.href='accountList?page=${i}'"
                     >
                         ${i}
                     </button>
                 </c:forEach>
+            </div>
+        </div>
+        
+        <!-- Modal chỉnh sửa role -->
+        <div id="editRoleModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1001;align-items:center;justify-content:center;" class="modal-overlay">
+            <div class="modal-content-custom" style="padding: 2rem; min-width: 320px; max-width: 400px;">
+                <div class="modal-header-custom" style="margin-bottom: 1.5rem; text-align: center;">
+                    <h2><i class="bi bi-pencil-square"></i> Edit User Role</h2>
+                </div>
+                <form id="editRoleForm" method="post" action="editRole" style="width:100%;">
+                    <input type="hidden" name="userId" id="editRoleUserId" />
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
+                            <input type="radio" name="role" value="0" id="roleAdmin" style="accent-color: var(--text-light);" disabled>
+                            <label for="roleAdmin" style="font-size: 1rem; color: var(--text-light);">Admin (not allowed)</label>
+                        </div>
+                        <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
+                            <input type="radio" name="role" value="1" id="roleManager" style="accent-color: var(--primary);">
+                            <label for="roleManager" style="font-size: 1rem;">Manager</label>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
+                            <input type="radio" name="role" value="2" id="roleCustomer" style="accent-color: var(--primary);">
+                            <label for="roleCustomer" style="font-size: 1rem;">Customer</label>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; justify-content:center;">
+                        <button type="submit" class="btn-primary-custom">Save</button>
+                        <button type="button" id="closeEditRoleBtn" class="btn-secondary-custom">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Modal for user detail -->
+        <div id="userDetailModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999;align-items:center;justify-content:center;" class="modal-overlay">
+            <div class="modal-content-custom" style="padding: 2rem; min-width: 320px; max-width: 450px; position: relative;">
+                <button onclick="closeModal()" id="closeModalBtn" style="position:absolute;top:1rem;right:1rem;background:transparent;color:var(--text-light);border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.3s ease;">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <div class="modal-header-custom" style="margin-bottom: 1.5rem;">
+                    <h2><i class="bi bi-person-circle"></i> User Detail</h2>
+                </div>
+                <div id="modalContent" style="line-height: 2;">
+                    <!-- Info will be injected here -->
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:0.75rem;margin-top:1.5rem;">
+                    <button onclick="closeModal()" class="btn-primary-custom">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal chỉnh sửa trạng thái -->
+        <div id="editStatusModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1002;align-items:center;justify-content:center;" class="modal-overlay">
+            <div class="modal-content-custom" style="padding: 2rem; min-width: 320px; max-width: 400px;">
+                <div class="modal-header-custom" style="margin-bottom: 1.5rem; text-align: center;">
+                    <h2><i class="bi bi-toggle-on"></i> Update Account Status</h2>
+                </div>
+                <form id="editStatusForm" method="post" action="editStatus" style="width:100%;">
+                    <input type="hidden" name="userId" id="editStatusUserId" />
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
+                            <input type="radio" name="status" value="true" id="statusActive" style="accent-color: var(--primary);">
+                            <label for="statusActive" style="font-size: 1rem;">
+                                <i class="bi bi-check-circle" style="color: #10b981;"></i> Active
+                            </label>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
+                            <input type="radio" name="status" value="false" id="statusLocked" style="accent-color: var(--primary);">
+                            <label for="statusLocked" style="font-size: 1rem;">
+                                <i class="bi bi-lock" style="color: #ef4444;"></i> Locked
+                            </label>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; justify-content:center;">
+                        <button type="submit" class="btn-primary-custom">Save</button>
+                        <button type="button" id="closeEditStatusBtn" class="btn-secondary-custom">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -802,91 +655,24 @@
         © 2025 Hola Cinema — Admin Dashboard. Designed with <i class="bi bi-heart-fill text-danger"></i> by the Dev Team.
     </footer>
 
-    <!-- User Detail Modal -->
-    <div id="userDetailModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2><i class="bi bi-person-circle"></i> User Detail</h2>
-            <div id="modalContent">
-                <!-- Info will be injected here -->
-            </div>
-            <div class="modal-actions">
-                <button onclick="closeModal()" class="btn btn-secondary">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Role Modal -->
-    <div id="editRoleModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeEditRoleModal()">&times;</button>
-            <h2><i class="bi bi-pencil-square"></i> Edit User Role</h2>
-            <form id="editRoleForm" method="post" action="${pageContext.request.contextPath}/editRole">
-                <input type="hidden" name="userId" id="editRoleUserId" />
-                <div class="modal-form-group">
-                    <label>
-                        <input type="radio" name="role" value="0" id="roleAdmin" disabled>
-                        <span style="color: var(--text-light);">Admin (not allowed)</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="role" value="1" id="roleManager">
-                        Manager
-                    </label>
-                    <label>
-                        <input type="radio" name="role" value="2" id="roleCustomer">
-                        Customer
-                    </label>
-                </div>
-                <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <button type="button" onclick="closeEditRoleModal()" class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Debug: Check if script is loaded
-        console.log('Account List page script loaded');
+        // Xử lý radio lọc role
+        document.querySelectorAll('input[name="roleFilter"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                const form = document.querySelector('form[action=accountList]');
+                const params = new URLSearchParams(new FormData(form));
+                if (radio.value === 'all') {
+                    params.delete('role');
+                } else {
+                    params.set('role', radio.value);
+                }
+                window.location.href = form.action + '?' + params.toString();
+            });
+        });
         
-        // Handle Role Filter Change
-        function handleRoleFilterChange(radio) {
-            const form = document.querySelector('form[action="accountList"]');
-            const params = new URLSearchParams();
-            
-            // Get search value
-            const searchInput = form.querySelector('input[name="search"]');
-            if (searchInput && searchInput.value) {
-                params.set('search', searchInput.value);
-            }
-            
-            // Get sort values
-            const sortField = "${sortField != null ? sortField : ''}";
-            const sortOrder = "${sortOrder != null ? sortOrder : ''}";
-            if (sortField) {
-                params.set('sortField', sortField);
-            }
-            if (sortOrder) {
-                params.set('sortOrder', sortOrder);
-            }
-            
-            // Set role parameter (or remove if "all")
-            if (radio.value !== 'all') {
-                params.set('role', radio.value);
-            }
-            
-            // Redirect with new parameters
-            window.location.href = 'accountList' + (params.toString() ? '?' + params.toString() : '');
-        }
-
-        // Sort Popup
+        // Hiện popup sort và giữ nguyên lựa chọn hiện tại
         document.getElementById('sortBtn').addEventListener('click', function() {
-            const popup = document.getElementById('sortPopup');
-            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
-            
-            // Set current values
             var currentField = "${sortField != null ? sortField : 'userId'}";
             var currentOrder = "${sortOrder != null ? sortOrder : 'asc'}";
             document.querySelectorAll('input[name="sortFieldPopup"]').forEach(function(radio) {
@@ -895,61 +681,27 @@
             document.querySelectorAll('input[name="sortOrderPopup"]').forEach(function(radio) {
                 radio.checked = (radio.value === currentOrder);
             });
+            document.getElementById('sortPopup').style.display = 'block';
         });
-
+        
+        // Đóng popup sort
         document.getElementById('closeSortBtn').addEventListener('click', function() {
             document.getElementById('sortPopup').style.display = 'none';
         });
-
+        
+        // Áp dụng sort
         document.getElementById('applySortBtn').addEventListener('click', function() {
-            const form = document.querySelector('form[action="accountList"]');
+            const form = document.querySelector('form[action=accountList]');
             const sortField = document.querySelector('input[name="sortFieldPopup"]:checked').value;
             const sortOrder = document.querySelector('input[name="sortOrderPopup"]:checked').value;
             const params = new URLSearchParams(new FormData(form));
             params.set('sortField', sortField);
             params.set('sortOrder', sortOrder);
             window.location.href = form.action + '?' + params.toString();
+            document.getElementById('sortPopup').style.display = 'none';
         });
-
-        // Close popup when clicking outside
-        document.addEventListener('click', function(event) {
-            const sortBtn = document.getElementById('sortBtn');
-            const sortPopup = document.getElementById('sortPopup');
-            if (!sortBtn.contains(event.target) && !sortPopup.contains(event.target)) {
-                sortPopup.style.display = 'none';
-            }
-        });
-
-        // User Detail Modal
-        function closeModal() {
-            document.getElementById('userDetailModal').classList.remove('show');
-        }
-
-        document.querySelectorAll('.detail-btn').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                var html = '<div style="line-height: 2;">';
-                html += '<p><strong>ID:</strong> ' + btn.dataset.userid + '</p>';
-                html += '<p><strong>Email:</strong> ' + btn.dataset.email + '</p>';
-                html += '<p><strong>Name:</strong> ' + btn.dataset.name + '</p>';
-                html += '<p><strong>Phone:</strong> ' + btn.dataset.phone + '</p>';
-                html += '<p><strong>Date of Birth:</strong> ' + (btn.dataset.dob || '-') + '</p>';
-                html += '<p><strong>Gender:</strong> ' + (btn.dataset.gender == 'true' ? 'Male' : 'Female') + '</p>';
-                html += '<p><strong>Role:</strong> ' + (btn.dataset.role == '0' ? '<span class="role-badge role-admin">Admin</span>' : (btn.dataset.role == '1' ? '<span class="role-badge role-manager">Manager</span>' : '<span class="role-badge role-customer">Customer</span>')) + '</p>';
-                html += '<p><strong>Status:</strong> ' + (btn.dataset.status === 'true' ? '<span class="status-badge status-active">Active</span>' : '<span class="status-badge status-locked">Locked</span>') + '</p>';
-                html += '<p><strong>Created At:</strong> ' + (btn.dataset.createdat || '-') + '</p>';
-                html += '<p><strong>Updated At:</strong> ' + (btn.dataset.updatedat || '-') + '</p>';
-                html += '</div>';
-                document.getElementById('modalContent').innerHTML = html;
-                document.getElementById('userDetailModal').classList.add('show');
-            });
-        });
-
-        // Edit Role Modal
-        function closeEditRoleModal() {
-            document.getElementById('editRoleModal').classList.remove('show');
-        }
-
+        
+        // Xử lý nút Edit Role
         document.querySelectorAll('.edit-role-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -958,36 +710,79 @@
                 document.querySelectorAll('#editRoleForm input[name="role"]').forEach(function(radio) {
                     radio.checked = (radio.value === role);
                 });
-                document.getElementById('editRoleModal').classList.add('show');
+                document.getElementById('editRoleModal').style.display = 'flex';
             });
         });
-
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded');
+        
+        // Đóng modal Edit Role
+        document.getElementById('closeEditRoleBtn').addEventListener('click', function() {
+            document.getElementById('editRoleModal').style.display = 'none';
         });
-
-        // Close modals when clicking outside
-        document.querySelectorAll('.modal-overlay').forEach(function(modal) {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.classList.remove('show');
-                }
+        
+        // Xử lý nút Edit Status
+        document.querySelectorAll('.edit-status-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('editStatusUserId').value = btn.dataset.userid;
+                var status = btn.dataset.status === 'true';
+                document.getElementById('statusActive').checked = status;
+                document.getElementById('statusLocked').checked = !status;
+                document.getElementById('editStatusModal').style.display = 'flex';
             });
         });
-
-        // Auto-hide alerts after 5 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                setTimeout(function() {
-                    alert.style.transition = 'opacity 0.5s ease';
-                    alert.style.opacity = '0';
-                    setTimeout(function() {
-                        alert.remove();
-                    }, 500);
-                }, 5000);
+        
+        // Đóng modal Edit Status
+        document.getElementById('closeEditStatusBtn').addEventListener('click', function() {
+            document.getElementById('editStatusModal').style.display = 'none';
+        });
+        
+        // Xử lý modal chi tiết user
+        function closeModal() {
+            document.getElementById('userDetailModal').style.display = 'none';
+        }
+        
+        document.querySelectorAll('.detail-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var html = '';
+                html += '<div style="display: grid; gap: 0.75rem;">';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-hash"></i> ID:</strong> ' + btn.dataset.userid + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-envelope"></i> Email:</strong> ' + btn.dataset.email + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-person"></i> Name:</strong> ' + btn.dataset.name + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-telephone"></i> Phone:</strong> ' + btn.dataset.phone + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-calendar"></i> Date of Birth:</strong> ' + (btn.dataset.dob || '-') + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-gender-ambiguous"></i> Gender:</strong> ' + (btn.dataset.gender == 'true' ? 'Male' : 'Female') + '</div>';
+                var roleText = btn.dataset.role == '0' ? 'Admin' : (btn.dataset.role == '1' ? 'Manager' : 'Customer');
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-shield-check"></i> Role:</strong> ' + roleText + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-clock"></i> Created At:</strong> ' + (btn.dataset.createdat || '-') + '</div>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-clock-history"></i> Updated At:</strong> ' + (btn.dataset.updatedat || '-') + '</div>';
+                var statusText = btn.dataset.status === 'true' ? '<span style="color: #10b981;">Active</span>' : '<span style="color: #ef4444;">Locked</span>';
+                html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-toggle-on"></i> Status:</strong> ' + statusText + '</div>';
+                html += '</div>';
+                document.getElementById('modalContent').innerHTML = html;
+                document.getElementById('userDetailModal').style.display = 'flex';
             });
+        });
+        
+        // Đóng modal khi click bên ngoài
+        window.addEventListener('click', function(event) {
+            var editRoleModal = document.getElementById('editRoleModal');
+            var editStatusModal = document.getElementById('editStatusModal');
+            var userDetailModal = document.getElementById('userDetailModal');
+            var sortPopup = document.getElementById('sortPopup');
+            
+            if (event.target == editRoleModal) {
+                editRoleModal.style.display = 'none';
+            }
+            if (event.target == editStatusModal) {
+                editStatusModal.style.display = 'none';
+            }
+            if (event.target == userDetailModal) {
+                userDetailModal.style.display = 'none';
+            }
+            if (event.target == sortPopup) {
+                sortPopup.style.display = 'none';
+            }
         });
     </script>
 </body>

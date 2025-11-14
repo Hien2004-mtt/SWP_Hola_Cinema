@@ -255,8 +255,9 @@
                 </div>
                 <div class="nav-links">
                     <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="revenue" class="active"><i class="bi bi-graph-up"></i> Revenue</a>
+                    <a href="foodManagement" ><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="../accountList"><i class="bi bi-people"></i> Account List</a>
                     <a href="../home"><i class="bi bi-house"></i> User Page</a>
                     <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 </div>
