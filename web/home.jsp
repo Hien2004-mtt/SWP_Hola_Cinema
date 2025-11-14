@@ -186,7 +186,7 @@
             <li><a href="home" class="active">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/movies">Movies</a></li>
             <li><a href="#">Booking</a></li>
-            <li><a href="#">News & Promotions</a></li>
+            <li><a href="${pageContext.request.contextPath}/manageNewsAndPromotion">News & Promotions</a></li>
 
             <!-- ⭐ Nút Contact nhảy xuống footer ⭐ -->
             <li><a href="#contact-info">Contact</a></li>
