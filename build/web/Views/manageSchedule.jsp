@@ -383,11 +383,27 @@
 
         });
 
-        // Form validation enhancement
-        async function validateDateTime() {
-            const showDate = document.querySelector('input[name="showDate"]');
-            const startTime = document.querySelector('input[name="startTime"]');
-            const endTime = document.querySelector('input[name="endTime"]');
+        // Movie durations map from server
+        const movieDurations = {
+            <c:forEach var="entry" items="${movieDurations}">
+            ${entry.key}: ${entry.value},
+            </c:forEach>
+        };
+
+        // Helper function for confirmation dialogs
+        function customConfirm(message, type) {
+            return new Promise((resolve) => {
+                const result = confirm(message);
+                resolve(result);
+            });
+        }
+
+        // Form validation enhancement - validate specific form
+        async function validateDateTimeForForm(form) {
+            const showDate = form.querySelector('input[name="showDate"]');
+            const startTime = form.querySelector('input[name="startTime"]');
+            const endTime = form.querySelector('input[name="endTime"]');
+            const movieIdSelect = form.querySelector('select[name="movieId"]');
             
             // Kiểm tra ngày chiếu không được là ngày quá khứ
             if (showDate && showDate.value) {
@@ -410,8 +426,23 @@
                 const endMinutes = parseInt(end[0]) * 60 + parseInt(end[1]);
                 
                 if (startMinutes >= endMinutes) {
-                    await customConfirm('Thời gian kết thúc phải sau thời gian bắt đầu!\n\nVui lòng kiểm tra lại thời gian.', 'warning');
+                    await customConfirm('Thời gian kết thúc phải muộn hơn thời gian bắt đầu của showtime!\n\nVui lòng kiểm tra lại thời gian.', 'warning');
                     return false;
+                }
+                
+                // Kiểm tra thời lượng showtime phải >= duration của phim
+                if (movieIdSelect && movieIdSelect.value) {
+                    const selectedMovieId = parseInt(movieIdSelect.value);
+                    const movieDuration = movieDurations[selectedMovieId];
+                    
+                    if (movieDuration && movieDuration > 0) {
+                        const timeDiffMinutes = endMinutes - startMinutes;
+                        
+                        if (timeDiffMinutes < movieDuration) {
+                            await customConfirm('Thời lượng showtime (' + timeDiffMinutes + ' phút) phải lớn hơn hoặc bằng thời lượng phim (' + movieDuration + ' phút)!\n\nVui lòng kiểm tra lại thời gian.', 'warning');
+                            return false;
+                        }
+                    }
                 }
                 
                 // Kiểm tra thời gian bắt đầu không quá sớm (trước 6h sáng)
@@ -438,9 +469,18 @@
             const forms = document.querySelectorAll('form');
             forms.forEach(function(form) {
                 form.addEventListener('submit', async function(e) {
-                    const isValid = await validateDateTime();
-                    if (!isValid) {
-                        e.preventDefault();
+                    // Get form-specific inputs
+                    const formShowDate = form.querySelector('input[name="showDate"]');
+                    const formStartTime = form.querySelector('input[name="startTime"]');
+                    const formEndTime = form.querySelector('input[name="endTime"]');
+                    const formMovieId = form.querySelector('select[name="movieId"]');
+                    
+                    // If this form has time inputs, validate it
+                    if (formShowDate || formStartTime || formEndTime) {
+                        const isValid = await validateDateTimeForForm(form);
+                        if (!isValid) {
+                            e.preventDefault();
+                        }
                     }
                 });
             });

@@ -189,4 +189,18 @@ public class ScheduleDAO {
             stmt.executeUpdate();
         }
     }
+    
+    // Lấy thời lượng phim (duration) theo movieId
+    public int getMovieDuration(int movieId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT duration_minutes FROM Movie WHERE movie_id = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, movieId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("duration_minutes");
+                }
+            }
+        }
+        return 0; // Trả về 0 nếu không tìm thấy phim
+    }
 }

@@ -105,9 +105,21 @@ public class ManageScheduleController extends HttpServlet {
                 scheduleList = searchedList;
             }
 
+            // Tạo map movieId -> duration cho client-side validation
+            java.util.Map<Integer, Integer> movieDurations = new java.util.HashMap<>();
+            for (ShowtimeSchedule movie : upcomingMovies) {
+                try {
+                    int duration = dao.getMovieDuration(movie.getMovieId());
+                    movieDurations.put(movie.getMovieId(), duration);
+                } catch (Exception e) {
+                    // Ignore errors, duration will be 0
+                }
+            }
+            
             request.setAttribute("upcomingMovies", upcomingMovies);
             request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
             request.setAttribute("scheduleList", scheduleList);
+            request.setAttribute("movieDurations", movieDurations);
             request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -158,6 +170,24 @@ public class ManageScheduleController extends HttpServlet {
                     // Kết hợp date và time thành Timestamp
                     Timestamp startTime = combineDateTime(showDateStr.trim(), startTimeStr.trim(), dateFormat, timeFormat);
                     Timestamp endTime = combineDateTime(showDateStr.trim(), endTimeStr.trim(), dateFormat, timeFormat);
+
+                    // Validation: Kiểm tra giờ kết thúc phải sau giờ bắt đầu
+                    if (!endTime.after(startTime)) {
+                        request.setAttribute("error", "Giờ kết thúc phải muộn hơn giờ bắt đầu của showtime!");
+                        break;
+                    }
+
+                    // Validation: Kiểm tra thời lượng showtime phải >= duration của phim
+                    int movieDuration = dao.getMovieDuration(movieId);
+                    if (movieDuration > 0) {
+                        long timeDiffMillis = endTime.getTime() - startTime.getTime();
+                        long timeDiffMinutes = timeDiffMillis / (1000 * 60); // Chuyển từ milliseconds sang minutes
+                        
+                        if (timeDiffMinutes < movieDuration) {
+                            request.setAttribute("error", "Thời lượng showtime (" + timeDiffMinutes + " phút) phải lớn hơn hoặc bằng thời lượng phim (" + movieDuration + " phút)!");
+                            break;
+                        }
+                    }
 
                     boolean ok = dao.updateShowtime(showtimeId, movieId, auditoriumId, startTime, endTime, basePrice);
                     if (ok) {
@@ -227,6 +257,38 @@ public class ManageScheduleController extends HttpServlet {
                     Timestamp startTime = combineDateTime(showDateStr.trim(), startTimeStr.trim(), dateFormat, timeFormat);
                     Timestamp endTime = combineDateTime(showDateStr.trim(), endTimeStr.trim(), dateFormat, timeFormat);
 
+                    // Validation: Kiểm tra giờ kết thúc phải sau giờ bắt đầu
+                    if (!endTime.after(startTime)) {
+                        request.setAttribute("error", "Giờ kết thúc phải muộn hơn giờ bắt đầu của showtime!");
+                        // Truyền lại dữ liệu đã nhập
+                        request.setAttribute("form_movieId", movieIdStr);
+                        request.setAttribute("form_auditoriumId", auditoriumIdStr);
+                        request.setAttribute("form_showDate", showDateStr);
+                        request.setAttribute("form_startTime", startTimeStr);
+                        request.setAttribute("form_endTime", endTimeStr);
+                        request.setAttribute("form_basePrice", basePriceStr);
+                        break;
+                    }
+
+                    // Validation: Kiểm tra thời lượng showtime phải >= duration của phim
+                    int movieDuration = dao.getMovieDuration(movieId);
+                    if (movieDuration > 0) {
+                        long timeDiffMillis = endTime.getTime() - startTime.getTime();
+                        long timeDiffMinutes = timeDiffMillis / (1000 * 60); // Chuyển từ milliseconds sang minutes
+                        
+                        if (timeDiffMinutes < movieDuration) {
+                            request.setAttribute("error", "Thời lượng showtime (" + timeDiffMinutes + " phút) phải lớn hơn hoặc bằng thời lượng phim (" + movieDuration + " phút)!");
+                            // Truyền lại dữ liệu đã nhập
+                            request.setAttribute("form_movieId", movieIdStr);
+                            request.setAttribute("form_auditoriumId", auditoriumIdStr);
+                            request.setAttribute("form_showDate", showDateStr);
+                            request.setAttribute("form_startTime", startTimeStr);
+                            request.setAttribute("form_endTime", endTimeStr);
+                            request.setAttribute("form_basePrice", basePriceStr);
+                            break;
+                        }
+                    }
+
                     Timestamp now = new Timestamp(System.currentTimeMillis());
                     if (endTime.before(now)) {
                         request.setAttribute("error", "Không thể thêm lịch chiếu ở quá khứ!");
@@ -264,9 +326,21 @@ public class ManageScheduleController extends HttpServlet {
                 upcomingMovies = dao.getAllMovies();
             }
             
+            // Tạo map movieId -> duration cho client-side validation
+            java.util.Map<Integer, Integer> movieDurations = new java.util.HashMap<>();
+            for (ShowtimeSchedule movie : upcomingMovies) {
+                try {
+                    int duration = dao.getMovieDuration(movie.getMovieId());
+                    movieDurations.put(movie.getMovieId(), duration);
+                } catch (Exception e) {
+                    // Ignore errors, duration will be 0
+                }
+            }
+            
             request.setAttribute("upcomingMovies", upcomingMovies);
             request.setAttribute("activeAuditoriums", dao.getActiveAuditoriums());
             request.setAttribute("scheduleList", dao.getAllShowtimes());
+            request.setAttribute("movieDurations", movieDurations);
             request.getRequestDispatcher("Views/manageSchedule.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             try {
