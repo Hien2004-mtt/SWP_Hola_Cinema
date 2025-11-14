@@ -134,8 +134,8 @@
 
         <% Map<String, String> errors = (Map<String, String>) request.getAttribute("errors"); %>
 
-        <% if (request.getAttribute("error") != null) { %>
-        <div class="alert alert-danger"><%= request.getAttribute("error") %></div>
+        <% if (request.getAttribute("errors") != null) { %>
+        <div class="alert alert-danger"><%= request.getAttribute("errors") %></div>
         <% } %>
 
         <form action="${pageContext.request.contextPath}/register" method="post">
