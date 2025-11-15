@@ -40,8 +40,8 @@ public class NewPassword extends HttpServlet {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
                 try (Connection con = DriverManager.getConnection(
-                        "jdbc:sqlserver://localhost:1433;databaseName=cinema3;encrypt=false;trustServerCertificate=true;",
-                        "sa", "123");
+                        "jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false;trustServerCertificate=true;",
+                        "sa", "1");
                      PreparedStatement pst = con.prepareStatement(
                              "UPDATE [dbo].[Users] SET password_hash = ?, updated_at = GETDATE() WHERE email = ?")) {
 
