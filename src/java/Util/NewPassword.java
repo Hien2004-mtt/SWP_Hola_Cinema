@@ -19,6 +19,8 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
         String newPassword = request.getParameter("password");
@@ -34,14 +36,46 @@ public class NewPassword extends HttpServlet {
             return;
         }
 
+        // Validate password not empty
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            request.setAttribute("error", "Mật khẩu mới không được để trống!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate password length
+        if (newPassword.length() < 6) {
+            request.setAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate confirm password not empty
+        if (confPassword == null || confPassword.trim().isEmpty()) {
+            request.setAttribute("error", "Vui lòng xác nhận mật khẩu!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate passwords match
+        if (!newPassword.equals(confPassword)) {
+            request.setAttribute("error", "Mật khẩu xác nhận không khớp!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
         if (newPassword != null && newPassword.equals(confPassword)) {
             try {
                 // ✅ Nạp driver trước khi kết nối
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
                 try (Connection con = DriverManager.getConnection(
-                        "jdbc:sqlserver://localhost:1433;databaseName=cinema;encrypt=false;trustServerCertificate=true;",
-                        "sa", "1");
+                        "jdbc:sqlserver://localhost:1433;databaseName=cinema3;encrypt=false;trustServerCertificate=true;",
+                        "sa", "123");
                      PreparedStatement pst = con.prepareStatement(
                              "UPDATE [dbo].[Users] SET password_hash = ?, updated_at = GETDATE() WHERE email = ?")) {
 

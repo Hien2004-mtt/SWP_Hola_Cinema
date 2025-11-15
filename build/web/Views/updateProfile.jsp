@@ -1,374 +1,688 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="Models.User, java.util.Map" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cập nhật hồ sơ</title>
+    <title>Update Profile - Hola Cinema</title>
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
 
     <style>
         :root {
-            --primary: #4361ee;
-            --primary-light: #e0e7ff;
-            --success: #10b981;
-            --danger: #ef4444;
-            --gray-100: #f8fafc;
-            --gray-200: #e2e8f0;
-            --gray-700: #334155;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            --primary: #6C63FF;
+            --primary-dark: #5A52D5;
+            --bg: #F8F9FC;
+            --card: #FFFFFF;
+            --text: #1A1D1F;
+            --text-secondary: #6F767E;
+            --border: #E4E7EC;
+            --success: #10B981;
+            --error: #EF4444;
         }
 
         * {
-            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            background: var(--bg);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 0;
             margin: 0;
         }
 
-        .profile-card {
+        /* Header */
+        .header {
             background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            background: #F3F4F6;
+            color: var(--text);
+        }
+
+        .nav-links a.active {
+            background: #EEF2FF;
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .profile-wrapper {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            gap: 3rem;
+            background: white;
+            border-radius: 24px;
             overflow: hidden;
-            max-width: 520px;
-            width: 100%;
-            animation: fadeIn 0.6s ease-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, var(--primary), #3b5bdb);
-            color: white;
-            padding: 1.75rem;
-            text-align: center;
+        /* Left Side - Illustration */
+        .illustration-side {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
             overflow: hidden;
         }
 
-        .card-header::before {
+        .illustration-side::before {
             content: '';
             position: absolute;
             top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(30deg);
-            pointer-events: none;
+            right: -50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        .card-header h2 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.5rem;
+        .illustration-content {
             position: relative;
             z-index: 1;
+            text-align: center;
         }
 
-        .card-header i {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            display: block;
+        .illustration-image {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .illustration-text {
+            color: white;
+        }
+
+        .illustration-text h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .illustration-text p {
+            font-size: 1rem;
             opacity: 0.9;
+            line-height: 1.6;
         }
 
-        .card-body {
-            padding: 2rem;
+        /* Right Side - Form */
+        .form-side {
+            padding: 3rem 3rem 3rem 0;
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Avatar Section */
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: #F9FAFB;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #A66EFE);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25);
+        }
+
+        .avatar-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .avatar-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
         }
 
         .form-label {
+            font-size: 0.875rem;
             font-weight: 600;
-            color: var(--gray-700);
-            font-size: 0.95rem;
+            color: var(--text);
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .form-control, .form-check-input {
-            border: 1.5px solid var(--gray-200);
-            border-radius: 8px;
-            padding: 0.65rem 1rem;
-            font-size: 0.95rem;
-            transition: var(--transition);
+        .form-label i {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .form-control {
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9375rem;
+            color: var(--text);
+            transition: all 0.2s;
+            background: white;
         }
 
         .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3.5px rgba(67, 97, 238, 0.15);
             outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
         }
 
         .form-control:disabled {
-            background-color: #f8fafc;
-            color: #64748b;
-            opacity: 1;
+            background: #F3F4F6;
+            color: var(--text-secondary);
+            cursor: not-allowed;
         }
 
-        .input-group-text {
-            background-color: var(--primary-light);
-            border: 1.5px solid var(--primary);
+        .form-control::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Gender Radio */
+        .gender-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .radio-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .radio-option label:hover {
+            border-color: var(--primary);
+            background: #F9FAFB;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            border-color: var(--primary);
+            background: #EEF2FF;
             color: var(--primary);
             font-weight: 600;
         }
 
-        .form-check {
-            padding-left: 0;
-            margin-bottom: 0.75rem;
-        }
-
-        .form-check-input {
-            width: 1.25em;
-            height: 1.25em;
-            margin-top: 0.15em;
-        }
-
-        .form-check-label {
-            margin-left: 0.5rem;
-            font-weight: 500;
-            color: var(--gray-700);
-        }
-
-        .error {
-            color: var(--danger);
-            font-size: 0.875rem;
-            margin-top: 0.35rem;
+        /* Buttons */
+        .button-group {
             display: flex;
-            align-items: center;
-            gap: 0.25rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
-        .error::before {
-            content: '⚠';
-            font-size: 0.9em;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #3b5bdb);
-            border: none;
+        .btn {
+            padding: 0.875rem 1.75rem;
             border-radius: 10px;
-            padding: 0.75rem 1rem;
+            font-size: 0.9375rem;
             font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
             border: none;
-            border-radius: 10px;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .btn-secondary:hover {
-            background-color: #475569;
-            transform: translateY(-1px);
-        }
-
-        .alert {
-            border-radius: 10px;
-            padding: 0.9rem 1.2rem;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            font-weight: 500;
-        }
-
-        .alert-danger {
-            background-color: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-
-        .text-center a {
             text-decoration: none;
         }
 
-        @media (max-width: 576px) {
-            .card-body {
-                padding: 1.5rem;
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+            border-color: var(--text-secondary);
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-out;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
-            .card-header {
-                padding: 1.5rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            .card-header h2 {
-                font-size: 1.3rem;
+        }
+
+        .alert.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .alert-success i {
+            color: #10B981;
+            font-size: 1.25rem;
+        }
+
+        .alert-danger {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .illustration-side {
+                padding: 2rem;
+            }
+
+            .form-side {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gender-group {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="profile-card">
-        <!-- Header -->
-        <div class="card-header">
-            <i class="fas fa-user-edit"></i>
-            <h2>Cập nhật hồ sơ</h2>
-        </div>
+    <%
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/Views/login.jsp");
+            return;
+        }
 
-        <!-- Body -->
-        <div class="card-body">
-            <% if (request.getAttribute("error") != null) { %>
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle"></i>
-                <%= request.getAttribute("error") %>
+        Map<String, String> errors = (Map<String, String>) request.getAttribute("errors");
+        String successMessage = (String) request.getAttribute("successMessage");
+    %>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="ri-movie-2-fill"></i>
+                Hola Cinema
             </div>
-            <% } %>
-            <% if (request.getAttribute("message") != null) { %>
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                <%= request.getAttribute("message") %>
-            </div>
-            <% } %>
-
-            <% User user = (User) request.getAttribute("user"); %>
-            <form action="${pageContext.request.contextPath}/updateProfile" method="post">
-                <!-- Email (disabled) -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">
-                        <i class="fas fa-envelope"></i> Email (không thể thay đổi)
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="email" class="form-control" id="email" value="<%= user.getEmail() %>" disabled>
-                    </div>
-                </div>
-
-                <!-- Password -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">
-                        <i class="fas fa-key"></i> Mật khẩu mới
-                    </label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Để trống nếu không đổi">
-                    <% Map<String, String> errors = (Map<String, String>) request.getAttribute("errors");
-                       if (errors != null && errors.containsKey("password")) { %>
-                    <div class="error"><%= errors.get("password") %></div>
-                    <% } %>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">
-                        <i class="fas fa-redo"></i> Xác nhận mật khẩu
-                    </label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu mới">
-                    <% if (errors != null && errors.containsKey("confirmPassword")) { %>
-                    <div class="error"><%= errors.get("confirmPassword") %></div>
-                    <% } %>
-                </div>
-
-                <!-- Name -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">
-                        <i class="fas fa-user"></i> Họ và tên
-                    </label>
-                    <input type="text" class="form-control" id="name" name="name" 
-                           value="<%= request.getAttribute("name") != null ? request.getAttribute("name") : (user.getName() != null ? user.getName() : "") %>" 
-                           required placeholder="Nguyễn Văn A">
-                    <% if (errors != null && errors.containsKey("name")) { %>
-                    <div class="error"><%= errors.get("name") %></div>
-                    <% } %>
-                </div>
-
-                <!-- Phone -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">
-                        <i class="fas fa-phone"></i> Số điện thoại
-                    </label>
-                    <input type="text" class="form-control" id="phone" name="phone" 
-                           value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : (user.getPhone() != null ? user.getPhone() : "") %>"
-                           placeholder="0901234567">
-                    <% if (errors != null && errors.containsKey("phone")) { %>
-                    <div class="error"><%= errors.get("phone") %></div>
-                    <% } %>
-                </div>
-
-                <!-- DOB -->
-                <div class="mb-3">
-                    <label for="dob" class="form-label">
-                        <i class="fas fa-calendar-alt"></i> Ngày sinh
-                    </label>
-                    <input type="date" class="form-control" id="dob" name="dob" 
-                           value="<%= request.getAttribute("dob") != null ? request.getAttribute("dob") : (user.getDob() != null ? user.getDob().toString() : "") %>">
-                    <% if (errors != null && errors.containsKey("dob")) { %>
-                    <div class="error"><%= errors.get("dob") %></div>
-                    <% } %>
-                </div>
-
-                <!-- Gender -->
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class="fas fa-venus-mars"></i> Giới tính
-                    </label>
-                    <div class="d-flex gap-4">
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="male" name="gender" value="1" 
-                                   <%= (request.getAttribute("gender") != null ? request.getAttribute("gender") : (user.isGender() ? "1" : "0")).equals("1") ? "checked" : "" %> required>
-                            <label class="form-check-label" for="male">Nam</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="female" name="gender" value="0" 
-                                   <%= (request.getAttribute("gender") != null ? request.getAttribute("gender") : (user.isGender() ? "1" : "0")).equals("0") ? "checked" : "" %>>
-                            <label class="form-check-label" for="female">Nữ</label>
-                        </div>
-                    </div>
-                    <% if (errors != null && errors.containsKey("gender")) { %>
-                    <div class="error"><%= errors.get("gender") %></div>
-                    <% } %>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="fas fa-save"></i> Cập nhật hồ sơ
-                </button>
-            </form>
-
-            <div class="text-center mt-3">
-                <a href="home" class="btn btn-secondary">
-                    <i class="fas fa-home"></i> Quay về trang chủ
+            <div class="nav-links">
+                <a href="${pageContext.request.contextPath}/home">
+                    <i class="ri-home-line"></i> Home
+                </a>
+                <a href="${pageContext.request.contextPath}/Views/updateProfile.jsp" class="active">
+                    <i class="ri-user-settings-line"></i> Profile
+                </a>
+                <a href="${pageContext.request.contextPath}/logout">
+                    <i class="ri-logout-box-line"></i> Logout
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="profile-wrapper">
+            <!-- Left Side - Illustration -->
+            <div class="illustration-side">
+                <div class="illustration-content">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800" 
+                         alt="Cinema" class="illustration-image">
+                    <div class="illustration-text">
+                        <h2>Manage Your Profile</h2>
+                        <p>Keep your information up to date for the best cinema experience</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Form -->
+            <div class="form-side">
+                <div class="form-header">
+                    <h1>Profile Settings</h1>
+                    <p>Update your personal information and preferences</p>
+                </div>
+
+                <!-- Avatar Section -->
+                <div class="avatar-section">
+                    <div class="avatar">
+                        <%= user.getName() != null && !user.getName().isEmpty() ? 
+                            user.getName().substring(0, 1).toUpperCase() : "U" %>
+                    </div>
+                    <div class="avatar-info">
+                        <h3><%= user.getName() != null ? user.getName() : "User" %></h3>
+                        <p><%= user.getEmail() %></p>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <% if (successMessage != null) { %>
+                <div class="alert alert-success">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <%= successMessage %>
+                </div>
+                <% } %>
+
+                <% if (errors != null && !errors.isEmpty()) { %>
+                <div class="alert alert-danger">
+                    <i class="ri-error-warning-line"></i>
+                    <% for (String error : errors.values()) { %>
+                        <%= error %><br>
+                    <% } %>
+                </div>
+                <% } %>
+
+                <!-- Form -->
+                <form action="${pageContext.request.contextPath}/updateProfile" method="post">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                <i class="ri-mail-line"></i>
+                                Email Address
+                            </label>
+                            <input type="email" class="form-control" value="<%= user.getEmail() %>" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="ri-user-line"></i>
+                                Full Name
+                            </label>
+                            <input type="text" name="name" class="form-control" 
+                                   value="<%= request.getAttribute("name") != null ? request.getAttribute("name") : (user.getName() != null ? user.getName() : "") %>" 
+                                   placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="ri-phone-line"></i>
+                                Phone Number
+                            </label>
+                            <input type="tel" name="phone" class="form-control" 
+                                   value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : (user.getPhone() != null ? user.getPhone() : "") %>" 
+                                   placeholder="0123456789" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="ri-calendar-line"></i>
+                                Date of Birth
+                            </label>
+                            <input type="date" name="dob" class="form-control" 
+                                   value="<%= request.getAttribute("dob") != null ? request.getAttribute("dob") : (user.getDob() != null ? user.getDob().toString() : "") %>" 
+                                   required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                <i class="ri-genderless-line"></i>
+                                Gender
+                            </label>
+                            <div class="gender-group">
+                                <%
+                                    String selectedGender = (String) request.getAttribute("gender");
+                                    boolean isMale = selectedGender != null ? "1".equals(selectedGender) : user.isGender();
+                                %>
+                                <div class="radio-option">
+                                    <input type="radio" id="male" name="gender" value="1"
+                                           <%= isMale ? "checked" : "" %> required>
+                                    <label for="male">
+                                        <i class="ri-men-line"></i> Male
+                                    </label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="female" name="gender" value="0"
+                                           <%= !isMale ? "checked" : "" %> required>
+                                    <label for="female">
+                                        <i class="ri-women-line"></i> Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Change Password Section -->
+                    <div style="margin: 2rem 0; padding-top: 2rem; border-top: 2px solid var(--border);">
+                        <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ri-lock-password-line" style="color: var(--primary);"></i>
+                            Change Password
+                        </h3>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                            Leave blank if you don't want to change your password
+                        </p>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="ri-lock-line"></i>
+                                    Current Password
+                                </label>
+                                <input type="password" name="currentPassword" class="form-control"
+                                       placeholder="Enter current password">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="ri-lock-line"></i>
+                                    New Password
+                                </label>
+                                <input type="password" name="newPassword" class="form-control"
+                                       placeholder="Enter new password">
+                                <small style="display: block; margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary);">
+                                    Min 6 characters, 1 uppercase, 1 special character (!@#$%^&*...)
+                                </small>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    <i class="ri-lock-line"></i>
+                                    Confirm New Password
+                                </label>
+                                <input type="password" name="confirmNewPassword" class="form-control"
+                                       placeholder="Confirm new password">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ri-save-line"></i>
+                            Save Changes
+                        </button>
+                        <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">
+                            <i class="ri-arrow-left-line"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-hide success message after 5 seconds
+        window.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.classList.add('fade-out');
+                    setTimeout(function() {
+                        successAlert.style.display = 'none';
+                    }, 300);
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 </html>
+

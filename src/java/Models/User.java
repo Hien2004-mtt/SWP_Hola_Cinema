@@ -10,6 +10,7 @@ public class User {
     private java.sql.Date dob;
     private boolean gender;
     private int role; // 0: admin, 1: staff, 2: customer
+    private boolean status; // true = active, false = locked
     private java.sql.Timestamp createdAt;
     private java.sql.Timestamp updatedAt;
 
@@ -88,6 +89,14 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public java.sql.Timestamp getCreatedAt() {

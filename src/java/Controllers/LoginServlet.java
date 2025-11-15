@@ -46,12 +46,39 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Validate input
-        if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            request.setAttribute("error", "Please enter your email and password!");
+        // Validate input - Server-side validation (cannot be bypassed by F12)
+        if (email == null || email.trim().isEmpty()) {
+            request.setAttribute("error", "Email cannot be empty!");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
+            return;
+        }
+
+        // Validate email format
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            request.setAttribute("error", "Invalid email format!");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
+            return;
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            request.setAttribute("error", "Password cannot be empty!");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
+            return;
+        }
+
+        // Validate password length
+        if (password.length() < 6) {
+            request.setAttribute("error", "Password must be at least 6 characters!");
+            request.setAttribute("email", email);
             request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
             return;
         }
@@ -79,12 +106,14 @@ public class LoginServlet extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/home");
                 }
             } else {
-                // Login failed
-                request.setAttribute("error", "Incorrect email or password!");
+                // Login failed - could be wrong credentials or banned account
+                request.setAttribute("error", "Email or password is incorrect, or your account has been banned!");
+                request.setAttribute("email", email);
                 request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("error", "An error has occurred: " + e.getMessage());
+            request.setAttribute("error", "An error occurred: " + e.getMessage());
+            request.setAttribute("email", email);
             request.getRequestDispatcher("/Views/login.jsp").forward(request, response);
         }
     }

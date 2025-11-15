@@ -16,8 +16,377 @@
     <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/accountList.css">
+    
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #a78bff;
+            --primary-dark: #5b21b6;
+            --accent: #e879f9;
+            --bg: #f8f9ff;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 15px rgba(109, 40, 217, 0.1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #f8f9ff, #eef2ff);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header - Match Dashboard */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .welcome-card .bi {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        /* Content Card */
+        .content-card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .content-card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Search Form */
+        .search-form {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-form input[type="text"] {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-form input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+        }
+
+        .search-form button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+        }
+
+        .btn-secondary-custom {
+            background: var(--text-light);
+            color: white;
+        }
+
+        .btn-secondary-custom:hover {
+            background: var(--text);
+        }
+
+        .btn-warning-custom {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(109, 40, 217, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: rgba(109, 40, 217, 0.05);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-detail {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-detail:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-edit-role {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-edit-role:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-edit-status {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .btn-edit-status:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-disabled {
+            background: var(--border);
+            color: var(--text-light);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Pagination */
+        .pagination {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            background: var(--card);
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .page-btn:disabled {
+            background: var(--border);
+            color: var(--text-light);
+            border-color: var(--border);
+            cursor: not-allowed;
+        }
+
+        .page-btn:not(:disabled):not(.active):hover {
+            background: rgba(109, 40, 217, 0.1);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-section label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-section input[type="radio"] {
+            accent-color: var(--primary);
+        }
+
+        /* Sort Popup */
+        #sortPopup {
+            background: var(--card);
+            box-shadow: 0 8px 24px rgba(109, 40, 217, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 280px;
+        }
+
+        #sortPopup h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content-custom {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(109, 40, 217, 0.2);
+        }
+
+        .modal-header-custom h2 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-container {
+                padding: 1rem;
+            }
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-section {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table-container {
+                overflow-x: scroll;
+            }
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header - Match Dashboard -->
@@ -27,12 +396,12 @@
                 <span class="bi bi-film"></span> Hola Cinema
             </div>
             <div class="nav-links">
-                <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
-                <a href="${pageContext.request.contextPath}/admin/revenue"><i class="bi bi-graph-up"></i> Doanh thu</a>
-                <a href="${pageContext.request.contextPath}/admin/foodManagement"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
-                <a href="${pageContext.request.contextPath}/admin/accountList" class="active"><i class="bi bi-people"></i> Quản lý tài khoản</a>
-                <a href="${pageContext.request.contextPath}/home"><i class="bi bi-house"></i> Trang người dùng</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
+                <a href="${pageContext.request.contextPath}/admin/revenue"><i class="bi bi-graph-up"></i> Revenue</a>
+                <a href="${pageContext.request.contextPath}/admin/foodManagement"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                <a href="${pageContext.request.contextPath}/admin/accountList" class="active"><i class="bi bi-people"></i> Account List</a>
+                <a href="${pageContext.request.contextPath}/home"><i class="bi bi-house"></i> User Page</a>
+                <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
         </div>
     </header>
@@ -178,7 +547,7 @@
                                             <a href="#" class="action-btn btn-edit-status edit-status-btn"
                                                 data-userid="${user.userId}"
                                                 data-status="${user.status}">
-                                                <i class="bi bi-toggle-on"></i> Status: <c:choose><c:when test="${user.status}">Active</c:when><c:otherwise>Locked</c:otherwise></c:choose>
+                                                <i class="bi bi-toggle-on"></i> Status: <c:choose><c:when test="${user.status}">Active</c:when><c:otherwise>Banned</c:otherwise></c:choose>
                                             </a>
                                         </td>
                                     </tr>
@@ -267,9 +636,9 @@
                             </label>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg); border-radius: 8px;">
-                            <input type="radio" name="status" value="false" id="statusLocked" style="accent-color: var(--primary);">
-                            <label for="statusLocked" style="font-size: 1rem;">
-                                <i class="bi bi-lock" style="color: #ef4444;"></i> Locked
+                            <input type="radio" name="status" value="false" id="statusBanned" style="accent-color: var(--primary);">
+                            <label for="statusBanned" style="font-size: 1rem;">
+                                <i class="bi bi-lock" style="color: #ef4444;"></i> Banned
                             </label>
                         </div>
                     </div>
@@ -357,7 +726,7 @@
                 document.getElementById('editStatusUserId').value = btn.dataset.userid;
                 var status = btn.dataset.status === 'true';
                 document.getElementById('statusActive').checked = status;
-                document.getElementById('statusLocked').checked = !status;
+                document.getElementById('statusBanned').checked = !status;
                 document.getElementById('editStatusModal').style.display = 'flex';
             });
         });
@@ -387,7 +756,7 @@
                 html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-shield-check"></i> Role:</strong> ' + roleText + '</div>';
                 html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-clock"></i> Created At:</strong> ' + (btn.dataset.createdat || '-') + '</div>';
                 html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-clock-history"></i> Updated At:</strong> ' + (btn.dataset.updatedat || '-') + '</div>';
-                var statusText = btn.dataset.status === 'true' ? '<span style="color: #10b981;">Active</span>' : '<span style="color: #ef4444;">Locked</span>';
+                var statusText = btn.dataset.status === 'true' ? '<span style="color: #10b981;">Active</span>' : '<span style="color: #ef4444;">Banned</span>';
                 html += '<div style="padding: 0.75rem; background: var(--bg); border-radius: 8px;"><strong><i class="bi bi-toggle-on"></i> Status:</strong> ' + statusText + '</div>';
                 html += '</div>';
                 document.getElementById('modalContent').innerHTML = html;
