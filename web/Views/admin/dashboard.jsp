@@ -222,12 +222,12 @@
                     <span class="bi bi-film"></span> Hola Cinema
                 </div>
                 <div class="nav-links">
-                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
-                    <a href="../accountList"><i class="bi bi-people"></i> Account List</a>
-                    <a href="../home"><i class="bi bi-house"></i> User Page</a>
-                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
+                    <a href="revenue"><i class="bi bi-graph-up"></i> Doanh thu</a>
+                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
+                    <a href="../accountList"><i class="bi bi-people"></i> Quản lý tài khoản</a>
+                    <a href="../home"><i class="bi bi-house"></i> Trang người dùng</a>
+                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
                 </div>
             </div>
         </header>
