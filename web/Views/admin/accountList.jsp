@@ -27,12 +27,12 @@
                 <span class="bi bi-film"></span> Hola Cinema
             </div>
             <div class="nav-links">
-                <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                <a href="${pageContext.request.contextPath}/admin/revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                <a href="${pageContext.request.contextPath}/admin/foodManagement"><i class="bi bi-cup-straw"></i> Manage Food</a>
-                <a href="${pageContext.request.contextPath}/admin/accountList" class="active"><i class="bi bi-people"></i> Account List</a>
-                <a href="${pageContext.request.contextPath}/home"><i class="bi bi-house"></i> User Page</a>
-                <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                <a href="${pageContext.request.contextPath}/admin/dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
+                <a href="${pageContext.request.contextPath}/admin/revenue"><i class="bi bi-graph-up"></i> Doanh thu</a>
+                <a href="${pageContext.request.contextPath}/admin/foodManagement"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
+                <a href="${pageContext.request.contextPath}/admin/accountList" class="active"><i class="bi bi-people"></i> Quản lý tài khoản</a>
+                <a href="${pageContext.request.contextPath}/home"><i class="bi bi-house"></i> Trang người dùng</a>
+                <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
     </header>
