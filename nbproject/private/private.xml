@@ -4,15 +4,21 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/payment_success.css</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Layout.css</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Filters/AuthorizationFilter.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/payment.css</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Util/ForgotPassword.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/AddAuditorium.jsp</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/BookingServlet.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/DAL/DBContext.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/SeatServlet.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/AddAuditoriumServlet.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/css/Seat.css</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/payment.jsp</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/AddAuditorium.jsp</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Util/ValidateOtp.java</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/payment_success.jsp</file>
             <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Util/NewPassword.java</file>
-            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/src/java/Controllers/AddAuditoriumServlet.java</file>
+            <file>file:/D:/PRJ/PRJ301_Project_JavaWedShop_HHK/SWP_Hola_Cinema/web/Views/Seat.jsp</file>
         </group>
     </open-files>
 </project-private>

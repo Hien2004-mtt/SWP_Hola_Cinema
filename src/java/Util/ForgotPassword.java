@@ -73,7 +73,7 @@ public class ForgotPassword extends HttpServlet {
                 String content = "Dear Valued Customer,\n\n"
                         + "To proceed with your request on our Cinema Service, please use the following One-Time Password (OTP):\n\n"
                         + otpvalue + "\n\n"
-                        + "⚠️ Please do not share this code with anyone. "
+                        + "Please do not share this code with anyone. "
                         + "This OTP is valid for a limited time and can only be used once.\n\n"
                         + "Thank you for choosing our service.\n\n"
                         + "Best regards,\n"

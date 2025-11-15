@@ -1,5 +1,8 @@
 /* 🎬 Tổng thể layout */
 
+body{
+    padding-top: 100px;
+}
 .layout {
     display: flex;
     justify-content: center;
@@ -7,6 +10,9 @@
     gap: 50px;
     margin-top: 40px;
     flex-wrap: wrap;
+}
+container{
+    padding-top: 1000px;
 }
 
 /* 🪑 Khu vực sơ đồ ghế */
