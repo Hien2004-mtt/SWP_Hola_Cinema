@@ -449,7 +449,7 @@
             <div class="news-content fade-in">
                 <div class="page-header">
                     <h1><i class="fas fa-newspaper"></i> Tin Tức & Khuyến Mãi</h1>
-                    <p style="color: #666; font-size: 1.1rem;">Cập nhật những thông tin mới nhất và ưu đãi hấp dẫn</p>
+                    <p style="color: #FFFFFF; font-size: 1.1rem;">Cập nhật những thông tin mới nhất và ưu đãi hấp dẫn</p>
                 </div>
 
                 <!-- Filter Tabs -->
