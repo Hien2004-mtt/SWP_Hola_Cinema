@@ -22,7 +22,7 @@ public class UserDAO {
             if (rs.next()) {
                 String storedHash = rs.getString("password_hash");
                 String statusStr = rs.getString("status");
-                boolean isActive = statusStr != null && statusStr.equalsIgnoreCase("active");
+                boolean isActive = statusStr != null && statusStr.equalsIgnoreCase("1");
 
                 // Check if account is banned
                 if (!isActive) {
