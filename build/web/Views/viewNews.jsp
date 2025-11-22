@@ -26,9 +26,8 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/movies">Movies</a></li>
-            <li><a href="#">Booking</a></li>
             <li><a href="${pageContext.request.contextPath}/viewNews" class="active">News & Promotions</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#contact-info">Contact</a></li>
         </ul>
     </nav>
 
