@@ -11,6 +11,8 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
 
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -376,6 +378,9 @@
                     </a>
                     <a href="${pageContext.request.contextPath}/admin/foodManagement">
                         <i class="ri-restaurant-line"></i> Food Management
+                    </a>
+                    <a href="${pageContext.request.contextPath}/accountList">
+                        <i class="bi bi-people"></i> Account List
                     </a>
                     <a href="${pageContext.request.contextPath}/home">
                         <i class="ri-home-line"></i> User Page
