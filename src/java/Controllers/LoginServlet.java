@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import DAL.UserDAO;
+import Dao.UserDAO;
 import Models.User;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.ScheduleDAO;
+import Dao.ScheduleDAO;
 import Models.ShowtimeSchedule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

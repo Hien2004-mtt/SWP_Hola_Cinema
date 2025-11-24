@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.MovieDetailDAO;
+import Dao.MovieDetailDAO;
 import Models.*;
 import java.io.IOException;
 import java.util.List;

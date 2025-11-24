@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.SeatDAO;
+import Dao.SeatDAO;
 import Models.Seat;
 import java.io.IOException;
 import java.util.List;

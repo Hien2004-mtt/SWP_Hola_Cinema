@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.AdminDAO;
+import Dao.AdminDAO;
 import Models.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

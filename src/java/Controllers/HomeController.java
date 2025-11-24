@@ -6,7 +6,7 @@
  */
 package Controllers;
 
-import DAL.MovieDAO;
+import Dao.MovieDAO;
 import Models.Movie;
 import java.io.IOException;
 import java.util.List;

@@ -1,8 +1,8 @@
-package DAO;
+package Dao;
 
+import Dal.DBContext;
 import Models.Payment;
 import java.sql.*;
-import DAL.DBContext;
 
 public class PaymentDAO {
 

@@ -2,9 +2,9 @@ package Controllers;
 
 import Controllers.Services.BookingService;
 import Controllers.Services.VoucherService;
-import DAL.BookingDAO;
-import DAL.DBContext;
-import DAO.VoucherDAO;
+import Dao.BookingDAO;
+import Dal.DBContext;
+import Dao.VoucherDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;

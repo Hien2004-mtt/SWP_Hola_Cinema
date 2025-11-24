@@ -4,10 +4,10 @@
  */
 package Controllers;
 
-import DAL.AuditoriumDAO;
-import DAL.MovieDAO;
-import DAL.SeatDAO;
-import DAL.ShowtimeDAO;
+import Dao.AuditoriumDAO;
+import Dao.MovieDAO;
+import Dao.SeatDAO;
+import Dao.ShowtimeDAO;
 import Models.Movie;
 import Models.Seat;
 import Models.Showtime;

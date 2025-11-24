@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.RevenueDAO;
+import Dao.RevenueDAO;
 import Models.RevenueRecord;
 import java.io.IOException;
 import java.math.BigDecimal;

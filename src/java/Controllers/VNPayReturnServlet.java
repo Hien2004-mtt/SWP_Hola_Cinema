@@ -1,8 +1,8 @@
 package Controllers;
 
 import Controllers.Util.EmailUtil;
-import DAL.BookingDAO;
-import DAO.PaymentDAO;
+import Dao.BookingDAO;
+import Dao.PaymentDAO;
 import Models.Payment;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.MatrixToImageWriter;

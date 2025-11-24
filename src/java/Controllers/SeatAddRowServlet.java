@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAL.SeatDAO;
-import DAL.AuditoriumDAO;
+import Dao.SeatDAO;
+import Dao.AuditoriumDAO;
 import Models.Auditorium;
 import Models.Seat;
 import java.io.IOException;

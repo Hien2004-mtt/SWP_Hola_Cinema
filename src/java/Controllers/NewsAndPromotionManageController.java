@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import DAL.NewsAndPromotionDAO;
+import Dao.NewsAndPromotionDAO;
 import Models.NewsAndPromotion;
 import Models.User;
 import jakarta.servlet.ServletException;

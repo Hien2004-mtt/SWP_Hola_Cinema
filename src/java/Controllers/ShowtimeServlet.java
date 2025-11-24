@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAL.MovieDAO;
-import DAL.ShowtimeDAO;
+import Dao.MovieDAO;
+import Dao.ShowtimeDAO;
 import Models.Movie;
 import Models.Showtime;
 import java.io.IOException;

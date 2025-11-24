@@ -1,6 +1,6 @@
 package Controllers.Services;
 
-import DAO.VoucherDAO;
+import Dao.VoucherDAO;
 import Models.Voucher;
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -5,7 +5,7 @@
 
 package Controllers;
 
-import DAL.ActorDAO;
+import Dao.ActorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

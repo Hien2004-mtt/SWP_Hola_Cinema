@@ -1,6 +1,6 @@
-package DAO;
+package Dao;
 
-import DAL.DBContext;
+import Dal.DBContext;
 import java.sql.*;
 import java.util.*;
 import Models.TransactionHistory;

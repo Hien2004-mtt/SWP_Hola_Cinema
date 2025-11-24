@@ -5,7 +5,7 @@
 
 package Controllers;
 
-import DAL.AuditoriumDAO;
+import Dao.AuditoriumDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

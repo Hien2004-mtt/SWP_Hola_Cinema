@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/payment.css" />
 
     <script src="${pageContext.request.contextPath}/Views/js/payment.js" defer></script>
+    <script>
+    window.contextPath = "<%= request.getContextPath() %>";
+</script>
 </head>
 
 <body>
@@ -40,6 +43,9 @@
                     <tr><th>Suất chiếu:</th>
                         <td><fmt:formatDate value="${start_time}" pattern="HH:mm dd/MM/yyyy"/></td>
                     </tr>
+                    <p class="text-danger fw-bold">
+    Thời gian chờ thanh toán: <span id="countdown_label">60</span> giây
+</p>
                 </table>
             </div>
 

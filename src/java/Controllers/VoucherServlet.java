@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAL.DBContext;
-import DAO.VoucherDAO;
+import Dal.DBContext;
+import Dao.VoucherDAO;
 import Models.User;
 import Models.Voucher;
 import jakarta.servlet.*;

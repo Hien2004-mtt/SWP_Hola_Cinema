@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.DashboardDAO;
+import Dao.DashboardDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

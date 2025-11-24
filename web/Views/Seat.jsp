@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
 <%@ page import="Models.Seat" %>
+
 
 <%
     List<Seat> seats = (List<Seat>) request.getAttribute("seats");
@@ -27,9 +29,12 @@
 
     <div class="container">
         <jsp:include page="/Inculude/Header.jsp" />
-         <c:if test="${not empty message}">
-        <div class="alert alert-danger">${message}</div>
-    </c:if>
+         <c:if test="${not empty sessionScope.seatMessage}">
+    <div class="alert alert-danger">
+        ${sessionScope.seatMessage}
+    </div>
+    <c:remove var="seatMessage" scope="session" />
+</c:if>
         <h2 style="text-align:center;">🎬 Chọn ghế cho phim: "<%= movieTitle %>"</h2>
         <p style="text-align:center;">⏰ Suất chiếu: <%= startTime %></p>
 

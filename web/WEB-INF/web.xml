@@ -50,6 +50,10 @@
         <servlet-name>TransactionHistoryController</servlet-name>
         <servlet-class>Controllers.TransactionHistoryController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <servlet-class>Controllers.CancelBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
@@ -149,6 +153,10 @@
     <servlet-mapping>
         <servlet-name>TransactionHistoryController</servlet-name>
         <url-pattern>/transactionHistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <url-pattern>/cancelBooking</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Views/Payment.jsp</welcome-file>

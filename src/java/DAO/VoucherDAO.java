@@ -1,7 +1,7 @@
-package DAO;
+package Dao;
 
 import Models.Voucher;
-import DAL.DBContext;
+import Dal.DBContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;

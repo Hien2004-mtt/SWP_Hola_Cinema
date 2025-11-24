@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.AuditoriumDAO;
+import Dao.AuditoriumDAO;
 import Models.Auditorium;
 import java.io.IOException;
 import jakarta.servlet.ServletException;

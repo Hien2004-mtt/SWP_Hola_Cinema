@@ -1,13 +1,12 @@
 package Controllers;
 
-import Controller.Util.AutoCancelTask;
-import DAL.*;
+
 import Models.*;
-import DAO.VoucherDAO;
-import DAL.BookingDAO;
-import DAL.BookingItemDAO;
-import DAL.SeatDAO;
-import DAL.ShowtimeDAO;
+import Dao.VoucherDAO;
+import Dao.BookingDAO;
+import Dao.BookingItemDAO;
+import Dao.SeatDAO;
+import Dao.ShowtimeDAO;
 import Models.Booking;
 import Models.BookingItem;
 import Models.Seat;
@@ -67,7 +66,7 @@ public class BookingServlet extends HttpServlet {
 
         int auditoriumId = showtimeDAO.getAuditoriumIdByShowtime(showtimeId);
 
-        try (Connection conn = DAL.DBContext.getConnection()) {
+        try (Connection conn = Dal.DBContext.getConnection()) {
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
@@ -91,11 +90,15 @@ public class BookingServlet extends HttpServlet {
             // Gọi DAO để lock nhiều ghế
             boolean locked = seatDAO.lockSeats(conn, seatIds);
             if (!locked) {
-                conn.rollback();
-                session.setAttribute("seatMessage", "Một hoặc nhiều ghế đã được người khác đặt trước!");
-                response.sendRedirect("seat?showtimeId=" + showtimeId);
-                return;
-            }
+    // 🔥 thêm dòng này
+    seatDAO.unlockSeats(seatIds); 
+
+    conn.rollback();
+
+    session.setAttribute("seatMessage", "Ghế đã được người khác đặt trước!");
+    response.sendRedirect("seat?showtimeId=" + showtimeId);
+    return;
+}
 
             // Tạo booking
             VoucherDAO voucherDAO = new VoucherDAO(conn);
@@ -125,31 +128,31 @@ public class BookingServlet extends HttpServlet {
             
             
             // ====== THREAD TỰ HỦY SAU 10 PHÚT (NẾU CHƯA THANH TOÁN) ======
-            scheduler.schedule(() -> {
-                try {
-                    Booking booking = bookingDAO.getBookingById(bookingId);
-                    int voucherId = booking.getVoucherId();
-                    if (booking != null && booking.getStatus().equalsIgnoreCase("pending")) {
-                        bookingDAO.updateBookingStatus(bookingId, "cancelled");
-                        bookingDAO.removeVoucherFromBooking(bookingId);
-                        voucherDAO.restoreUsage(voucherId);
-                        List<BookingItem> bookedItems = itemDAO.getItemsByBookingId(bookingId);
-                        List<Integer> ids = new ArrayList<>();
-                        for (BookingItem bi : bookedItems) {
-                            ids.add(bi.getSeatId());
-                        }
-                        seatDAO.unlockSeats(ids);
-                        System.out.println("Booking #" + bookingId + " đã bị hủy do quá hạn thanh toán.");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }, 1, TimeUnit.MINUTES);
+//            scheduler.schedule(() -> {
+//                try {
+//                    Booking booking = bookingDAO.getBookingById(bookingId);
+//                    int voucherId = booking.getVoucherId();
+//                    if (booking != null && booking.getStatus().equalsIgnoreCase("pending")) {
+//                        bookingDAO.updateBookingStatus(bookingId, "cancelled");
+//                        bookingDAO.removeVoucherFromBooking(bookingId);
+//                        voucherDAO.restoreUsage(voucherId);
+//                        List<BookingItem> bookedItems = itemDAO.getItemsByBookingId(bookingId);
+//                        List<Integer> ids = new ArrayList<>();
+//                        for (BookingItem bi : bookedItems) {
+//                            ids.add(bi.getSeatId());
+//                        }
+//                        seatDAO.unlockSeats(ids);
+//                        System.out.println("Booking #" + bookingId + " đã bị hủy do quá hạn thanh toán.");
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }, 1, TimeUnit.MINUTES);
             // ====== LƯU SESSION ĐỂ APPLY VOUCHER KHÔNG MẤT ======
             session.setAttribute("bookingId", bookingId);
             session.setAttribute("bookedSeats", selectedSeats);
             session.setAttribute("totalPrice", totalPrice);
-            // ====== LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT ======
+            //  LẤY THÔNG TIN HIỂN THỊ CHO PAYMENT 
             String customerName = user.getName();
             String movieTitle = showtimeDAO.getMovieTitleByShowtime(showtimeId);
             String auditoriumName = showtimeDAO.getAuditoriumNameByShowtime(showtimeId);

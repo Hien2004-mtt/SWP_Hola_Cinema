@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.SeatDAO;
+import Dao.SeatDAO;
 import Models.Seat;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

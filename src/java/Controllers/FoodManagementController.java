@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.FoodDAO;
+import Dao.FoodDAO;
 import Models.Food;
 import java.io.IOException;
 import java.math.BigDecimal;

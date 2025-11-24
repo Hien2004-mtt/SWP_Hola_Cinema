@@ -8,7 +8,7 @@ package Controllers;
  *
  * @author ASUS
  */
-import DAL.ScheduleDAO;
+import Dao.ScheduleDAO;
 import Models.User;
 import Models.ShowtimeSchedule;
 import jakarta.servlet.ServletException;

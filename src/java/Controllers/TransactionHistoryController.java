@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAO.TransactionHistoryDAO;
+import Dao.TransactionHistoryDAO;
 import Models.TransactionHistory;
 import Models.User;
 import java.io.IOException;

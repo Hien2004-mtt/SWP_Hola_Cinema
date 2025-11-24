@@ -5,9 +5,9 @@
 
 package Controllers;
 
-import DAL.ActorDAO;
-import DAL.GenreDAO;
-import DAL.MovieDAO;
+import Dao.ActorDAO;
+import Dao.GenreDAO;
+import Dao.MovieDAO;
 import Models.Movie;
 import java.io.IOException;
 import java.io.PrintWriter;

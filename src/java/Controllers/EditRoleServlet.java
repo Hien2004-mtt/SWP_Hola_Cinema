@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAL.DAO;
+import Dao.DAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
