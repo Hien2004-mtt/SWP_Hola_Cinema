@@ -14,17 +14,11 @@ public class AccountListController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Kiểm tra quyền truy cập (giả sử chỉ admin có thể truy cập)
-//        if (!isAdmin(request)) {
-//            response.sendRedirect("login.jsp");
-//            return;
-//        }
 
         String search = request.getParameter("search");
         String sortField = request.getParameter("sortField");
         String sortOrder = request.getParameter("sortOrder");
         String roleParam = request.getParameter("role");
-
 
         int pageSize = 10; // số lượng user mỗi trang
         int currentPage = 1;

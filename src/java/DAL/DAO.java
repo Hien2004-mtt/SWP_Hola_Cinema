@@ -13,8 +13,37 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class DAO {
+    // Tìm người dùng theo số điện thoại
+    public UserAccount findByPhone(String phone) {
+        String sql = "SELECT * FROM Users WHERE phone = ?";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                UserAccount u = new UserAccount();
+                u.setUserId(rs.getInt("user_id"));
+                u.setEmail(rs.getString("email"));
+                u.setPasswordHash(rs.getString("password_hash"));
+                u.setName(rs.getString("name"));
+                u.setPhone(rs.getString("phone"));
+                Date dob = rs.getDate("dob");
+                if (dob != null)
+                    u.setDob(dob.toLocalDate());
+                u.setGender(rs.getBoolean("gender"));
+                u.setRole(rs.getInt("role"));
+                u.setCreatedAt(rs.getTimestamp("created_at"));
+                u.setUpdatedAt(rs.getTimestamp("updated_at"));
+                u.setStatus(rs.getBoolean("status"));
+                return u;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    //ma hoa mat khau
+    // ma hoa mat khau
     public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -31,60 +60,33 @@ public class DAO {
         }
     }
 
-//    // dang ky nguoi dung
-//    public boolean register(User user) {
-//        String sql = "INSERT INTO Users (email, password_hash, name, phone, dob, gender, role, created_at, updated_at) "
-//                   + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
-//        try (Connection conn = DBContext.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setString(1, user.getEmail());
-//            ps.setString(2, user.getPasswordHash());
-//            ps.setString(3, user.getName());
-//            ps.setString(4, user.getPhone());
-//            ps.setDate(5, Date.valueOf(user.getDob()));
-//            ps.setBoolean(6, user.isGender());
-//            ps.setInt(7, user.getRole());
-//
-//            return ps.executeUpdate() > 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-    // Tìm người dùng theo số điện thoại
-    public UserAccount findByPhone(String phone) {
-        String sql = "SELECT * FROM Users WHERE phone = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, phone);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                UserAccount u = new UserAccount();
-                u.setUserId(rs.getInt("user_id"));
-                u.setEmail(rs.getString("email"));
-                u.setPasswordHash(rs.getString("password_hash"));
-                u.setName(rs.getString("name"));
-                u.setPhone(rs.getString("phone"));
-                Date dob = rs.getDate("dob");
-                if (dob != null) {
-                    u.setDob(dob.toLocalDate());
-                }
-                u.setGender(rs.getBoolean("gender"));
-                u.setRole(rs.getInt("role"));
-                u.setCreatedAt(rs.getTimestamp("created_at"));
-                u.setUpdatedAt(rs.getTimestamp("updated_at"));
-                u.setStatus(rs.getBoolean("status"));
-                return u;
-            }
+    // dang ky nguoi dung
+    public boolean register(UserAccount user) {
+        String sql = "INSERT INTO Users (email, password_hash, name, phone, dob, gender, role, status, created_at, updated_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPasswordHash());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getPhone());
+            ps.setDate(5, Date.valueOf(user.getDob()));
+            ps.setBoolean(6, user.isGender());
+            ps.setInt(7, user.getRole());
+            ps.setBoolean(8, user.isStatus());
+            // ...existing code...
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return null;
     }
 
     // tim nguoi dung theo email
     public UserAccount findByEmail(String email) {
         String sql = "SELECT * FROM Users WHERE email = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
@@ -96,9 +98,8 @@ public class DAO {
                 u.setName(rs.getString("name"));
                 u.setPhone(rs.getString("phone"));
                 Date dob = rs.getDate("dob");
-                if (dob != null) {
+                if (dob != null)
                     u.setDob(dob.toLocalDate());
-                }
                 u.setGender(rs.getBoolean("gender"));
                 u.setRole(rs.getInt("role"));
                 u.setCreatedAt(rs.getTimestamp("created_at"));
@@ -139,15 +140,14 @@ public class DAO {
         }
         // Validate sortField and sortOrder
         String field = "user_id";
-        if ("role".equalsIgnoreCase(sortField)) {
+        if ("role".equalsIgnoreCase(sortField))
             field = "role";
-        }
         String order = "ASC";
-        if ("desc".equalsIgnoreCase(sortOrder)) {
+        if ("desc".equalsIgnoreCase(sortOrder))
             order = "DESC";
-        }
         sql.append(" ORDER BY " + field + " " + order);
-        try (java.sql.Connection conn = DBContext.getConnection(); java.sql.PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        try (java.sql.Connection conn = DBContext.getConnection();
+                java.sql.PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             int idx = 1;
             if (hasSearch) {
                 ps.setString(idx++, "%" + search + "%"); // email
@@ -166,9 +166,8 @@ public class DAO {
                 u.setName(rs.getString("name"));
                 u.setPhone(rs.getString("phone"));
                 java.sql.Date dob = rs.getDate("dob");
-                if (dob != null) {
+                if (dob != null)
                     u.setDob(dob.toLocalDate());
-                }
                 u.setGender(rs.getBoolean("gender"));
                 u.setRole(rs.getInt("role"));
                 u.setCreatedAt(rs.getTimestamp("created_at"));
@@ -182,11 +181,14 @@ public class DAO {
         return userList;
     }
 
+
+
     // Cập nhật role cho user
     public boolean updateUserRole(int userId, int role) {
         // Kiểm tra nếu user hiện tại là admin thì không cho đổi role
         String checkSql = "SELECT role FROM Users WHERE user_id = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
             checkPs.setInt(1, userId);
             ResultSet rs = checkPs.executeQuery();
             if (rs.next() && rs.getInt("role") == 0) {
@@ -197,8 +199,9 @@ public class DAO {
             e.printStackTrace();
             return false;
         }
-        String sql = "UPDATE Users SET role = ?, updated_at = GETDATE() WHERE user_id = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    String sql = "UPDATE Users SET role = ?, updated_at = GETDATE() WHERE user_id = ?";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, role);
             ps.setInt(2, userId);
             return ps.executeUpdate() > 0;
@@ -209,8 +212,9 @@ public class DAO {
     }
 
     public boolean updateUserStatus(int userId, boolean status) {
-        String sql = "UPDATE Users SET status = ?, updated_at = GETDATE() WHERE user_id = ?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    String sql = "UPDATE Users SET status = ?, updated_at = GETDATE() WHERE user_id = ?";
+        try (Connection conn = DBContext.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBoolean(1, status);
             ps.setInt(2, userId);
             return ps.executeUpdate() > 0;

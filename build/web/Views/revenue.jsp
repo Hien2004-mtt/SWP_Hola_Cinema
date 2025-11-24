@@ -18,55 +18,83 @@
 
         <style>
             :root {
-                --primary: #6d28d9;
-                --primary-light: #a78bff;
-                --primary-dark: #5b21b6;
-                --accent: #e879f9;
-                --bg: #f8f9ff;
+                --primary: #6C5CE7;
+                --primary-light: #A66EFF;
+                --primary-dark: #5B4BC4;
+                --bg: #F4F6FA;
                 --card: #ffffff;
-                --text: #1f2937;
-                --text-light: #6b7280;
-                --border: #e5e7eb;
-                --shadow: 0 4px 15px rgba(109, 40, 217, 0.1);
+                --text: #2D3436;
+                --text-light: #636E72;
+                --border: #E5E7EB;
+                --shadow: 0 4px 12px rgba(0,0,0,0.06);
+                --shadow-hover: 0 8px 20px rgba(0,0,0,0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
             body {
                 font-family: 'Inter', 'Segoe UI', sans-serif;
-                background: linear-gradient(to bottom right, #f8f9ff, #eef2ff);
+                background: var(--bg);
                 color: var(--text);
                 min-height: 100vh;
             }
 
             /* Header */
             .header {
-                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-                color: white;
-                padding: 1rem 2rem;
-                box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+                background: var(--card);
+                color: var(--text);
+                padding: 1.2rem 2rem;
+                box-shadow: var(--shadow);
                 position: sticky;
                 top: 0;
                 z-index: 1000;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .header .container-fluid {
+                max-width: 1400px;
+                margin: 0 auto;
             }
 
             .header .logo {
-                font-weight: 700;
-                font-size: 1.5rem;
+                font-weight: 800;
+                font-size: 1.6rem;
                 display: flex;
                 align-items: center;
+                gap: 12px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .header .logo .bi {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 28px;
+            }
+
+            .nav-links {
+                display: flex;
                 gap: 10px;
             }
 
             .nav-links a {
-                color: rgba(255,255,255,0.9);
+                color: var(--text);
                 text-decoration: none;
-                font-weight: 500;
-                padding: 0.5rem 1rem;
-                border-radius: 8px;
+                font-weight: 600;
+                padding: 0.6rem 1.2rem;
+                border-radius: 10px;
                 transition: all 0.3s ease;
+                font-size: 14px;
             }
 
             .nav-links a:hover, .nav-links a.active {
-                background: rgba(255,255,255,0.15);
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
                 color: white;
             }
 
@@ -88,11 +116,13 @@
 
             /* === FILTERS - FIX ĐÈ CHỮ 100% === */
             .filter-card {
-                background: var(--card);
-                padding: 1.5rem;
-                border-radius: 16px;
-                box-shadow: var(--shadow);
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1.8rem;
+                border-radius: 20px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
                 margin-bottom: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.3);
             }
 
             .filter-row {
@@ -152,11 +182,13 @@
             }
 
             .table-container {
-                background: var(--card);
-                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
                 overflow: hidden;
-                box-shadow: var(--shadow);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
                 margin-bottom: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.3);
             }
 
             .table {
@@ -185,13 +217,20 @@
             }
 
             .chart-container {
-                background: var(--card);
-                padding: 1.5rem;
-                border-radius: 16px;
-                box-shadow: var(--shadow);
-                height: 380px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1.8rem;
+                border-radius: 20px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+                height: 400px;
                 display: flex;
                 flex-direction: column;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .chart-container:hover {
+                box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
             }
 
             .chart-container h3 {
@@ -255,8 +294,9 @@
                 </div>
                 <div class="nav-links">
                     <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="revenue" class="active"><i class="bi bi-graph-up"></i> Revenue</a>
+                    <a href="foodManagement" ><i class="bi bi-cup-straw"></i> Manage Food</a>
+                    <a href="../accountList"><i class="bi bi-people"></i> Account List</a>
                     <a href="../home"><i class="bi bi-house"></i> User Page</a>
                     <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 </div>

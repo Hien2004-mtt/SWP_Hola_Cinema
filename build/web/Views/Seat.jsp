@@ -23,10 +23,9 @@
     </head>
 
     <body>
-        
+          <jsp:include page="/Inculude/Header.jsp" />
 
     <div class="container">
-        <jsp:include page="/Inculude/Header.jsp" />
          <c:if test="${not empty message}">
         <div class="alert alert-danger">${message}</div>
     </c:if>

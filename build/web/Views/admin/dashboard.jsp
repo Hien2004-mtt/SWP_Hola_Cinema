@@ -8,25 +8,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Dashboard - Hola Cinema</title>
 
-        <!-- Bootstrap 5 + Icons -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
 
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <style>
             :root {
-                --primary: #6d28d9;
-                --primary-light: #a78bff;
-                --primary-dark: #5b21b6;
-                --accent: #e879f9;
-                --bg: #f8f9ff;
+                --primary: #6C5CE7;
+                --primary-light: #A66EFF;
+                --primary-dark: #5B4BC4;
+                --bg: #F4F6FA;
                 --card: #ffffff;
-                --text: #1f2937;
-                --text-light: #6b7280;
-                --border: #e5e7eb;
-                --shadow: 0 4px 15px rgba(109, 40, 217, 0.1);
+                --text: #2D3436;
+                --text-light: #636E72;
+                --border: #E5E7EB;
+                --shadow: 0 4px 12px rgba(0,0,0,0.06);
+                --shadow-hover: 0 8px 20px rgba(0,0,0,0.1);
             }
 
             * {
@@ -36,410 +38,544 @@
             }
 
             body {
-                font-family: 'Inter', 'Segoe UI', sans-serif;
-                background: linear-gradient(to bottom right, #f8f9ff, #eef2ff);
+                font-family: 'Poppins', sans-serif;
+                background: var(--bg);
                 color: var(--text);
                 min-height: 100vh;
             }
 
             /* Header */
             .header {
-                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-                color: white;
-                padding: 1rem 2rem;
-                box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+                background: var(--card);
+                color: var(--text);
+                padding: 1.2rem 2rem;
+                box-shadow: var(--shadow);
                 position: sticky;
                 top: 0;
                 z-index: 1000;
+                border-bottom: 1px solid var(--border);
             }
 
-            .header .logo {
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .logo {
+                font-weight: 800;
+                font-size: 1.6rem;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .logo i {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 28px;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                color: var(--text);
+                text-decoration: none;
+                font-weight: 600;
+                padding: 0.6rem 1.2rem;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                font-size: 14px;
+            }
+
+            .nav-links a:hover, .nav-links a.active {
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                color: white;
+            }
+
+            /* Main Container */
+            .main-container {
+                padding: 2.5rem;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .page-title {
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--text);
+                margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .page-title i {
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .page-subtitle {
+                color: var(--text-light);
+                margin-bottom: 2rem;
+                font-size: 15px;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+                margin-bottom: 2.5rem;
+            }
+
+            .stat-card {
+                background: var(--card);
+                border-radius: 20px;
+                padding: 1.8rem;
+                box-shadow: var(--shadow);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border: 1px solid var(--border);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 100px;
+                height: 100px;
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                opacity: 0.05;
+                border-radius: 50%;
+                transform: translate(30%, -30%);
+            }
+
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-hover);
+            }
+
+            .stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+
+            .stat-icon {
+                width: 56px;
+                height: 56px;
+                border-radius: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 26px;
+                color: white;
+            }
+
+            .stat-icon.revenue {
+                background: linear-gradient(135deg, #6C5CE7, #A66EFF);
+            }
+
+            .stat-icon.tickets {
+                background: linear-gradient(135deg, #00B894, #55EFC4);
+            }
+
+            .stat-icon.movies {
+                background: linear-gradient(135deg, #FD79A8, #FDCB6E);
+            }
+
+            .stat-icon.users {
+                background: linear-gradient(135deg, #0984E3, #74B9FF);
+            }
+
+            .stat-content {
+                position: relative;
+                z-index: 1;
+            }
+
+            .stat-label {
+                font-size: 14px;
+                color: var(--text-light);
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .stat-value {
+                font-size: 32px;
+                font-weight: 800;
+                color: var(--text);
+                line-height: 1;
+            }
+
+            .stat-change {
+                font-size: 13px;
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .stat-change.positive {
+                color: #00B894;
+            }
+
+            .stat-change.negative {
+                color: #D63031;
+            }
+
+            /* Charts Section */
+            .charts-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+                gap: 24px;
+                margin-bottom: 2.5rem;
+            }
+
+            .chart-card {
+                background: var(--card);
+                border-radius: 20px;
+                padding: 1.8rem;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+            }
+
+            .chart-header {
+                margin-bottom: 1.5rem;
+            }
+
+            .chart-title {
+                font-size: 18px;
                 font-weight: 700;
-                font-size: 1.5rem;
+                color: var(--text);
                 display: flex;
                 align-items: center;
                 gap: 10px;
             }
 
-            .nav-links a {
-                color: rgba(255,255,255,0.9);
-                text-decoration: none;
-                font-weight: 500;
-                padding: 0.5rem 1rem;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-            }
-
-            .nav-links a:hover {
-                background: rgba(255,255,255,0.15);
-                color: white;
-            }
-
-            /* Container */
-            .main-container {
-                padding: 2rem;
-                max-width: 1400px;
-                margin: 0 auto;
-            }
-
-            .welcome-card {
-                background: var(--card);
-                padding: 1.5rem;
-                border-radius: 16px;
-                box-shadow: var(--shadow);
-                margin-bottom: 2rem;
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                font-size: 1.1rem;
-            }
-
-            .welcome-card .bi {
-                font-size: 1.8rem;
+            .chart-title i {
                 color: var(--primary);
-            }
-
-            /* Stats Cards */
-            .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 2rem;
-            }
-
-            .stat-card {
-                background: var(--card);
-                padding: 1.5rem;
-                border-radius: 16px;
-                box-shadow: var(--shadow);
-                text-align: center;
-                transition: all 0.3s ease;
-                border: 1px solid var(--border);
-            }
-
-            .stat-card:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 12px 25px rgba(109, 40, 217, 0.18);
-            }
-
-            .stat-card .icon {
-                width: 50px;
-                height: 50px;
-                margin: 0 auto 1rem;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.5rem;
-                color: white;
-            }
-
-            .stat-card h3 {
-                font-size: 1.8rem;
-                font-weight: 700;
-                color: var(--primary);
-                margin: 0.5rem 0;
-            }
-
-            .stat-card p {
-                color: var(--text-light);
-                font-size: 0.95rem;
-                margin: 0;
-            }
-
-            /* Chart Section */
-            .charts-section {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 1.5rem;
-                margin-top: 1rem;
             }
 
             .chart-container {
-                background: var(--card);
-                padding: 1.5rem;
-                border-radius: 16px;
-                box-shadow: var(--shadow);
-                height: 320px;
-                display: flex;
-                flex-direction: column;
+                height: 350px;
+                position: relative;
             }
 
-            .chart-container h3 {
-                margin: 0 0 1rem;
-                font-size: 1.1rem;
+            /* Recent Activity */
+            .activity-card {
+                background: var(--card);
+                border-radius: 20px;
+                padding: 1.8rem;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+            }
+
+            .activity-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .activity-title {
+                font-size: 18px;
+                font-weight: 700;
                 color: var(--text);
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 10px;
             }
 
-            .chart-container canvas {
+            .activity-item {
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                transition: background 0.3s ease;
+            }
+
+            .activity-item:last-child {
+                border-bottom: none;
+            }
+
+            .activity-item:hover {
+                background: var(--bg);
+                border-radius: 10px;
+            }
+
+            .activity-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                color: white;
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            }
+
+            .activity-content {
                 flex: 1;
-                max-height: 260px;
             }
 
-            .small-chart {
-                height: 320px;
+            .activity-text {
+                font-size: 14px;
+                color: var(--text);
+                font-weight: 500;
             }
 
-            /* Footer */
-            footer {
-                text-align: center;
-                padding: 2rem;
+            .activity-time {
+                font-size: 12px;
                 color: var(--text-light);
-                font-size: 0.9rem;
-                margin-top: 3rem;
-                border-top: 1px solid var(--border);
             }
 
             /* Responsive */
-            @media (max-width: 992px) {
-                .charts-section {
+            @media (max-width: 768px) {
+                .main-container {
+                    padding: 1.5rem;
+                }
+
+                .stats-grid {
                     grid-template-columns: 1fr;
                 }
-            }
 
-            @media (max-width: 576px) {
-                .main-container {
-                    padding: 1rem;
-                }
-                .welcome-card {
-                    flex-direction: column;
-                    text-align: center;
-                }
-                .stats-grid {
+                .charts-grid {
                     grid-template-columns: 1fr;
                 }
             }
         </style>
     </head>
     <body>
-
-        <header class="header">
-            <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
                 <div class="logo">
-                    <span class="bi bi-film"></span> Hola Cinema
+                    <i class="ri-movie-2-fill"></i>
+                    Hola Cinema Admin
                 </div>
                 <div class="nav-links">
-                    <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
-                    <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
-                    <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Manage Food</a>
-                    <a href="../home"><i class="bi bi-house"></i> User Page</a>
-                    <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    <a href="${pageContext.request.contextPath}/admin/dashboard" class="active">
+                        <i class="ri-dashboard-line"></i> Overview
+                    </a>
+                    <a href="${pageContext.request.contextPath}/admin/revenue">
+                        <i class="ri-line-chart-line"></i> Revenue
+                    </a>
+                    <a href="${pageContext.request.contextPath}/admin/foodManagement">
+                        <i class="ri-restaurant-line"></i> Food Management
+                    </a>
+                    <a href="${pageContext.request.contextPath}/accountList">
+                        <i class="bi bi-people"></i> Account List
+                    </a>
+                    <a href="${pageContext.request.contextPath}/home">
+                        <i class="ri-home-line"></i> User Page
+                    </a>
+                    <a href="${pageContext.request.contextPath}/logout">
+                        <i class="ri-logout-box-line"></i> Logout
+                    </a>
                 </div>
             </div>
-        </header>
-
-        <div class="main-container">
-
-            <!-- Welcome -->
-            <div class="welcome-card">
-                <div class="bi bi-person-circle"></div>
-                <div>
-                    Welcome, <strong>${adminUser.name}</strong>!  
-                    <small class="text-muted d-block">| Role: <em>Administrator</em></small>
-                </div>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="bi bi-currency-exchange"></i>
-                    </div>
-                    <h3><fmt:formatNumber value="${todayRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Today's Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                        <i class="bi bi-calendar-month"></i>
-                    </div>
-                    <h3><fmt:formatNumber value="${monthRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Monthly Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-                        <i class="bi bi-calendar3"></i>
-                    </div>
-                    <h3><fmt:formatNumber value="${yearRevenue}" type="currency" currencySymbol="₫"/></h3>
-                    <p>Yearly Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <i class="bi bi-ticket-perforated"></i>
-                    </div>
-                    <h3><c:out value="${totalTickets}"/></h3>
-                    <p>Tickets Sold</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                        <i class="bi bi-play-circle"></i>
-                    </div>
-                    <h3><c:out value="${nowShowing}"/></h3>
-                    <p>Now Showing</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
-                        <i class="bi bi-clock-history"></i>
-                    </div>
-                    <h3><c:out value="${comingSoon}"/></h3>
-                    <p>Coming Soon</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="bi bi-building"></i>
-                    </div>
-                    <h3><c:out value="${activeCinemas}"/></h3>
-                    <p>Active Cinemas</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <h3><c:out value="${totalUsers}"/></h3>
-                    <p>Total Users</p>
-                </div>
-                <div class="stat-card">
-                    <div class="icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
-                        <i class="bi bi-star-fill"></i>
-                    </div>
-                    <h3><fmt:formatNumber value="${avgRating}" pattern="#.##"/></h3>
-                    <p>Average Rating</p>
-                </div>
-            </div>
-
-            <!-- Charts Section -->
-            <div class="charts-section">
-
-                <!-- Line Chart: 12-Month Revenue -->
-                <div class="chart-container">
-                    <h3><i class="bi bi-graph-up-arrow"></i> 12-Month Revenue</h3>
-                    <canvas id="revenueLineChart"></canvas>
-                </div>
-
-                <!-- Pie Chart: Movie Distribution -->
-                <div class="chart-container small-chart">
-                    <h3><i class="bi bi-pie-chart"></i> Movie Distribution</h3>
-                    <canvas id="movieTypeChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Bar Chart: Revenue by Cinema (if data available) -->
-            <c:if test="${not empty cinemaRevenue}">
-                <div class="chart-container" style="margin-top: 1.5rem;">
-                    <h3><i class="bi bi-building-fill-gear"></i> Revenue by Cinema</h3>
-                    <canvas id="cinemaBarChart"></canvas>
-                </div>
-            </c:if>
-
         </div>
 
-        <footer>
-            © 2025 Hola Cinema — Admin Dashboard. Designed with <i class="bi bi-heart-fill text-danger"></i> by the Dev Team.
-        </footer>
+        <!-- Main Container -->
+        <div class="main-container">
+            <h1 class="page-title">
+                <i class="ri-dashboard-3-line"></i>
+                Dashboard Overview
+            </h1>
+            <p class="page-subtitle">Welcome back! Here's what's happening with your cinema today.</p>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon revenue">
+                            <i class="ri-money-dollar-circle-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-value">
+                            <fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="$"/>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="ri-arrow-up-line"></i>
+                            +12.5% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon tickets">
+                            <i class="ri-ticket-2-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Tickets Sold</div>
+                        <div class="stat-value">${totalTickets}</div>
+                        <div class="stat-change positive">
+                            <i class="ri-arrow-up-line"></i>
+                            +8.2% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon movies">
+                            <i class="ri-film-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Active Movies</div>
+                        <div class="stat-value">${totalMovies}</div>
+                        <div class="stat-change positive">
+                            <i class="ri-arrow-up-line"></i>
+                            +3 new releases
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon users">
+                            <i class="ri-user-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-value">${totalUsers}</div>
+                        <div class="stat-change positive">
+                            <i class="ri-arrow-up-line"></i>
+                            +156 new users
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="ri-bar-chart-line"></i>
+                            Revenue Overview
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">
+                            <i class="ri-pie-chart-line"></i>
+                            Ticket Distribution
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="ticketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h3 class="activity-title">
+                        <i class="ri-time-line"></i>
+                        Recent Activity
+                    </h3>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="ri-ticket-2-line"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">New ticket booking for "Avengers: Endgame"</div>
+                        <div class="activity-time">2 minutes ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="ri-user-add-line"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">New user registration</div>
+                        <div class="activity-time">15 minutes ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="ri-film-line"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">New movie added: "Spider-Man: No Way Home"</div>
+                        <div class="activity-time">1 hour ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
-            // Data from server
-            const monthlyRevenue = [
-            <c:forEach var="r" items="${monthlyRevenue}" varStatus="loop">
-                ${r}<c:if test="${!loop.last}">,</c:if>
-            </c:forEach>
-            ];
-
-            // Example data for movie distribution (replace with actual data)
-            const movieTypes = ['Action', 'Romance', 'Horror', 'Comedy', 'Animation'];
-            const movieCounts = [25, 18, 15, 22, 12];
-
-            // Line Chart
-            const ctxLine = document.getElementById('revenueLineChart').getContext('2d');
-            new Chart(ctxLine, {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                            label: 'Revenue (₫)',
-                            data: monthlyRevenue,
-                            borderColor: '#6d28d9',
-                            backgroundColor: 'rgba(109, 40, 217, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#6d28d9',
-                            pointRadius: 5,
-                            pointHoverRadius: 7
-                        }]
+                        label: 'Revenue',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000],
+                        borderColor: '#6C5CE7',
+                        backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {display: false}
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: value => value.toLocaleString('en-US') + '₫'
-                            }
-                        }
+                        legend: { display: false }
                     }
                 }
             });
 
-            // Pie Chart
-            const ctxPie = document.getElementById('movieTypeChart').getContext('2d');
-            new Chart(ctxPie, {
+            // Ticket Chart
+            const ticketCtx = document.getElementById('ticketChart').getContext('2d');
+            new Chart(ticketCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: movieTypes,
+                    labels: ['Standard', 'VIP', 'Premium'],
                     datasets: [{
-                            data: movieCounts,
-                            backgroundColor: [
-                                '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'
-                            ],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
+                        data: [300, 150, 100],
+                        backgroundColor: ['#6C5CE7', '#A66EFF', '#00B894']
+                    }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {position: 'bottom', labels: {padding: 15}}
-                    }
+                    maintainAspectRatio: false
                 }
             });
-
-            // Bar Chart (if cinema data exists)
-            <c:if test="${not empty cinemaRevenue}">
-            const ctxBar = document.getElementById('cinemaBarChart').getContext('2d');
-            const cinemaNames = [<c:forEach var="entry" items="${cinemaRevenue}">'${entry.key}',</c:forEach>];
-            const cinemaRevenues = [<c:forEach var="entry" items="${cinemaRevenue}">${entry.value},</c:forEach>];
-
-            new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: cinemaNames,
-                    datasets: [{
-                            label: 'Revenue',
-                            data: cinemaRevenues,
-                            backgroundColor: 'rgba(109, 40, 217, 0.7)',
-                            borderColor: '#6d28d9',
-                            borderWidth: 1
-                        }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {legend: {display: false}},
-                    scales: {
-                        y: {beginAtZero: true}
-                    }
-                }
-            });
-            </c:if>
         </script>
-
     </body>
 </html>
+

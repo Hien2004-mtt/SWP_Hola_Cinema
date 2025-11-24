@@ -1,6 +1,7 @@
 package DAL;
 
 import Models.User;
+import Util.PasswordUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,8 +21,26 @@ public class UserDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String storedHash = rs.getString("password_hash");
+                String statusStr = rs.getString("status");
+                boolean isActive = statusStr != null && statusStr.equalsIgnoreCase("1");
 
-                if (password.equals(storedHash)) {
+                // Check if account is banned
+                if (!isActive) {
+                    return null; // Account is banned, cannot login
+                }
+
+                // Verify password using BCrypt
+                // Support both BCrypt hashed passwords and legacy plain text passwords
+                boolean passwordMatches = false;
+                if (storedHash.startsWith("$2a$") || storedHash.startsWith("$2b$") || storedHash.startsWith("$2y$")) {
+                    // BCrypt hash detected
+                    passwordMatches = PasswordUtil.verifyPassword(password, storedHash);
+                } else {
+                    // Legacy plain text password (for backward compatibility)
+                    passwordMatches = password.equals(storedHash);
+                }
+
+                if (passwordMatches) {
                     user = new User();
                     user.setUserId(rs.getInt("user_id"));
                     user.setEmail(rs.getString("email"));
@@ -31,6 +50,7 @@ public class UserDAO {
                     user.setDob(rs.getDate("dob"));
                     user.setGender(rs.getBoolean("gender"));
                     user.setRole(rs.getInt("role"));
+                    user.setStatus(isActive);
                     user.setCreatedAt(rs.getTimestamp("created_at"));
                     user.setUpdatedAt(rs.getTimestamp("updated_at"));
                 }

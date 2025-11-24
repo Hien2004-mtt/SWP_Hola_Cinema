@@ -14,24 +14,43 @@ public class EditRoleServlet extends HttpServlet {
             throws ServletException, IOException {
         String userIdStr = request.getParameter("userId");
         String roleStr = request.getParameter("role");
+        
+        if (userIdStr == null || roleStr == null) {
+            request.getSession().setAttribute("error", "Thiếu thông tin cần thiết!");
+            response.sendRedirect(request.getContextPath() + "/accountList");
+            return;
+        }
+        
         int userId, role;
         try {
             userId = Integer.parseInt(userIdStr);
             role = Integer.parseInt(roleStr);
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input");
+            e.printStackTrace();
+            request.getSession().setAttribute("error", "Dữ liệu không hợp lệ!");
+            response.sendRedirect(request.getContextPath() + "/accountList");
             return;
         }
+        
         // Không cho đổi role thành admin
         if (role == 0) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Changing role to Admin is not allowed.");
+            request.getSession().setAttribute("error", "Không được phép đổi role thành Admin!");
+            response.sendRedirect(request.getContextPath() + "/accountList");
             return;
         }
-        boolean success = new DAO().updateUserRole(userId, role);
-        if (success) {
-            response.sendRedirect("accountList");
-        } else {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Update failed");
+        
+        try {
+            boolean success = new DAO().updateUserRole(userId, role);
+            if (success) {
+                request.getSession().setAttribute("success", "Cập nhật role thành công!");
+            } else {
+                request.getSession().setAttribute("error", "Không thể cập nhật role!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("error", "Đã xảy ra lỗi khi cập nhật role!");
         }
+        
+        response.sendRedirect(request.getContextPath() + "/accountList");
     }
 }

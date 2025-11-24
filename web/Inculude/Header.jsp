@@ -101,8 +101,8 @@
                        href="${pageContext.request.contextPath}/home">Home</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/movies">Movies</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/booking">Booking</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/promotions">Promotions</a></li>
+              
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/manageNewsAndPromotion">Promotions</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/contact">Contact</a></li>
                     <% } %>
             </ul>

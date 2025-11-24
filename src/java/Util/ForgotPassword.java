@@ -54,8 +54,8 @@ public class ForgotPassword extends HttpServlet {
             props.put("mail.smtp.port", "465");
 
             // Replace with your app-specific password stored securely
-            final String senderEmail = "hienmtthe180121@fpt.edu.vn";
-            final String senderPassword = "your_app_password_here";
+            final String senderEmail = "quanghuy1472005@gmail.com";
+            final String senderPassword = "dmqp pjxc cfsz yonl";
 
             Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -73,7 +73,7 @@ public class ForgotPassword extends HttpServlet {
                 String content = "Dear Valued Customer,\n\n"
                         + "To proceed with your request on our Cinema Service, please use the following One-Time Password (OTP):\n\n"
                         + otpvalue + "\n\n"
-                        + "⚠️ Please do not share this code with anyone. "
+                        + "Please do not share this code with anyone. "
                         + "This OTP is valid for a limited time and can only be used once.\n\n"
                         + "Thank you for choosing our service.\n\n"
                         + "Best regards,\n"

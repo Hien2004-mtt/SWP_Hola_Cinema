@@ -19,6 +19,8 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
         String newPassword = request.getParameter("password");
@@ -30,6 +32,38 @@ public class NewPassword extends HttpServlet {
             System.out.println("⚠️ Email trong session bị null, không thể cập nhật.");
             request.setAttribute("error", "Phiên làm việc đã hết hạn. Vui lòng thực hiện lại từ đầu.");
             dispatcher = request.getRequestDispatcher("forgotPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate password not empty
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            request.setAttribute("error", "Mật khẩu mới không được để trống!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate password length
+        if (newPassword.length() < 6) {
+            request.setAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate confirm password not empty
+        if (confPassword == null || confPassword.trim().isEmpty()) {
+            request.setAttribute("error", "Vui lòng xác nhận mật khẩu!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Validate passwords match
+        if (!newPassword.equals(confPassword)) {
+            request.setAttribute("error", "Mật khẩu xác nhận không khớp!");
+            dispatcher = request.getRequestDispatcher("newPassword.jsp");
             dispatcher.forward(request, response);
             return;
         }

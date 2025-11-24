@@ -151,6 +151,28 @@ public class NewsAndPromotionManageController extends HttpServlet {
                         break;
                     }
 
+                    // Validate dates
+                    long currentTime = System.currentTimeMillis();
+                    
+                    // Check if start date is in the past
+                    if (news.getStartDate() != null && news.getStartDate().getTime() < currentTime) {
+                        request.setAttribute("error", "Thời gian bắt đầu không được ở quá khứ!");
+                        break;
+                    }
+                    
+                    // Check if end date is in the past
+                    if (news.getEndDate() != null && news.getEndDate().getTime() < currentTime) {
+                        request.setAttribute("error", "Thời gian kết thúc không được ở quá khứ!");
+                        break;
+                    }
+                    
+                    // Check if end date is after start date
+                    if (news.getStartDate() != null && news.getEndDate() != null 
+                            && news.getEndDate().getTime() <= news.getStartDate().getTime()) {
+                        request.setAttribute("error", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!");
+                        break;
+                    }
+                    
                     // Tạm thời bỏ qua đăng nhập - sử dụng user_id = 1 làm mặc định
                     news.setCreatedBy(loggedInUser != null ? loggedInUser.getUserId() : 1);
 
@@ -207,7 +229,29 @@ public class NewsAndPromotionManageController extends HttpServlet {
                         request.setAttribute("error", "Định dạng ngày tháng không hợp lệ!");
                         break;
                     }
-
+                    
+                    // Validate dates
+                    long currentTime = System.currentTimeMillis();
+                    
+                    // Check if start date is in the past
+                    if (news.getStartDate() != null && news.getStartDate().getTime() < currentTime) {
+                        request.setAttribute("error", "Thời gian bắt đầu không được ở quá khứ!");
+                        break;
+                    }
+                    
+                    // Check if end date is in the past
+                    if (news.getEndDate() != null && news.getEndDate().getTime() < currentTime) {
+                        request.setAttribute("error", "Thời gian kết thúc không được ở quá khứ!");
+                        break;
+                    }
+                    
+                    // Check if end date is after start date
+                    if (news.getStartDate() != null && news.getEndDate() != null 
+                            && news.getEndDate().getTime() <= news.getStartDate().getTime()) {
+                        request.setAttribute("error", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!");
+                        break;
+                    }
+                    
                     boolean ok = dao.update(news);
                     if (ok) {
                         request.setAttribute("success", "Cập nhật " + (type.equals("news") ? "tin tức" : "khuyến mãi") + " thành công!");

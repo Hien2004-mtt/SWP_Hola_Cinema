@@ -2,6 +2,7 @@ package Controllers;
 
 import DAL.UserDAO;
 import Models.User;
+import Util.PasswordUtil;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.HashMap;
@@ -61,49 +62,84 @@ public class UpdateProfileServlet1 extends HttpServlet {
         String email = currentUser.getEmail(); // Email not updatable, use from session
 
         // Get form parameters
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String dobStr = request.getParameter("dob");
         String genderStr = request.getParameter("gender");
 
+        // Password change parameters
+        String currentPassword = request.getParameter("currentPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmNewPassword = request.getParameter("confirmNewPassword");
+
         // Map to store validation errors
         Map<String, String> errors = new HashMap<>();
 
-        // Validate fields
-        if (password != null && !password.trim().isEmpty()) {
-            if (password.length() < 6) {
-                errors.put("password", "Mật khẩu phải có ít nhất 6 ký tự!");
+        // Validate password change (if user wants to change password)
+        boolean changePassword = false;
+        if ((currentPassword != null && !currentPassword.trim().isEmpty()) ||
+            (newPassword != null && !newPassword.trim().isEmpty()) ||
+            (confirmNewPassword != null && !confirmNewPassword.trim().isEmpty())) {
+
+            changePassword = true;
+
+            // All password fields must be filled
+            if (currentPassword == null || currentPassword.trim().isEmpty()) {
+                errors.put("currentPassword", "Please enter your current password!");
+            } else {
+                // Verify current password
+                if (!PasswordUtil.verifyPassword(currentPassword, currentUser.getPasswordHash())) {
+                    errors.put("currentPassword", "Current password is incorrect!");
+                }
             }
-            if (confirmPassword == null || !confirmPassword.equals(password)) {
-                errors.put("confirmPassword", "Xác nhận mật khẩu không khớp!");
+
+            if (newPassword == null || newPassword.trim().isEmpty()) {
+                errors.put("newPassword", "Please enter a new password!");
+            } else {
+                String passwordError = PasswordUtil.getPasswordValidationError(newPassword);
+                if (passwordError != null) {
+                    errors.put("newPassword", passwordError);
+                }
             }
-        } else if (confirmPassword != null && !confirmPassword.trim().isEmpty()) {
-            errors.put("password", "Vui lòng nhập mật khẩu nếu muốn thay đổi!");
+
+            if (confirmNewPassword == null || confirmNewPassword.trim().isEmpty()) {
+                errors.put("confirmNewPassword", "Please confirm your new password!");
+            } else if (!confirmNewPassword.equals(newPassword)) {
+                errors.put("confirmNewPassword", "Password confirmation does not match!");
+            }
         }
 
         if (name == null || name.trim().isEmpty()) {
-            errors.put("name", "Họ và tên không được để trống!");
+            errors.put("name", "Full name cannot be empty!");
+        } else if (name.length() < 2) {
+            errors.put("name", "Full name must be at least 2 characters!");
         } else if (!name.matches("^[\\p{L} ]+$")) {
-            errors.put("name", "Họ và tên chỉ được chứa chữ cái và khoảng trắng!");
+            errors.put("name", "Full name can only contain letters and spaces!");
         }
 
-        if (phone != null && !phone.trim().isEmpty() && !phone.matches("^0[0-9]{9,10}$")) {
-            errors.put("phone", "Số điện thoại phải bắt đầu bằng 0 và có 10-11 số!");
+        if (phone == null || phone.trim().isEmpty()) {
+            errors.put("phone", "Phone number cannot be empty!");
+        } else if (!phone.matches("^0[0-9]{9,10}$")) {
+            errors.put("phone", "Phone number must start with 0 and have 10-11 digits!");
         }
 
-        if (dobStr != null && !dobStr.trim().isEmpty()) {
+        if (dobStr == null || dobStr.trim().isEmpty()) {
+            errors.put("dob", "Date of birth cannot be empty!");
+        } else {
             try {
-                Date dob = Date.valueOf(dobStr); // Sử dụng java.sql.Date.valueOf
-                // Nếu không lỗi, dob đã được tạo thành công
+                Date dob = Date.valueOf(dobStr);
+                // Check if date is in the future
+                Date today = new Date(System.currentTimeMillis());
+                if (dob.after(today)) {
+                    errors.put("dob", "Date of birth cannot be in the future!");
+                }
             } catch (IllegalArgumentException e) {
-                errors.put("dob", "Ngày sinh không hợp lệ! (Định dạng: yyyy-MM-dd)");
+                errors.put("dob", "Invalid date of birth!");
             }
         }
 
-        if (genderStr == null) {
-            errors.put("gender", "Vui lòng chọn giới tính!");
+        if (genderStr == null || genderStr.trim().isEmpty()) {
+            errors.put("gender", "Please select gender!");
         }
 
         // If there are validation errors, return to form with errors
@@ -123,8 +159,13 @@ public class UpdateProfileServlet1 extends HttpServlet {
             java.sql.Date dob = (dobStr != null && !dobStr.trim().isEmpty()) ? Date.valueOf(dobStr) : null;
             boolean gender = (genderStr != null && genderStr.equals("1")) ? true : false;
 
-            // Password: If not provided, keep current; else update
-            String passwordHash = (password != null && !password.trim().isEmpty()) ? password : currentUser.getPasswordHash();
+            // Determine password hash to use
+            String passwordHash = currentUser.getPasswordHash(); // Keep current by default
+
+            if (changePassword && errors.isEmpty()) {
+                // Hash the new password with BCrypt
+                passwordHash = PasswordUtil.hashPassword(newPassword);
+            }
 
             // Update user profile (role not updated)
             boolean success = userDAO.updateProfile(email, passwordHash, name, phone, dob, gender);
@@ -132,15 +173,20 @@ public class UpdateProfileServlet1 extends HttpServlet {
                 // Update session with new info
                 User updatedUser = userDAO.getUserByEmail(email);
                 session.setAttribute("user", updatedUser);
-                request.setAttribute("message", "Cập nhật hồ sơ thành công! Bạn sẽ được chuyển về trang chủ sau 3 giây.");
-                request.getRequestDispatcher("/Views/updateSuccess.jsp").forward(request, response);
+
+                String successMsg = changePassword ?
+                    "Profile and password updated successfully!" :
+                    "Profile updated successfully!";
+                request.setAttribute("successMessage", successMsg);
+                request.setAttribute("user", updatedUser);
+                request.getRequestDispatcher("/Views/updateProfile.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Cập nhật hồ sơ thất bại. Vui lòng thử lại!");
+                request.setAttribute("error", "Profile update failed. Please try again!");
                 request.setAttribute("user", currentUser);
                 request.getRequestDispatcher("/Views/updateProfile.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("error", "Đã xảy ra lỗi: " + e.getMessage());
+            request.setAttribute("error", "An error occurred: " + e.getMessage());
             request.setAttribute("user", currentUser);
             request.getRequestDispatcher("/Views/updateProfile.jsp").forward(request, response);
         }

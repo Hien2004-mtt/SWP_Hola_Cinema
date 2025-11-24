@@ -88,6 +88,17 @@
             </div>
         </div>
     </div>
+<div style="
+    background:#fff3cd;
+    border:1px solid #ffeeba;
+    padding:10px;
+    border-radius:6px;
+    margin-top:10px;
+    font-size:18px;
+">
+    ⏳ <b>Thời gian còn lại để thanh toán:</b>
+    <span id="countdown" style="color:red; font-weight:bold;">60</span> giây
+</div>
 
     <!-- ? Footer -->
     <jsp:include page="/Inculude/Footer.jsp" />

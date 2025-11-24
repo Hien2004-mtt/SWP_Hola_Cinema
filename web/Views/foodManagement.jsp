@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Food - Hola Cinema Admin</title>
+    <title>Food Management - Hola Cinema Admin</title>
 
     <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -289,105 +289,106 @@
             <span class="bi bi-film"></span> Hola Cinema
         </div>
         <div class="nav-links">
-            <a href="dashboard"><i class="bi bi-speedometer2"></i> Tổng quan</a>
-            <a href="revenue"><i class="bi bi-graph-up"></i> Doanh thu</a>
-            <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Quản lý Food</a>
-            <a href="../home"><i class="bi bi-house"></i> Trang người dùng</a>
-            <a href="../logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            <a href="dashboard"><i class="bi bi-speedometer2"></i> Overview</a>
+            <a href="revenue"><i class="bi bi-graph-up"></i> Revenue</a>
+            <a href="foodManagement" class="active"><i class="bi bi-cup-straw"></i> Food Management</a>
+            <a href="../accountList"><i class="bi bi-people"></i> Account List</a>
+            <a href="../home"><i class="bi bi-house"></i> User Page</a>
+            <a href="../logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
     </div>
 </header>
 
 <div class="main-container">
 
-    <!-- Page Title + Nút thêm -->
+    <!-- Page Title + Add Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="page-title">
-            <i class="bi bi-cup-straw"></i> Quản lý Food & Đồ uống
+            <i class="bi bi-cup-straw"></i> Food & Beverage Management
         </h1>
         <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addModal">
-            <i class="bi bi-plus-circle"></i> Thêm món
+            <i class="bi bi-plus-circle"></i> Add Item
         </button>
     </div>
 
-    <!-- Bộ lọc + Sắp xếp -->
+    <!-- Filters + Sort -->
     <div class="filter-card">
         <div class="filter-row">
 
-            <!-- Tìm tên -->
+            <!-- Search Name -->
             <div class="filter-group">
                 <form method="get" action="foodManagement">
-                    <label>Tên:</label>
-                    <input type="text" name="name" placeholder="Tìm tên..." value="${name}" class="form-control">
-                    <button type="submit" class="btn btn-primary">Tìm</button>
+                    <label>Name:</label>
+                    <input type="text" name="name" placeholder="Search name..." value="${name}" class="form-control">
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </div>
 
-            <!-- Loại -->
+            <!-- Type -->
             <div class="filter-group">
                 <form method="get" action="foodManagement">
-                    <label>Loại:</label>
+                    <label>Type:</label>
                     <select name="type" class="form-select">
-                        <option value="">-- Tất cả --</option>
+                        <option value="">-- All --</option>
                         <option value="snack" ${type=="snack"?"selected":""}>Snack</option>
                         <option value="drink" ${type=="drink"?"selected":""}>Drink</option>
                         <option value="popcorn" ${type=="popcorn"?"selected":""}>Popcorn</option>
                     </select>
-                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
             </div>
 
-            <!-- Khoảng giá -->
+            <!-- Price Range -->
             <div class="filter-group">
                 <form method="get" action="foodManagement">
-                    <label>Từ:</label>
-                    <input type="number" name="min" placeholder="VNĐ" step="1000" value="${min}" class="form-control">
-                    <label>Đến:</label>
-                    <input type="number" name="max" placeholder="VNĐ" step="1000" value="${max}" class="form-control">
-                    <button type="submit" class="btn btn-primary">Lọc giá</button>
+                    <label>From:</label>
+                    <input type="number" name="min" placeholder="VND" step="1000" value="${min}" class="form-control">
+                    <label>To:</label>
+                    <input type="number" name="max" placeholder="VND" step="1000" value="${max}" class="form-control">
+                    <button type="submit" class="btn btn-primary">Filter Price</button>
                 </form>
             </div>
 
-            <!-- Trạng thái -->
+            <!-- Status -->
             <div class="filter-group">
                 <form method="get" action="foodManagement">
-                    <label>Trạng thái:</label>
+                    <label>Status:</label>
                     <select name="status" class="form-select">
-                        <option value="">-- Tất cả --</option>
-                        <option value="1" ${status=="1"?"selected":""}>Còn hàng</option>
-                        <option value="0" ${status=="0"?"selected":""}>Hết hàng</option>
+                        <option value="">-- All --</option>
+                        <option value="1" ${status=="1"?"selected":""}>In Stock</option>
+                        <option value="0" ${status=="0"?"selected":""}>Out of Stock</option>
                     </select>
-                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
             </div>
 
-            <!-- Sắp xếp -->
+            <!-- Sort -->
             <div class="filter-group">
                 <form method="get" action="foodManagement">
-                    <label>Sắp xếp:</label>
+                    <label>Sort:</label>
                     <select name="sort" class="form-select">
-                        <option value="">-- Giá --</option>
-                        <option value="asc" ${sort=="asc"?"selected":""}>Tăng dần</option>
-                        <option value="desc" ${sort=="desc"?"selected":""}>Giảm dần</option>
+                        <option value="">-- Price --</option>
+                        <option value="asc" ${sort=="asc"?"selected":""}>Ascending</option>
+                        <option value="desc" ${sort=="desc"?"selected":""}>Descending</option>
                     </select>
-                    <button type="submit" class="btn btn-primary">Sắp xếp</button>
+                    <button type="submit" class="btn btn-primary">Sort</button>
                 </form>
             </div>
 
         </div>
     </div>
 
-    <!-- Bảng dữ liệu -->
+    <!-- Data Table -->
     <div class="table-container">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Tên món</th>
-                    <th>Loại</th>
-                    <th>Giá (VNĐ)</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th>Item Name</th>
+                    <th>Type</th>
+                    <th>Price (VND)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -408,25 +409,25 @@
                     <td><fmt:formatNumber value="<%= f.getPrice() %>" type="currency" currencySymbol="₫"/></td>
                     <td>
                         <span class="badge <%= f.isStatus() ? "bg-success" : "bg-danger" %>">
-                            <%= f.isStatus() ? "Còn hàng" : "Hết hàng" %>
+                            <%= f.isStatus() ? "In Stock" : "Out of Stock" %>
                         </span>
                     </td>
                     <td>
                         <a href="#" class="action-btn edit-btn" data-bs-toggle="modal" data-bs-target="#editModal"
                            onclick="fillEditModal(<%= f.getFoodId() %>, '<%= f.getName().replace("'", "\\'") %>', '<%= f.getType() %>', <%= f.getPrice() %>, <%= f.isStatus() %>)">
-                            <i class="bi bi-pencil-square"></i> Sửa
+                            <i class="bi bi-pencil-square"></i> Edit
                         </a>
                         <a href="foodManagement?action=toggle&id=<%= f.getFoodId() %>" class="action-btn toggle-btn">
-                            <i class="bi bi-arrow-repeat"></i> Đổi
+                            <i class="bi bi-arrow-repeat"></i> Toggle
                         </a>
-                        <a href="foodManagement?action=delete&id=<%= f.getFoodId() %>" class="action-btn delete-btn" onclick="return confirm('Xác nhận xóa món này?')">
-                            <i class="bi bi-trash"></i> Xóa
+                        <a href="foodManagement?action=delete&id=<%= f.getFoodId() %>" class="action-btn delete-btn" onclick="return confirm('Confirm delete this item?')">
+                            <i class="bi bi-trash"></i> Delete
                         </a>
                     </td>
                 </tr>
                 <% } } else { %>
                 <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">Không có dữ liệu phù hợp</td>
+                    <td colspan="6" class="text-center py-4 text-muted">No matching data found</td>
                 </tr>
                 <% } %>
             </tbody>
@@ -459,27 +460,27 @@
         <% } %>
     </div>
 
-    <a href="${pageContext.request.contextPath}/home" class="btn btn-outline-secondary btn-sm">Quay lại trang chủ</a>
+    <a href="${pageContext.request.contextPath}/home" class="btn btn-outline-secondary btn-sm">Back to Home</a>
 
 </div>
 
-<!-- MODAL THÊM -->
+<!-- ADD MODAL -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Thêm món ăn mới</h5>
+                <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Add New Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form method="post" action="foodManagement">
                     <input type="hidden" name="foodId">
                     <div class="mb-3">
-                        <label class="form-label">Tên món</label>
-                        <input type="text" name="name" class="form-control" placeholder="Nhập tên món..." required>
+                        <label class="form-label">Item Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter item name..." required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Loại</label>
+                        <label class="form-label">Type</label>
                         <select name="type" class="form-select" required>
                             <option value="snack">Snack</option>
                             <option value="drink">Drink</option>
@@ -487,37 +488,37 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Giá (VNĐ)</label>
+                        <label class="form-label">Price (VND)</label>
                         <input type="number" name="price" step="1000" class="form-control" placeholder="0" required>
                     </div>
                     <div class="form-check mb-3">
                         <input type="checkbox" name="status" class="form-check-input" id="addStatus" checked>
-                        <label class="form-check-label" for="addStatus">Còn hàng</label>
+                        <label class="form-check-label" for="addStatus">In Stock</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Lưu món</button>
+                    <button type="submit" class="btn btn-primary w-100">Save Item</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL SỬA -->
+<!-- EDIT MODAL -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chỉnh sửa món ăn</h5>
+                <h5 class="modal-title">Edit Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form method="post" action="foodManagement">
                     <input type="hidden" id="editId" name="foodId">
                     <div class="mb-3">
-                        <label class="form-label">Tên món</label>
+                        <label class="form-label">Item Name</label>
                         <input type="text" id="editName" name="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Loại</label>
+                        <label class="form-label">Type</label>
                         <select id="editType" name="type" class="form-select" required>
                             <option value="snack">Snack</option>
                             <option value="drink">Drink</option>
@@ -525,14 +526,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Giá (VNĐ)</label>
+                        <label class="form-label">Price (VND)</label>
                         <input type="number" id="editPrice" name="price" step="1000" class="form-control" required>
                     </div>
                     <div class="form-check mb-3">
                         <input type="checkbox" id="editStatus" name="status" class="form-check-input">
-                        <label class="form-check-label" for="editStatus">Còn hàng</label>
+                        <label class="form-check-label" for="editStatus">In Stock</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Cập nhật</button>
+                    <button type="submit" class="btn btn-primary w-100">Update</button>
                 </form>
             </div>
         </div>
@@ -541,7 +542,7 @@
 
 <!-- Footer -->
 <footer>
-    © 2025 Hola Cinema — Admin Dashboard. Được thiết kế với <i class="bi bi-heart-fill text-danger"></i> bởi Team Dev
+    © 2025 Hola Cinema — Admin Dashboard. Designed with <i class="bi bi-heart-fill text-danger"></i> by Team Dev
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
