@@ -108,7 +108,7 @@ public class CheckoutController extends HttpServlet {
                 + URLEncoder.encode("Lỗi processMomo: " + e.getMessage(), "UTF-8"));
     }
 }
-    private void processVNPay(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+   private void processVNPay(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
         HttpSession session = req.getSession(false);
         if (session == null) throw new IllegalStateException("Phiên thanh toán không tồn tại");
@@ -116,33 +116,33 @@ public class CheckoutController extends HttpServlet {
         Double discounted = (Double) session.getAttribute("discountedTotal");
         Double total = (Double) session.getAttribute("totalPrice");
         Double finalAmount = (discounted != null && discounted > 0) ? discounted : total;
+
         if (finalAmount == null) throw new IllegalArgumentException("Không tìm thấy giá trị amount");
 
-        long amount = Math.round(finalAmount * 100); // nhân 100 theo yêu cầu VNPay
-        String vnp_Version = "2.1.0";
-        String vnp_Command = "pay";
-        String vnp_TmnCode = VNPayConfig.vnp_TmnCode;
-        String vnp_IpAddr = VNPayConfig.getIpAddress(req);
+        long amount = Math.round(finalAmount * 100);
+
         String vnp_TxnRef = String.valueOf(session.getAttribute("bookingId"));
-        String vnp_OrderInfo = "Thanh toan ve HolaCinema booking " + vnp_TxnRef;
-        String orderType = "billpayment";
+        if (vnp_TxnRef == null || vnp_TxnRef.equals("null")) {
+            throw new IllegalStateException("Mã bookingId không hợp lệ!");
+        }
 
         Map<String, String> vnp_Params = new HashMap<>();
-        vnp_Params.put("vnp_Version", vnp_Version);
-        vnp_Params.put("vnp_Command", vnp_Command);
-        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Version", "2.1.0");
+        vnp_Params.put("vnp_Command", "pay");
+        vnp_Params.put("vnp_TmnCode", VNPayConfig.vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
-        vnp_Params.put("vnp_OrderType", orderType);
+        vnp_Params.put("vnp_OrderInfo", "Thanh toán vé HolaCinema #" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderType", "billpayment");
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl);
-        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl); // phải là HTTPS
+        vnp_Params.put("vnp_IpAddr", VNPayConfig.getIpAddress(req));
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         vnp_Params.put("vnp_CreateDate", formatter.format(cld.getTime()));
+
         cld.add(Calendar.MINUTE, 15);
         vnp_Params.put("vnp_ExpireDate", formatter.format(cld.getTime()));
 
@@ -155,14 +155,21 @@ public class CheckoutController extends HttpServlet {
         for (int i = 0; i < fieldNames.size(); i++) {
             String fieldName = fieldNames.get(i);
             String fieldValue = vnp_Params.get(fieldName);
+
             if (fieldValue != null && !fieldValue.isEmpty()) {
-                hashData.append(fieldName).append('=').append(URLEncoder.encode(fieldValue, "UTF-8"));
-                query.append(URLEncoder.encode(fieldName, "UTF-8")).append('=')
+
+                // HASH DATA - KHÔNG encoded
+                hashData.append(fieldName).append('=').append(fieldValue);
+
+                // QUERY STRING - CÓ encoded
+                query.append(URLEncoder.encode(fieldName, "UTF-8"))
+                     .append('=')
                      .append(URLEncoder.encode(fieldValue, "UTF-8"));
-                if (i < fieldNames.size() - 1) {
-                    hashData.append('&');
-                    query.append('&');
-                }
+            }
+
+            if (i < fieldNames.size() - 1) {
+                hashData.append('&');
+                query.append('&');
             }
         }
 
@@ -170,10 +177,12 @@ public class CheckoutController extends HttpServlet {
         String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + query + "&vnp_SecureHash=" + vnp_SecureHash;
 
         resp.sendRedirect(paymentUrl);
+
     } catch (Exception e) {
         e.printStackTrace();
         resp.sendRedirect(req.getContextPath() + "/Views/payment.jsp?page=fail&msg=" +
                 URLEncoder.encode("VNPay Error: " + e.getMessage(), "UTF-8"));
     }
 }
+
 }
